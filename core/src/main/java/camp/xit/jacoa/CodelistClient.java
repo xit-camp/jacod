@@ -9,6 +9,7 @@ import camp.xit.jacoa.model.CodelistEnum;
 import camp.xit.jacoa.provider.DataProvider;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,143 +20,130 @@ import java.util.concurrent.TimeUnit;
 public interface CodelistClient {
 
     /**
-     * Vráti všetky platné čiselníkové hodnoty daného číselníka. Číselník je jednoznačne identifikovaný
-     * názvom. V názve číselníka nezáleží na veľkosti písmen a na delenie slov v názve je možné použiť znak
-     * '_' alebo '-' t.j. napríklad názov DOCUMENT_TYPE je ekvivalentný s document-type. Káždá hodnota
-     * obsahuje všetky atribúty. Ak chceš definovať zoznam vrátených atribútov, tak použi
-     * {@link #getCodelist(java.lang.String, java.lang.String[])}. Ak číselník z daným menom neexistuje, tak
-     * sa vyhodí výnimka {@link CodelistNotFoundException}.
+     * Return codelist instance which contains all codelist entries. If codelist does not exist
+     * {@link CodelistNotFoundException}.
      *
-     * Táto metóda vracia iba číselníky z hlavnej cache a preto nevracia číselníky definované používateľom.
-     * To znamená, že ak používaš svoje odvodené triedy číselníkov, tak použí metódu
-     * {@link #getCodelist(java.lang.Class)}.
-     *
-     * @param codelist názov číselníka
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @return zoznam všetkých čiselníkových hodnôt
+     * @param <T> codelist type
+     * @param codelist codelist name
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @return codelist
      */
     Codelist<? extends CodelistEntry> getCodelist(String codelist);
 
 
     /**
-     * Vráti všetky platné čiselníkové hodnoty daného číselníka. Ak číselník z daným menom neexistuje, tak sa
-     * vyhodí výnimka {@link CodelistNotFoundException}. Táto operácia vráti všetky možné číselníky, vrátane
-     * použivateľsky definovaných číselníkov.
+     * Return codelist instance which contains all codelist entries. If codelist does not exist
+     * {@link CodelistNotFoundException}.
      *
-     * @param <T> typ číselníkka
-     * @param entryClass trieda číselníka
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @return zoznam všetkých čiselníkových hodnôt
+     * @param <T> codelist type
+     * @param entryClass codelist entry class
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @return codelist
      */
     <T extends CodelistEntry> Codelist<T> getCodelist(Class<T> entryClass);
 
 
     /**
-     * Vráti všetky platné čiselníkové hodnoty daného číselníka spĺňajúce kritéria definovane parametrom
-     * query.Číselník je jednoznačne identifikovaný názvom. V názve číselníka nezáleží na veľkosti písmen a
-     * na delenie slov v názve je možné použiť znak '_' alebo '-' t.j. napríklad názov DOCUMENT_TYPE je
-     * ekvivalentný s document-type. Káždá hodnota obsahuje všetky atribúty. Ak chceš definovať zoznam
-     * vrátených atribútov, tak použi {@link #getCodelist(java.lang.String, java.lang.String[])}. Ak číselník
-     * z daným menom neexistuje, tak sa vyhodí výnimka {@link CodelistNotFoundException}.
+     * Return codelist instance which contains only entries that are result of defined query. If codelist does
+     * not exist {@link CodelistNotFoundException}.
      *
-     * @param <T> codelist entry type
-     * @param codelist názov číselníka
+     * @param <T> codelist type
+     * @param codelist codelist name
      * @param query query
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @throws CompileException ak query nie je kompilovatelná
-     * @return zoznam všetkých čiselníkových hodnôt
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @throws CompileException if query is invalid
+     * @return codelist
      */
     <T extends CodelistEntry> Codelist<T> getFilteredCodelist(String codelist, String query);
 
 
     /**
-     * Vráti všetky platné čiselníkové hodnoty daného číselníka spĺňajúce kritéria definovane parametrom
-     * query. Ak číselník z daným menom neexistuje, tak sa vyhodí výnimka {@link CodelistNotFoundException}.
+     * Return codelist instance which contains only entries that are result of defined query. If codelist does
+     * not exist {@link CodelistNotFoundException}.
      *
-     * @param <T> typ číselníkka
+     * @param <T> codelist type
      * @param query query
-     * @param entryClass trieda číselníka
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @return zoznam všetkých čiselníkových hodnôt
+     * @param entryClass codelist entry class
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @return codelist
      */
     <T extends CodelistEntry> Codelist<T> getFilteredCodelist(Class<T> entryClass, String query);
 
 
     /**
-     * Vráti všetky platné číselníkové hodnoty pre viaceré číselníky definované názvom. Táto metóda je vhodná
-     * ak potrebuješ vrátiť naraz viacero číselníkov.
+     * Return defined subset of codelists as map. This is useful when you need fetch more than one codelist in
+     * one call.
      *
-     * @param codelists názvy číselníkov
-     * @return číselníkové hodnoty
+     * @param codelists codelist names
+     * @return map of codelists
      */
     Map<String, Codelist<?>> getCodelists(String... codelists);
 
 
     /**
-     * Vráti konkrétnu hodnotu číselníka definovanú atribútom {@link CodelistEntry#code}. Ak hodnota
-     * neexistuje, tak {@link Optional#isPresent()} je false. Táto metóda vracia aj neplatné číselníkové
-     * hodnoty. Ak číselník z daným menom neexistuje, tak sa vyhodí výnimka {@link CodelistNotFoundException},
-     * alebo ak daná hodnota neexistuje, tak sa vyhodí výnkmka {@link EntryNotFoundException}.
+     * Returns codelist entry value defined by {@link CodelistEntry#code} attribute. See {@link CodelistEnum}
+     * to define enums. If codelist does not exist {@link CodelistNotFoundException} and if entry doesn't
+     * exist, {@link EntryNotFoundException} is thrown. This method returns also invalid values.
      *
-     * @param codelist názov číselníka
-     * @param code primárny kľúč hodnoty
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @throws EntryNotFoundException ak hodnota neexistuje
-     * @return číselníková hodnota
+     * @param <T> type of codelist
+     * @param code primary key of entry
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @throws EntryNotFoundException if entry does not exist
+     * @return codelist entry value
      */
     CodelistEntry getEntry(String codelist, String code);
 
 
     /**
-     * Vráti konkrétnu hodnotu číselníka definovanú atribútom {@link CodelistEntry#code}. Ak hodnota
-     * neexistuje, tak {@link Optional#isPresent()} je false. Táto metóda vracia aj neplatné číselníkové
-     * hodnoty. Ak číselník z daným menom neexistuje, tak sa vyhodí výnimka {@link CodelistNotFoundException},
-     * alebo ak daná hodnota neexistuje, tak sa vyhodí výnkmka {@link EntryNotFoundException}.
+     * Returns codelist entry value defined by {@link CodelistEntry#code} enumeration attribute. See
+     * {@link CodelistEnum} to define enums. If codelist does not exist {@link CodelistNotFoundException} and
+     * if entry doesn't exist, {@link EntryNotFoundException} is thrown. This method returns also invalid
+     * values.
      *
-     * @param <T> trieda číselníka
-     * @param code primárny kľúč hodnoty ako enumerácia
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @throws EntryNotFoundException ak hodnota neexistuje
-     * @return číselníková hodnota
+     * @param <T> type of codelist
+     * @param code primary key of entry
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @throws EntryNotFoundException if entry does not exist
+     * @return codelist entry value
      */
     <T extends CodelistEntry> T getEntry(CodelistEnum<T> code);
 
 
     /**
-     * Vráti konkrétnu hodnotu číselníka definovanú atribútom {@link CodelistEntry#code}. Ak hodnota
-     * neexistuje, tak {@link Optional#isPresent()} je false. Táto metóda vracia aj neplatné číselníkové
-     * hodnoty. Ak daná hodnota neexistuje, tak sa vyhodí výnkmka {@link EntryNotFoundException}.
+     * Returns codelist entry value defined by {@link CodelistEntry#code} attribute. If codelist does not
+     * exist {@link CodelistNotFoundException} and if entry doesn't exist, {@link EntryNotFoundException} is
+     * thrown. This method returns also invalid values.
      *
-     * @param <T> typ číselníkka
-     * @param entryClass trieda reprezentujúca číselník
-     * @param code primárny kľúč hodnoty
-     * @throws CodelistNotFoundException ak číselník neexistuje
-     * @throws EntryNotFoundException ak hodnota neexistuje
-     * @return číselníková hodnota
+     * @param <T> type of codelist
+     * @param entryClass codelist entry class
+     * @param code primary key of entry
+     * @throws CodelistNotFoundException if codelist does not exist
+     * @throws EntryNotFoundException if entry does not exist
+     * @return codelist entry value
      */
     <T extends CodelistEntry> T getEntry(Class<T> entryClass, String code);
 
 
     /**
-     * Vráti číselníkové dáta ako zoznam máp (HashMap), kde každá inštancia mapy predstavuje 1 číselníkový
-     * záznam. Táto reprezentácia môže byť vhodná napr. na serializáciu do json alebo iného formátu.
+     * Returns codelist entries as list of flat map implemented by {@link HashMap}, where every map in the
+     * list is one codelist entry. It's useful to serialize data into another format e.g. JSON.
      *
-     * @param codelist názov číselníka
-     * @return číselníkové dáta ako zoznam máp
+     * @param codelist codelist name
+     * @return codelist entries as list of flat maps.
      */
     List<Map<String, Object>> getFlatEntries(String codelist);
 
 
     /**
-     * Vráti používateľský názov {@link DataProvider} ak existuje alebo všeobecný názov.
+     * Returns data provider name defined by {@link DataProvider#getName()}.
      *
-     * @return názov {@link DataProvider}
+     * @return name of {@link DataProvider}
      */
     String getProviderName();
 
 
     /**
-     * Načíta znova dáta daného číselníka a všetkých jeho závislostí.
+     * Reload cached codelist data.
      *
      * @param codelist
      */
@@ -171,7 +159,7 @@ public interface CodelistClient {
 
 
     /**
-     * Zmaže všetky dáta z cache a znova načíta
+     * Remove all data from cache
      */
     void clearCache();
 
@@ -205,9 +193,9 @@ public interface CodelistClient {
 
 
         /**
-         * Nastav si, ktoré číselníky budú nahraté do cache ihned po vytvorení inštancie codelist client.
-         * Číselníky sa nahrávajú asynchrónne, takže to teoreticky nespomalí štart tvojej aplikácie.
-         * Vo východzom stave sa loadujú všetky číselníky.
+         * Define list of codelists that will be fetched right after construction of {@link CodelistClient}.
+         * All codelists are prefetched by default. This setting is useful when you need to prefetch only
+         * subset of all codelists.
          *
          * @param prefetchedCodelists zoznam číselníkov, ktoré budú nahrane do cache
          * @return builder
@@ -231,9 +219,9 @@ public interface CodelistClient {
 
 
         /**
-         * Vo východzom nastavení sa skenuje len východzí classpath
-         * (camp.xit.codelist.client.model), čo môže mať za následok, že sa nenájdu
-         * všetky číselníkove triedy aplikácie. Týmto nastavením povieš, že sa bude skenovať celý classpath.
+         * In the default setting, only the default classpath (camp.xit.jacoa.model) is scanned, which may
+         * result in not finding all application classes. This setting tells that the entire classpath will be
+         * scanned.
          *
          * @return builder
          */
@@ -244,10 +232,11 @@ public interface CodelistClient {
 
 
         /**
-         * Vo východzom nastavení sa skenuje kompletný classpath, čo môže mať za následok pomalší štart
-         * aplikácie. Táto metóda prída definovane priestory k základnym menným priestorom.
+         * In the default setting, only the default classpath (camp.xit.jacoa.model) is scanned, which may
+         * result in not finding all application classes. This method adds defined packages, that will be
+         * scanned.
          *
-         * @param whitelistPackages zoznam packages, ktoré sa budú skenovať
+         * @param whitelistPackages list of packages, that will be scanned
          * @return builder
          */
         public Builder addScanPackages(String... whitelistPackages) {
@@ -257,39 +246,8 @@ public interface CodelistClient {
 
 
         /**
-         * Vo východzom nastavení sa skenuje kompletný classpath, čo môže mať za následok pomalší štart
-         * aplikácie. Týmto nastavením povieš, v ktorých packages sa nachádza model alebo mapovenie modelu pre
-         * číselníky. Pozor! Táto metóda zmaže základny namespace číselníkov a použijú sa iba tieto namespace.
-         * Ak chceš iba pridať niektorý namespace k základným, tak použi metódu
-         * {@link #addScanPackages(java.lang.String...)}
-         *
-         * @param whitelistPackages zoznam packages, ktoré sa budú skenovať
-         * @return builder
-         */
-        public Builder addScanOnlyPackages(String... whitelistPackages) {
-            return addScanOnlyPackages(false, whitelistPackages);
-        }
-
-
-        /**
-         * Vo východzom nastavení sa skenuje kompletný classpath, čo môže mať za následok pomalší štart
-         * aplikácie.Týmto nastavením povieš, v ktorých packages sa nachádza model alebo mapovenie modelu pre
-         * číselníky.
-         *
-         * @param addBasePackages if true, then add also base packages
-         * @param whitelistPackages zoznam packages, ktoré sa budú skenovať
-         * @return builder
-         */
-        public Builder addScanOnlyPackages(boolean addBasePackages, String... whitelistPackages) {
-            if (addBasePackages) this.whitelistPackages.addAll(Arrays.asList(BASE_PACKAGES));
-            this.whitelistPackages.addAll(Arrays.asList(whitelistPackages));
-            return this;
-        }
-
-
-        /**
-         * Nastav ľubovoľnú implementáciu DataProvider. Ako východzia je použitá
-         * {@link SimpleCsvDataProvider}.
+         * Set instance of data provider implementation. This is mandatory attribute. Application throws
+         * {@link IllegalArgumentException} when no data provider is set.
          *
          * @param dataProvider data provider
          * @return builder
@@ -301,10 +259,12 @@ public interface CodelistClient {
 
 
         /**
-         * Nastav čas, ako často sa bude aktualizovať cache. Aktualizácia prebieha asynchrónne.
+         * Set expiry time. Default value is 10 minutes. It means that every codelist expired in this time and
+         * will be refreshed when it was changed. This setting is applicable only for
+         * {@link CachedCodelistClientImpl} implementation.
          *
-         * @param time časový údaj
-         * @param unit jednotka času pre časový údaj
+         * @param time time value
+         * @param unit time unit
          * @return
          */
         public Builder withExpiryTime(long time, TimeUnit unit) {
@@ -315,8 +275,8 @@ public interface CodelistClient {
 
 
         /**
-         * Ak je táto možnosť zapnutá, tak codelist client nebude doťahovať žiadne referencie, len vytvorí
-         * inštanciu s vyplneným atribútom code.
+         * Shallow references means, that {@link CodelistClient} wont fetch codelist references. It creates
+         * references with filled code property.
          *
          * @return builder
          */
@@ -327,8 +287,8 @@ public interface CodelistClient {
 
 
         /**
-         * Ak je táto možnosť zapnutá, tak codelist client bude doťahovať všetky referencie, vrátane
-         * transitívnych. Táto možnosť je východzia.
+         * As oposite to shallow references, this settings will fetch all references. This setting is default
+         * behaviour of {@link CodelistClient}
          *
          * @return builder
          */
@@ -339,8 +299,8 @@ public interface CodelistClient {
 
 
         /**
-         * Vypne cache číselníkov. Pri doťahovaní referencií bude použitá lokálna cache, ktorá má za úlohu
-         * zabezpečiť, že každý číselník bude dotiahnutý práva raz.
+         * Turn off cache. Cache is enabled by default, but it's useful in some scenarios e.g. debug.
+         * !!! Be aware that this setting has huge impact on application performace !!!
          *
          * @return builder
          */
@@ -351,7 +311,7 @@ public interface CodelistClient {
 
 
         /**
-         * Zapne cache číselníkov. Táto možnosť je východzia. Cache je použitá aj pri doťahovaní referencií.
+         * Enable cache. This is default behaviour.
          *
          * @return builder
          */
