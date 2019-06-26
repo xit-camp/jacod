@@ -8,7 +8,7 @@
 
     <scm>
         <connection>scm:git:ssh://git@code.xit.camp:xit/common/jacod.git</connection>
-        <tag>HEAD</tag>
+        <tag>r1.0</tag>
     </scm>
 
     <properties>
