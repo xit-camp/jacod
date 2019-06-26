@@ -4,8 +4,8 @@ options {
 }
 
 PARSER_BEGIN(Parser)
-package camp.xit.jacoa.entry.parser;
-import camp.xit.jacoa.entry.parser.ast.*;
+package camp.xit.jacod.entry.parser;
+import camp.xit.jacod.entry.parser.ast.*;
 public class Parser {
     public Expression parse(Class<?> clazz) throws ParseException {
         return expression(clazz);

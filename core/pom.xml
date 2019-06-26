@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>camp.xit.jacoa</groupId>
-        <artifactId>jacoa</artifactId>
+        <groupId>camp.xit.jacod</groupId>
+        <artifactId>jacod</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jacoa-core</artifactId>
+    <artifactId>jacod-core</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
