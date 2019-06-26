@@ -1,4 +1,4 @@
-# JACOA - Java Codelist API
+# JACOD - Java Codelist API
 
 ## Installation
 
@@ -7,8 +7,8 @@
 ```xml
 <dependency>
     <groupId>camp.xit.jaoca</groupId>
-    <artifactId>jacoa-bom</artifactId>
-    <version>${jacoa.version}</version>
+    <artifactId>jacod-bom</artifactId>
+    <version>${jacod.version}</version>
 </dependency>
 ```
 
