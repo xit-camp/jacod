@@ -45,7 +45,6 @@
         <module>core</module>
         <module>provider-xlsx</module>
         <module>provider-csv</module>
-        <module>provider-crafter</module>
         <module>bom</module>
     </modules>
 
