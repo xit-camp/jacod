@@ -17,4 +17,4 @@ nb-configuration.xml
 # Eclipse
 .project
 .classpath
-.settings/
+.settings/node_modules/
