@@ -1,52 +1,83 @@
-# Kiwi Codelist client API
+# JACOA - Java Codelist API
 
-## Inštalácia
+## Installation
 
 **Using maven**
 
 ```xml
 <dependency>
-    <groupId>camp.xit.codelist</groupId>
-    <artifactId>codelist-client</artifactId>
-    <version>1.0</version>
+    <groupId>camp.xit.jaoca</groupId>
+    <artifactId>jacoa-bom</artifactId>
+    <version>${jacoa.version}</version>
 </dependency>
 ```
 
-## Použitie
+## Usage
 
-### Základný číselník
+### Base Codelist (no entry class defined)
 
 ```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-Codelist title = cl.getCodelist("MarketingMark");
+CodelistClient cl = new CodelistClient.Builder()
+        .addScanPackages("com.example.model").
+        .withDataProvider(new CSVDataProvider())
+        .build();
+
+Codelist title = cl.getCodelist("Title");
 title.getEntry("DrSC.");
 title.stream().filter(e -> e.getCode().contains("Dr")).forEach(System.out::println);
 ```
 
-### Odvodený číselník
+### Extended codelist
 
 ```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-Codelist<ApplicationProcessingStep> aps = cl.getCodelist(ApplicationProcessingStep.class);
+@Getter
+@Setter
+@ToString(callSuper = true)
+public class Title extends CodelistEntry {
+
+    public enum Position {
+        BEFORE, AFTER
+    }
+
+    private Position position;
+
+
+    public Title() {
+    }
+
+
+    public Title(String code) {
+        super(code);
+    }
+
+
+    public Title(CodelistEnum<Title> codeEnum) {
+        super(codeEnum.toString());
+    }
+}
 ```
 
-### Vytvorenie odvodeného číselníka
+```java
+CodelistClient cl = new CodelistClient.Builder()
+        .addScanPackages("com.example.model").
+        .withDataProvider(new CSVDataProvider())
+        .build();
 
-Číselník je definovaný triedou [CodelistEntry](src/main/java/camp/xit/kiwi/codelist/client/model/CodelistEntry.java).
-Každý odvodený číselník musí dediť od tejto triedy.
+Codelist<Title> aps = cl.getCodelist(Title.class);
+```
 
-Napr.
+### Codelist references
+
+Codelist entry can reference other codelists e.g.:
 
 ```java
 public class PresentedPaperSection extends CodelistEntry {
 
-    private Boolean allMandatory;
-    private String description;
+    private PaperType paperType;
 }
 ```
 
-Ak číselník definuje referenciu na iný číselník, ktorý je základný čiselník, tak je potrebné definovať referenciu
-na tento číselník pomocou anotacie `@EntryRef`.
+If codelist reference is base codelist without entry class, you have to use @EntryRef annotation to define codelist name.
 
 Napr.
 
@@ -59,7 +90,7 @@ public class InsuranceProduct extends CodelistEntry {
 }
 ```
 
-Toto pravidlo platí aj pre všetky referencie typu kolekcia. Napr.
+Same for collection references:
 
 ```java
 public class InsuranceProduct extends CodelistEntry {
@@ -69,13 +100,13 @@ public class InsuranceProduct extends CodelistEntry {
     private List<CodelistEntry> companies;
 }
 ```
-### Vložené objekty
+### Embedded types
 
-Každý odvodený číselník môže definovať "vložené" objekty. Trieda definujúca vložený objekt, musí deklarovať anotáciu
-`@Embeddable`. Vložený objekt nemusí dediť od triedy CodelistEntry a môže asociovať iný vložený objekt resp. číselník.
-Data zo zdrojového systému potom musia obsahovať klúče podla prefixu nadradenej property.
-Z nižšie uvedeného príkladu napr. crafter zdrojový systém bude mať xml element `companyBusinessAdressStreet`.
+Every extended codelist may define properties of simple types, but also more complex (embedded) types.
+Class that define embedded type has contain `@Embeddable` annotation. Embedded type class does not need to
+extend CodelistEntry class, but can contain reference to another codelist entry.
 
+Embedded type is only wrapper for some subset of values.
 
 ```java
 public class BusinessPlace extends CodelistEntry {
