@@ -1,0 +1,4 @@
+code,name,order,selected,validFrom,validTo
+01,Insurance company 01,20,TRUE,1900-01-01,9999-12-31
+02,Insurance company 02,30,FALSE,1900-01-01,9999-12-31
+03,Insurance company 03,10,FALSE,1900-01-01,9999-12-31

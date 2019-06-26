@@ -1,0 +1,565 @@
+code,name,order,selected,validFrom,validTo,sms,emailSubject,emailBody
+SMS_SIGNATURE_AGREEMENTS,Sms podpis súhlasov,10,FALSE,1900-01-01,9999-12-31,"Ahoj ${param1}, autorizacny kod na udelenie suhlasu so spracovanim udajov je ${key} a plati do ${date} do ${time} hod. Pekny den",,
+SMS_SIGNATURE_CONTRACT,Sms podpis zmluvy,20,FALSE,1900-01-01,9999-12-31,"Ahoj ${param1}, autorizacny kod na podpis Zmluvy c. ${param2} je ${key} a plati do ${date} do ${time} hod. Pekny den",,
+SMS_SIGNATURE_CONTRACT_WITHDRAWAL,Sms podpis odstúpenia od zmluvy,22,FALSE,1900-01-01,9999-12-31,"Ahoj ${param1}, autorizacny kod na podpis dokumentu odstúpenia od Zmluvy c. ${param2} je ${key} a plati do ${date} do ${time} hod. Pekny den",,
+SMS_SIGNATURE_PURCHASE_WITHDRAWAL,Sms podpis odstúpenia od kúpnej zmluvy,24,FALSE,1900-01-01,9999-12-31,"Ahoj ${param1}, autorizacny kod na podpis dokumentu odstúpenia od Kúpnej zmluvy financovanej Zmluvou c. ${param2} je ${key} a plati do ${date} do ${time} hod. Pekny den",,
+ACCOUNT_CREATED_EXTERNAL,Vytvorenie účtu externistu,25,FALSE,1900-01-01,9999-12-31,Prístupové heslo k Vášmu novému účtu je ${password},Informácia o vytvorení účtu v PB PARTNER,"Vážený spolupracovník,
+
+Práve Vám bol zriadený prístupový účet pre prístup k vybraným službám PB PARTNER.
+Pri prihlasovaní budete používať nasledujúce prihlasovacie údaje.
+login: ${domainLogin}
+doménový login: PBPARTNER\${domainLogin}
+heslo: Vám bolo doručené cez mobilný telefón, ktorý ste uviedli v žiadosti. Heslo je zdieľané pre všetky poskytované služby.
+
+PB PARTNER"
+ACCOUNT_CREATED_EMPLOYEE,Vytvorenie účtu zamestnanca,30,FALSE,1900-01-01,9999-12-31,,Informácia o vytvorení zamestnaneckého účtu PB PARTNER,"Vážený kolega/kolegyňa,
+
+Bol Vám zriadený zamestnanecký prístupový účet s nasledujúcimi údajmi:
+
+Prístupová adresa k online službám:
+https://portal.office.com/
+Prihlasovacie meno: ${login}
+
+Pre prihlasovanie do domény budete používať nasledujúci formát prihlasovacieho mena:
+PBPARTNER\${domainLogin}
+
+Prístupové heslo je spoločné, bolo Vám doručené mobilný telefón, ktorý ste uviedli v žiadosti.
+
+PB PARTNER"
+PASSWORD_SET_EMPLOYEE,Nastavenie hesla zamestnancovi,40,FALSE,1900-01-01,9999-12-31,Vaše nové prístupové heslo je ${password},,
+PASSWORD_SET_CLIENT,Nastavenie hesla klientovi,50,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, inicializacne heslo pre pristup do Ahoj zony je ${password}. Pekny den",,
+PASSWORD_SET_AGENT,Nastavenie hesla agentovi,60,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, inicializačné heslo pre prístup do Ahoj Appky je ${password}. Ako prihlasovacie meno použite údaj, ktorý ste si zvolili pri žiadosti o prístup.",,
+CONTRACT_SIGNED_SMS_FC_CLIENT,Informácia o sprístupnení zmluvy v Ahoj zóne,70,FALSE,1900-01-01,9999-12-31,,Podpísaná zmluva v Ahoj zóne,"Ahoj ${firstName},
+
+novú zmluvu č. ${contractNumber}, ktorú ste podpísali u nášho obchodného partnera, nájdete v AHOJ ZÓNE.
+
+Ak si ju chcete kedykoľvek pozrieť, stačí kliknúť na https://zona.ahojsplatky.sk a prihlásiť sa týmito prvkami:
+
+Prihlasovacie meno:  ${email}
+Heslo: doručili sme Vám cez sms. Ak ste sa do zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+CONTRACT_SIGNED_SMS_NEW_FC_CLIENT,Informácia o sprístupnení zmluvy v Ahoj zóne,80,FALSE,1900-01-01,9999-12-31,,Podpísaná zmluva v Ahoj zóne,"Ahoj ${firstName},
+
+novú zmluvu č. ${contractNumber}, ktorú ste podpísali u nášho obchodného partnera, nájdete v AHOJ ZÓNE.
+
+Ak si ju chcete kedykoľvek pozrieť, stačí kliknúť na https://zona.ahojsplatky.sk a aktivovať si Vašu AHOJ ZÓNU. Prihlásite sa jednoducho týmito prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: doručili sme Vám cez SMS. Ak ste si heslo pri prvom prihlásení zmenili, použite toto heslo.
+
+Aktiváciou AHOJ ZÓNY v nej nájdete všetky dôležité informácie a dokumenty týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Zároveň budete môcť žiadať o ďalšie naše produkty online a elektronicky uzatvárať zmluvné vzťahy s našou spoločnosťou.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+CONTRACT_SIGNED_SMS_COURIER_NEW_FC_CLIENT,Informácia o sprístupnení podpísanej zmluvy v Ahoj zóne - kuriér podpis,85,FALSE,1900-01-01,9999-12-31,,Podpísaná zmluva v Ahoj zóne,"Ahoj ${firstName},
+
+novú zmluvu č. ${contractNumber}, ktorú ste podpísali u nášho kuriéra, nájdete v AHOJ ZÓNE.
+
+Ak si ju chcete kedykoľvek pozrieť, stačí kliknúť na https://zona.ahojsplatky.sk a aktivovať si Vašu AHOJ ZÓNU. Prihlásite sa jednoducho týmito prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: doručili sme Vám cez SMS. Ak ste si heslo pri prvom prihlásení zmenili, použite toto heslo.
+
+Aktiváciou AHOJ ZÓNY v nej nájdete všetky dôležité informácie a dokumenty týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Zároveň budete môcť žiadať o ďalšie naše produkty online a elektronicky uzatvárať zmluvné vzťahy s našou spoločnosťou.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+SIGNED_FC_DELIVERED_CLIENT,Doručenie podpísanej rámcovej zmluvy ,90,FALSE,1900-01-01,9999-12-31,,"Ahoj, aktivujte si AHOJ ZÓNU","Ahoj ${firstName},
+
+je čas na radosť! Že prečo? Zmluva o elektronickej komunikácii, ktorú ste podpísali u nášho obchodného partnera,  k nám dorazila. Teraz si môžete aktivovať Vašu AHOJ ZÓNU.
+
+Prihlásite sa jednoducho na https://zona.ahojsplatky.sk týmito prihlasovacími prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: doručili sme Vám cez SMS. Ak ste si heslo pri prihlásení zmenili, použite toto heslo.
+
+Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+
+Aktiváciou AHOJ ZÓNY v nej nájdete všetky dôležité informácie a dokumenty týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Zároveň budete môcť žiadať o ďaľšie naše produkty online a elektronicky uzatvárať zmluvné vzťahy s našou spoločnosťou.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_SENT_ESHOP_CLIENT,Odoslanie eshop žiadosti na schválenie,100,FALSE,1900-01-01,9999-12-31,,Žiadosť o nákup na splátky prijatá,"Ahoj ${firstName},
+
+prijali sme Vašu žiadosť č. ${contractNumber} o nákup na splátky v e-shope. Žiadosť teraz posúdime a o jej výsledku Vás budeme už čoskoro informovať.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_SENT_ESHOP_VERIFICATION_BP,Odoslanie eshop žiadosti na verifikáciu na predajni,110,FALSE,1900-01-01,9999-12-31,,Žiadosť č. ${contractNumber} o nákup na splátky,"Ahoj obchodný partner,
+
+posielame Ti novú žiadosť č. ${contractNumber} o nákup na splátky. Prosíme, skontroluj, či je výber tovaru v poriadku. Ak niečo nesedí, spoj sa s naším klientom a výber tovaru spoločne upravte.
+
+Ďakujeme
+
+Ahoj"
+APPLICATION_COND_APPROVED_ESHOP_CLIENT_NEW,Podmienečne schválená eshop žiadosť nový klient,120,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, pre uspesne dokoncenie nakupu sa prihlaste do AHOJ ZONY na https://zona.ahojsplatky.sk a urobte vsetky pozadovane kroky. Inicializacne heslo pre pristup do Ahoj zony je ${password}. Dakujeme",Nezabudnite dokončiť svoj nákup,"Ahoj ${firstName},
+
+pre úspešné dokončenie Vášho  nákupu v e-shope a expedíciu tovaru je dôležité, aby  ste sa čo najskôr prihlásili do AHOJ ZÓNY a urobili všetky požadované kroky, ku ktorým Vás bude zóna navádzať.
+
+Stačí kliknúť na https://zona.ahojsplatky.sk a prihlásiť sa týmito prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: doručili sme Vám cez SMS. Pri prvom prihlásení je potrebné si heslo zmeniť.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_COND_APPROVED_ESHOP_CLIENT,Podmienečne schválená eshop žiadosť existujúci klient,130,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, pre uspesne dokoncenie nakupu sa prihlaste do AHOJ ZONY na  https://zona.ahojsplatky.sk a urobte vsetky pozadovane kroky. Dakujeme",Nezabudnite dokončiť svoj nákup,"Ahoj ${firstName},
+
+pre úspešné dokončenie Vášho  nákupu v e-shope a expedíciu tovaru je dôležité, aby  ste sa čo najskôr prihlásili do AHOJ ZÓNY a urobili všetky požadované kroky, ku ktorým Vás  bude zóna navádzať.
+
+Stačí kliknúť na https://zona.ahojsplatky.sk  a prihlásiť sa týmito prvkami:
+Prihlasovacie meno: ${email}
+Heslo: použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_REJECTED_ESHOP_CLIENT,Zamietnutá eshop žiadosť - Klient,140,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, je nam to luto, ale Vasa ziadost c. ${contractNumber} o nakup na splatky v e-shope bola zamietnuta. Verime, ze nabuduce sa to podari.","Prepáčte, zamietnutá žiadosť","Ahoj ${firstName},
+
+je nám to ľúto, ale Vašu žiadosť č. ${contractNumber} o nákup na splátky v e-shope sme museli zamietnuť.
+
+Veríme, že nabudúce sa to podarí.
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_REJECTED_ESHOP_BP,Zamietnutá eshop žiadosť - Predajné miesto,150,FALSE,1900-01-01,9999-12-31,,Storno objednávky číslo ${orderNumber},"Ahoj obchodný partner,
+
+prosíme, zrušte v e-shope objednávku číslo ${orderNumber}, pretože žiadosť o nákup na splátky k nej bola zamietnutá.
+
+Ďakujeme a prajeme pekný deň
+
+Vaše Ahojsplátky"
+APPLICATION_APPROVED_ESHOP_FC_CLIENT,Schválená eshop žiadosť - Klient s RZ,160,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Teraz sa prihlaste do AHOJ ZONY na https://zona.ahojsplatky.sk, podpiste zmluvu a tovar posleme za Vami. Pekny den","Hurá, schválená žiadosť","Ahoj ${firstName},
+
+môžete sa tešiť. Vaša  žiadosť č. ${contractNumber} o nákup na splátky v e-shope bola schválená.
+
+Teraz sa už len prihláste do AHOJ ZÓNY na https://zona.ahojsplatky.sk, podpíšte zmluvu a tovar pošleme za Vami. Prihlásite sa jednoducho týmito prvkami:
+Prihlasovacie meno:  ${email}
+Heslo: pri prihlásení použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+
+Ďakujeme a tešíme sa s Vami!
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_APPROVED_ESHOP_NO_FC_CLIENT,Schválená eshop žiadosť - Klient bez RZ,170,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Viac info k dokonceniu nakupu najdete v emaile. Pekny den","Hurá, žiadosť schválená – zmluva poslaná!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o nákup tovaru na splátky v eshope č. ${contractNumber} je schválená.
+
+K úspešnému dokončeniu Vášho nákupu online a expedovaniu Vami vybratého tovaru, stačí už len podpísať Zmluvu o spotrebiteľskom úvere. K tomu je potrebné uzatvoriť s našou spoločnosťou Zmluvu o elektronickej komunikácii. Tá Vám bola aktuálne odoslaná a bude doručená kuriérom na adresu, ktorú ste uviedli na doručovanie písomností. Vzor Zmluvy Vám zasielame aj v prílohe tohto emailu.
+
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA (https://zona.ahojsplatky.sk), kde nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Súčasne budete môcť prostredníctvom nej podávať ďalšie žiadosti o produkty a služby poskytované zo strany našej spoločnosti online a uzatvárať zmluvné vzťahy s našou spoločnosťou.
+
+Je dôležité, aby ste sa po doručení  Zmluvy o elektronickej komunikácii prihlásili do AHOJ ZÓNY a vykonali všetky požadované kroky. Stačí kliknúť na https://zona.ahojsplatky.sk a prihlásiť sa týmito prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: pri prvom prihlásení použite inicializačné heslo, ktoré sme Vám doručili cez SMS. Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo
+
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_APPROVED_ESHOP_COURIER_NO_FC_CLIENT,Schválená eshop žiadosť - Klient bez RZ s prístupom na AZ - Kuriér podpis,171,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Viac info k dokonceniu nakupu najdete v emaile. Pekny den","Hurá, žiadosť schválená – zmluva poslaná!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o nákup tovaru na splátky v eshope č. ${contractNumber} je schválená.
+
+K úspešnému dokončeniu Vášho nákupu online a expedovaniu Vami vybratého tovaru, stačí už len podpísať Zmluvu o spotrebiteľskom úvere. K tomu je potrebné uzatvoriť s našou spoločnosťou Zmluvu o elektronickej komunikácii. Predmetné zmluvy Vám boli aktuálne odoslané a budú doručené kuriérom na adresu, ktorú ste uviedli na doručovanie písomností. Vzory zmlúv Vám zasielame aj v prílohe tohto emailu. Pre odšifrovanie dokumentov použite rok Vášho narodenia.
+
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA (https://zona.ahojsplatky.sk), kde nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Súčasne budete môcť prostredníctvom nej podávať ďalšie žiadosti o produkty a služby poskytované zo strany našej spoločnosti online a uzatvárať zmluvné vzťahy s našou spoločnosťou.
+
+Pre prístup do AHOJ ZÓNY stačí kliknúť na https://zona.ahojsplatky.sk a prihlásiť sa týmito prvkami:
+
+Prihlasovacie meno: ${email}
+Heslo: pri prvom prihlásení použite inicializačné heslo, ktoré sme Vám doručili cez SMS. Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo
+
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_APPROVED_ESHOP_NO_FC_CLIENT_NEW,Schválená eshop žiadosť - Klient bez RZ,172,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Nakup dokoncite v AHOJ ZONE na https://zona.ahojsplatky.sk, inicializacne heslo pre prihlasenie je ${password}. Viac info v emaile. Pekny den",,
+APPLICATION_APPROVED_ESHOP_COURIER_NO_FC_CLIENT_NEW,Schválená eshop žiadosť - Klient bez RZ bez prístupu na AZ - Kuriér podpis,174,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Inicializacne heslo pre prihlasenie do AHOJ ZONY na https://zona.ahojsplatky.sk je ${password}. Viac info v emaile. Pekny den",,
+APPLICATION_APPROVED_ESHOP_NO_FC_FILLING,Schválená eshop žiadosť - Klient bez RZ - Podateľňa,175,FALSE,1900-01-01,9999-12-31,,Zmluva o elektronickej komunikácii na odoslanie klientovi,"Na základe schválenej zmluvy na eshop predajni je potrebné klientovi kuriérorom/poštou zaslať na podpis priloženú Zmluvu o elektronickej komunikácii na nasledovnú adresu:
+
+Meno, priezvisko, titul: ${personDisplayName}
+Adresa: ${addressPostalValue}
+Krajina: ${country}"
+APPLICATION_APPROVED_ESHOP_COURIER_NO_FC_FILLING,Schválená eshop žiadosť - Klient bez RZ - Podateľňa - Kuriér podpis,178,FALSE,1900-01-01,9999-12-31,,Zmluva o elektronickej komunikácii č. ${frameContractNumber} pre zmluvu o úvere č. ${contractNumber} postúpená kuriérovi na doručenie,U kuriéra - Kolos bola objednaná preprava zásielky - doručenie Zmluvy o elektronickej komunikácii č. ${frameContractNumber} k Zmluve o spotrebiteľskom úvere č. ${contractNumber} pre zabezpečenie ich podpisu klientom na tablete. KAK ${courierAuthCode}
+APPLICATION_APPROVED_ESHOP_SIGN_AT_PLACE_CLIENT,Schválená eshop žiadosť - Podpis zmluvy na predajnom mieste,180,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa ziadost c. ${contractNumber} o nakup na splatky  bola schvalena. Teraz cakajte na info z e-shopu, kedy mozete prist podpisat zmluvu a vyzdvihnut si tovar. Pekny den","Hurá, schválená žiadosť","Ahoj ${firstName},
+
+máme pre Vás  dobrú správu. Vaša žiadosť č. ${contractNumber} o nákup na splátky v e-shope bola schválená.
+
+Teraz čakajte na výzvu z e-shopu, kedy môžete prísť podpísať zmluvu a vyzdvihnúť si objednaný tovar.
+
+Ďakujeme a tešíme sa s Vami!
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_APPROVED_ESHOP_SIGN_AT_PLACE_BP,Schválená eshop žiadosť - Info predajcovi pri podpise zmluvy na obchodnom mieste,190,FALSE,1900-01-01,9999-12-31,,"Žiadosť schválená, pripravte tovar na odovzdanie","Ahoj obchodný partner,
+
+žiadosť o nákup na splátky k objednávke č. ${orderNumber} v e-shope bola schválená. Po podpise zmluvy môžete klientovi odovzdať tovar.
+
+Ďakujeme a prajeme pekný deň
+
+Vaše Ahojsplátky"
+APPLICATION_SENT_ZE_ESHOP_CLIENT,Odoslaná eshop žiadosť na ZincEuro - Klient,200,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, nic nie je stratene. Tvoju zamietnutu ziadost c. ${contractNumber} sme poslali na posudenie nasmu partnerovi Zinc Euro. Viac info najdes v maily. Pekny den",Žiadosť pre Zinc Euro,"Ahoj ${firstName},
+
+máme pre Teba dobrú správu. Tvoju zamietnutú žiadosť č. ${contractNumber} sme poslali nášmu partnerovi Zinc Euro, kde ju znovu posúdia a budú Ťa kontaktovať.
+
+Veríme, že urobia všetko pre to, aby si si vytúženú vec mohol/a kúpiť.
+
+Tak trpezlivo čakaj na ich odpoveď.
+
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_SENT_ZE_ESHOP_BP,Odoslaná eshop žiadosť na ZincEuro - Predajné miesto,210,FALSE,1900-01-01,9999-12-31,,Objednávka číslo ${orderNumber} presunutá do Zinc Euro,"Ahoj obchodný partner,
+
+píšeme Ti, že zamietnutú žiadosť o nákup na splátky k  objednávke číslo ${orderNumber} sme postúpili nášmu partnerovi Zinc Euro.
+
+Ak budeš mať ďalšie otázky ohľadom tejto objednávky, neváhaj nás kontaktovať.
+
+Ďakujeme
+
+Ahoj"
+APPLICATION_SIGNED_ESHOP_BP,Podpísaná eshop žiadosť na selfcare - Predajné miesto,220,FALSE,1900-01-01,9999-12-31,,Expedícia objednávky číslo ${orderNumber},"Ahoj obchodný partner,
+
+zmluva k objednávke číslo ${orderNumber} bola podpísaná. Tovar môže byť expedovaný klientovi.
+
+Výška akontácie: ${depositAmount}
+Cena tovaru: ${goodsPrice}
+Výška úveru: ${amount}
+
+Ďakujeme
+Ahoj"
+APPLICATION_SIGNED_ZE_ESHOP_BP,Podpísaná eshop žiadosť na ZincEuro selfcare - Predajné miesto,230,FALSE,1900-01-01,9999-12-31,,Expedícia objednávky číslo ${orderNumber},"Ahoj obchodný partner,
+
+zmluva so Zinc Euro k objednávke č. ${orderNumber} bola podpísaná. Tovar môže byť expedovaný klientovi.
+
+Výška akontácie: ${depositAmount}
+Cena tovaru: ${goodsPrice}
+Výška úveru: ${amount}
+
+Ďakujeme
+Ahoj"
+APPLICATION_CANCELLED_ESHOP_BP,Eshop žiadosť zrušená (nepodpísaná) na selfcare - Predajné miesto,240,FALSE,1900-01-01,9999-12-31,,Storno objednávky číslo ${orderNumber},"Ahoj obchodný partner,
+
+zmluva k objednávke č. ${orderNumber} stále nie je podpísaná. Prosíme, zrušte túto objednávku.
+
+Ďakujeme a prajeme pekný deň
+
+Vaše Ahojsplátky"
+APPLICATION_CANCELLED_ZE_ESHOP_BP,Eshop žiadosť zrušená (nepodpísaná) na ZincEuro selfcare - Predajné miesto,250,FALSE,1900-01-01,9999-12-31,,Storno objednávky číslo ${orderNumber},"Ahoj obchodný partner,
+
+zmluva so Zinc Euro k objednávke č. ${orderNumber} stále nie je podpísaná. Prosíme, zruš túto objednávku.
+
+Ďakujeme
+
+Ahoj"
+APPLICATION_CANCELLED_ESHOP_CLIENT,Eshop žiadosť zrušená predajcom - Klient,260,FALSE,1900-01-01,9999-12-31,,"Prepáčte, zmluva zrušená","Ahoj ${firstName},
+
+je nám to ľúto, ale Vaša zmluva o nákupe tovaru na splátky č. ${contractNumber} musela byť zrušená.
+
+Ak máte aj naďalej záujem o nákup na splátky cez Ahoj, pošlite nám novú objednávku z vybraného internetového obchodu.
+
+Veríme, že už čoskoro Ti budeme môcť splniť nákupné sny.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+RISK_IMPORT_NOK,Výsledok importu do Risk Registry DB - NOK,270,FALSE,1900-01-01,9999-12-31,,Import dát do Risk Registry ${source} NOK,"Import dát skočil s problémami.
+
+Realizované zmeny a nájdené problémy je možné vidieť v poslednom logu.
+
+Zdroj dát: ${source}
+Zastavené manuálne: ${stopped}
+Počet riadkov: ${rows.count}
+Počet spracovaných riadkov: ${rows.procesed}
+Posledný spracovaný riadok: ${rows.last}
+Počet ignorovaných riadkov: ${rows.ignored}
+Počet nových záznamov: ${items.new}
+Počet zmenených záznamov: ${items.updated}
+Počet uzavretých záznamov: ${items.closed}
+Počet problémových záznamov: ${items.problem}
+Linka na log: ${logurl}${logname}"
+RISK_IMPORT_OK,Výsledok importu do Risk Registry DB - OK,280,FALSE,1900-01-01,9999-12-31,,Import dát do Risk Registry ${source} OK,"Import dát skočil úspešne.
+
+Realizované zmeny je možné vidieť v poslednom logu.
+
+Zdroj dát: ${source}
+Zastavené manuálne: ${stopped}
+Počet riadkov: ${rows.count}
+Počet spracovaných riadkov: ${rows.procesed}
+Posledný spracovaný riadok: ${rows.last}
+Počet ignorovaných riadkov: ${rows.ignored}
+Počet nových záznamov: ${items.new}
+Počet zmenených záznamov: ${items.updated}
+Počet uzavretých záznamov: ${items.closed}
+Počet problémových záznamov: ${items.problem}
+Linka na log: ${logurl}${logname}"
+CONTRACT_SIGNED_BO,Notifikácia backoffice o podpísanej zmluve,290,FALSE,1900-01-01,9999-12-31,,Podpísaná zmluva č. ${contractNumber},"V prílohe sa nachádzajú detaily podpísanej zmluvy, ktorá je pripravená na manuálny prepis do systému SPIN."
+MANUAL_CUSTOMER_IDENTIFICATION_BO,Manuálne stotožnenie zákazníka,300,FALSE,1900-01-01,9999-12-31,,Manuálne stotožnenie zákazníka ${customerId},"Stotožnenie zákazníka v procese spracovania žiadosti nebolo úspešné. Je potrebné identifikovať zákazníka so zhodným rodným číslom. Výsledkom je buď potvrdenie duplicitného rodného čísla dvoch nezávislých osôb, alebo zákazníka stotožniť so záznamom v CRM. Potrebné detaily pre vykonanie manuálneho stotožnenia nájdete v prílohe tohoto emailu."
+NEW_AGENT_APPLICATION_BO,Žiadosť o vytvorenie nového agenta,310,FALSE,1900-01-01,9999-12-31,,Žiadosť o zaevidovanie sprostredkovateľa ${fullName},"Poverený obchodný zástupca predajne ${businessPlaceName} {${businessPlaceCode}) požiadal o zaevidovanie nového sprostredkovateľa/agenta s týmito údajmi:
+
+Meno: ${firstName}
+Priezvisko: ${lastName}
+Dátum narodenia: ${birthDate}
+Email: ${email}
+Prihlasovacie meno: ${nickname}
+Mobil: ${mobile}
+Zobrazenie vo vyberačoch: ${visible}
+Pozícia (rola): ${role}"
+SMS_AGREEMENT_FC_SIGNATURE,SMS udelenie súhlasu s elektronickým podpisom RZ,320,FALSE,1900-01-01,9999-12-31,"Zadajte autorizacny kod ${key} spolu s rokom Vasho narodenia ak suhlasite, aby ste  Zmluvu o elektronickej komunikacii uzatvorili elektronicky SMS autorizaciou. Kod plati do ${date} do ${time} hod.",,
+SMS_SIGNATURE_FC,SMS podpis rámcovej zmluvy,330,FALSE,1900-01-01,9999-12-31,"SMS autorizacia bola aktivovana. Zadajte autorizacny kod ${key} spolu s rokom Vasho narodenia, ak suhlasite s obsahom Zmluvy o elektronickej komunikacii c. ${param2}. Bola Vam zaslana do e-mailu, heslo na odsifrovanie zmluvy je Vas rok narodenia. Kod plati do ${date} do ${time} hod.",Návrh Zmluvy o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovaný návrh Zmluvy o elektronickej komunikácii, ktorú ste sa rozhodli podpísať elektronicky prostredníctvom služby  SMS autorizácia u nášho obchodného partnera. Heslo na jej odšifrovanie sme Vám zaslali cez SMS.
+
+Vďaka tejto Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Súčasne budete prostredníctvom nej oprávnený podávať ďalšie žiadosti o produkty a služby poskytované zo strany našej spoločnosti online a uzatvárať právne vzťahy s našou spoločnosťou.
+
+Ďakujeme a prajeme pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+SMS_SIGNATURE_FC_COURIER,SMS podpis rámcovej zmluvy - Kuriér podpis,332,FALSE,1900-01-01,9999-12-31,"SMS autorizacia bola aktivovana. Zadajte autorizacny kod ${key} spolu s rokom Vasho narodenia, ak suhlasite s obsahom Zmluvy o elektronickej komunikacii c. ${param2}. Bola Vam zaslana do e-mailu, heslo na odsifrovanie zmluvy je Vas rok narodenia. Kod plati do ${date} do ${time} hod.",Návrh Zmluvy o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovaný návrh Zmluvy o elektronickej komunikácii, ktorú ste sa rozhodli podpísať elektronicky prostredníctvom služby SMS autorizácia u nášho kuriéra. Heslo na jej odšifrovanie sme Vám zaslali cez SMS.
+
+Vďaka tejto Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou. Súčasne budete prostredníctvom nej oprávnený podávať ďalšie žiadosti o produkty a služby poskytované zo strany našej spoločnosti online a uzatvárať právne vzťahy s našou spoločnosťou.
+
+Ďakujeme a prajeme pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+SMS_SIGNATURE_FC_SELFCARE,SMS podpis rámcovej zmluvy,335,FALSE,1900-01-01,9999-12-31,"Zadajte autorizacny kod ${key}, ak suhlasite s obsahom Zmluvy o elektronickej komunikacii c. ${param2}.  Kod plati do ${date} do ${time} hod.",,
+FC_SMS_SIGNED_CLIENT,RZ elektronicky podpísaná,340,FALSE,1900-01-01,9999-12-31,"Potvrdzujeme Vam uzavretie Zmluvy o elektronickej komunikacii c. ${frameContractNumber}. Odteraz mozete podpisovat svoje zmluvy elektronicky a je Vam spristupnena AHOJ ZONA na https://zona.ahojsplatky.sk. Zmluvu sme Vam zaslali na Vas email, heslo na jej odsifrovanie je Vas rok narodenia.",Zmluva o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovanú Zmluvu o elektronickej komunikácii č. ${frameContractNumber}, ktorú ste podpísali elektronicky prostredníctvom služby  SMS autorizácie u nášho obchodného partnera. Na jej odšifrovanie použite heslo, ktoré sme Vám poslali v sms správe.
+
+Na základe tejto Zmluvy o elektronickej komunikácii  ste oprávnený konať s našou spoločnosťou prostredníctvom prostriedkov elektronickej komunikácie, a súčasne  vykonávať iné úkony v AHOJ ZÓNE (klientska zóna), ktorá Vám je sprístupnená na https://zona.ahojsplatky.sk.
+
+Do  AHOJ ZÓNY sa prihlásite jednoducho týmito prihlasovacími prvkami:
+
+Prihlasovacie meno:  ${email}
+Heslo: použite heslo, ktorým ste sa prihlásili naposledy. Ak si heslo nepamätáte, zvoľte pri prihlásení Zabudnuté heslo
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+FC_SMS_SIGNED_COURIER_CLIENT,RZ elektronicky podpísaná - Kuriér podpis,344,FALSE,1900-01-01,9999-12-31,Potvrdzujeme Vam uzavretie Zmluvy o elektronickej komunikacii c. ${frameContractNumber}. Odteraz mozete podpisovat svoje zmluvy elektronicky a je Vam spristupnena AHOJ ZONA na https://zona.ahojsplatky.sk. Zmluvu sme Vam zaslali na Vas email. Pre odšifrovanie dokumentov použite rok Vášho narodenia.,Zmluva o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovanú Zmluvu o elektronickej komunikácii č. ${frameContractNumber}, ktorú ste podpísali elektronicky prostredníctvom služby SMS autorizácie u nášho kuriéra. Na jej odšifrovanie použite heslo, ktoré sme Vám poslali v sms správe.
+
+Na základe tejto Zmluvy o elektronickej komunikácii  ste oprávnený konať s našou spoločnosťou prostredníctvom prostriedkov elektronickej komunikácie, a súčasne  vykonávať iné úkony v AHOJ ZÓNE (klientska zóna), ktorá Vám je sprístupnená na https://zona.ahojsplatky.sk.
+
+Do  AHOJ ZÓNY sa prihlásite jednoducho týmito prihlasovacími prvkami:
+
+Prihlasovacie meno:  ${email}
+Heslo: použite heslo, ktorým ste sa prihlásili naposledy. Ak si heslo nepamätáte, zvoľte pri prihlásení Zabudnuté heslo
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+FC_SMS_SIGNED_CLIENT_NEW,RZ elektronicky podpísaná,346,FALSE,1900-01-01,9999-12-31,"Potvrdzujeme Vam uzavretie Zmluvy o elektronickej komunikacii c. ${frameContractNumber}. Zmluvu sme Vam zaslali na Vas email, heslo na jej odsifrovanie je Vas rok narodenia. Odteraz mozete podpisovat svoje zmluvy elektronicky a je Vam spristupnena AHOJ ZONA na https://zona.ahojsplatky.sk. Inicializacne heslo pre pristup do Ahoj zony je ${password}.",Zmluva o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovanú Zmluvu o elektronickej komunikácii č. ${frameContractNumber}, ktorú ste podpísali elektronicky prostredníctvom služby  SMS autorizácie u nášho obchodného partnera. Na jej odšifrovanie použite heslo, ktoré sme Vám poslali v sms správe.
+
+Na základe tejto Zmluvy o elektronickej komunikácii  ste oprávnený konať s našou spoločnosťou prostredníctvom prostriedkov elektronickej komunikácie, a súčasne  vykonávať iné úkony v AHOJ ZÓNE (klientska zóna), ktorá Vám je sprístupnená na https://zona.ahojsplatky.sk.
+
+Do  AHOJ ZÓNY sa prihlásite jednoducho týmito prihlasovacími prvkami:
+
+Prihlasovacie meno:  ${email}
+Heslo: doručili sme Vám cez SMS. Pri prvom prihlásení je potrebné si heslo zmeniť.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+FC_SMS_SIGNED_COURIER_CLIENT_NEW,RZ elektronicky podpísaná - Kuriér podpis,348,FALSE,1900-01-01,9999-12-31,Potvrdzujeme Vam uzavretie Zmluvy o elektronickej komunikacii c. ${frameContractNumber}. Zmluvu sme Vam zaslali na Vas email. Pre odšifrovanie dokumentov použite rok Vášho narodenia. Odteraz mozete podpisovat svoje zmluvy elektronicky a je Vam spristupnena AHOJ ZONA na https://zona.ahojsplatky.sk. Inicializacne heslo pre pristup do Ahoj zony je ${password}.,Zmluva o elektronickej komunikácii,"Ahoj ${firstName},
+
+v prílohe tohto e-mailu Vám posielame zašifrovanú Zmluvu o elektronickej komunikácii č. ${frameContractNumber}, ktorú ste podpísali elektronicky prostredníctvom služby  SMS autorizácie u nášho kuriéra. Na jej odšifrovanie použite heslo, ktoré sme Vám poslali v sms správe.
+
+Na základe tejto Zmluvy o elektronickej komunikácii  ste oprávnený konať s našou spoločnosťou prostredníctvom prostriedkov elektronickej komunikácie, a súčasne  vykonávať iné úkony v AHOJ ZÓNE (klientska zóna), ktorá Vám je sprístupnená na https://zona.ahojsplatky.sk.
+
+Do  AHOJ ZÓNY sa prihlásite jednoducho týmito prihlasovacími prvkami:
+
+Prihlasovacie meno:  ${email}
+Heslo: doručili sme Vám cez SMS. Pri prvom prihlásení je potrebné si heslo zmeniť.
+
+Pekný deň
+
+Ahoj
+info@ahojsplatky.sk"
+CONTRACT_RETRACTED_BO,Zmluva o pôžičke odstúpená,350,FALSE,1900-01-01,9999-12-31,,Informácia - Odstúpenie od zmluvy o úvere č. ${contractNumber},Podpísaná Zmluva o úvere č. ${contractNumber} z obchodného miesta ${businessPlaceCode} - ${businessPlaceName} bola odstúpená v zákonnej lehote v mene klienta agentom ${agentCode} - ${agentName} - viď priložený dokument.
+PURCHASE_RETRACTED_BO,Zmluva o nákupe tovaru odstúpená,360,FALSE,1900-01-01,9999-12-31,,Informácia - Odstúpenie od Zmluvy o kúpe tovaru viažucej sa k zmluve o úvere č. ${contractNumber},Zmluva o kúpe tovaru viažuca sa k podpísanej Zmluva o úvere č. ${contractNumber} z obchodného miesta ${businessPlaceCode} - ${businessPlaceName} bola odstúpená agentom ${agentCode} - ${agentName} - viď priložený dokument.
+APPLICATION_COMPLETED_PAPER_EVIDENCE_CC,"Vyplnenie žiadosti, dokončenie doložením dokladov",370,FALSE,1900-01-01,9999-12-31,,Asistovaný predaj – žiadosť č. ${contractNumber} – Dolož doklady,"Stav žiadosti Dolož doklady.
+
+Žiadosť číslo ${contractNumber} na predajni ${businessPlaceCode} - ${businessPlaceName} klient ${customerFirstname} ${customerSurname} telefónne číslo ${customerMobile}
+${applicationUrl}
+
+Doplň termín spracovania podľa informácie od klienta o priložení dokladov.
+
+Spracovanie úlohy:
+Skontroluj stav zmluvy. Ak je stav zmluvy Dolož doklady, skontroluj e-mailovú schránku  klient@ahojsplatky.sk, dolož doručené doklady žiadosti, odošli žiadosť na posúdenie, ukonč úlohu.
+Ak klient nezaslal doklady, kontaktuj klienta, prever zaslanie dokladov, nastav nový termín spracovania, prípadne ukonč úlohu."
+APPLICATION_REJECTED_ASSISTED_CLIENT,"Vyplnenie žiadosti o nákup na splátky, dokončenie doložením dokladov",380,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, je nam to luto, ale Vasa  ziadost c. ${contractNumber} o nakup na splatky bola zamietnuta.",,
+APPLICATION_CC_REJECTED_ASSISTED_CLIENT,"Vyplnenie žiadosti o pôžičku, dokončenie doložením dokladov",385,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, je nam to luto, ale Vasa  ziadost o pozicku c. ${contractNumber} bola po prehodnoteni zamietnuta. Verime, ze nabuduce sa to podari.",,
+APPLICATION_COND_APPROVED_ASSISTED_CLIENT,Informovanie klienta o potrebe dopracovania žiadosti o nákup na splátky,390,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, Vasu ziadost c. ${contractNumber} o nakup na splatky je potrebne dopracovat. V kratkom case Vas preto bude kontaktovat nas operator. Pekny den",,
+APPLICATION_CC_COND_APPROVED_ASSISTED_CLIENT,Informovanie klienta o potrebe dopracovania žiadosti o pôžičku,395,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, Vasu ziadost o pozicku c. ${contractNumber} je potrebne dopracovat. V kratkom case Vas bude kontaktovat nas operator. Pekny den",,
+APPLICATION_COND_APPROVED_ASSISTED_CC,Informovanie kontaktného centra o potrebe dopracovania žiadosti,400,FALSE,1900-01-01,9999-12-31,,Asistovaný predaj – žiadosť č. ${contractNumber} – Podmienečne schválená,"Stav žiadosti Podmienečne schválená.
+Žiadosť číslo ${contractNumber} na predajni ${businessPlaceCode} - ${businessPlaceName} klient ${customerFirstname} ${customerSurname} telefónne číslo ${customerMobile}
+${applicationUrl}
+Prever stav zmluvy.
+- Úprava finančných parametrov
+Kontaktuj klienta, odkomunikuj mu návrh úpravy finančných parametrov, po odsúhlasení klientom uprav finančné parametre a odošli žiadosť na posúdenie.
+- Oprava žiadosti
+Kontaktuj klienta, odkomunikuj mu potrebnú úpravu žiadosti, po odsúhlasení klientom uprav žiadosť a odošli na posúdenie.
+- Doložiť doklady
+Kontaktuj klienta, informuj ho že k posúdeniu jeho žiadosti je potrebné doložiť doklady (definuj aké)
+Doplň termín spracovania podľa informácie od klienta o priložení dokladov.
+Spracovanie úlohy:
+Skontroluj stav zmluvy. Ak je stav zmluvy Dolož doklady, skontroluj e-mailovú schránku  klient@ahojsplatky.sk, dolož doručené doklady žiadosti, odošli žiadosť na posúdenie, ukonč úlohu.
+Ak klient nezaslal doklady, kontaktuj klienta, prever zaslanie dokladov, nastav nový termín spracovania, prípadne ukonč úlohu.
+"
+APPLICATION_APPROVED_ASSISTED_CLIENT,Informovanie klienta o schválení žiadosti o nákup na splátky,405,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena. Staci uz len navstivit predajnu, kde podpisete zmluvu a s usmevom si odnesiete Vas tovar. Tesime sa na Vas. Pekny den",,
+APPLICATION_CC_APPROVED_ASSISTED_FC_CLIENT,Informovanie klienta s RZ o schválení žiadosti o pôžičku,406,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost o pozicku c. ${contractNumber} bola schvalena. Teraz sa prihlaste do AHOJ ZONY na https://zona.ahojsplatky.sk, podpiste Zmluvu a peniaze prevedieme na Vas ucet. Pekny den","Hurá, žiadosť bola schválená!","Ahoj ${firstName},
+
+môžete sa tešiť. Vaša žiadosť o pôžičku č. ${contractNumber} je schválená.
+Teraz sa už len prihláste do AHOJ ZÓNY na https://zona.ahojsplatky.sk, podpíšte zmluvu a peniaze pošleme na Váš účet. Prihlásite sa jednoducho týmito prvkami:
+Prihlasovacie meno: ${email}
+Heslo: pri prihlásení použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+
+Pekný deň
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_CC_APPROVED_ASSISTED_NO_FC_CLIENT,Informovanie klienta bez RZ o schválení žiadosti o pôžičku - s prístupom do zóny,407,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost o pozicku c. ${contractNumber} bola schvalena. Teraz sa prihlaste do AHOJ ZONY na https://zona.ahojsplatky.sk, podpiste Zmluvu a peniaze prevedieme na Vas ucet. Pekny den","Hurá, žiadosť bola schválená!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o pôžičku č. ${contractNumber} je schválená.
+K úspešnému prevodu pôžičky na Váš účet je potrebné najprv uzatvoriť Zmluvu o elektronickej komunikácii. Tá bola odoslaná a bude Vám doručená do vlastných rúk na adresu trvalého bydliska. Vzor Zmluvy Vám zasielame aj v prílohe tohto emailu.
+Je dôležité, aby ste sa po doručení  Zmluvy o elektronickej komunikácii prihlásili do AHOJ ZÓNY na https://zona.ahojsplatky.sk
+Prihlasovacie meno: ${email}
+Heslo: zadajte inicializačné heslo z SMS.
+Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde vždy nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou.
+Táto zmluva Vám umožní žiadať a uzatvárať zmluvy o našich produktoch kedykoľvek a online.
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_CC_APPROVED_ASSISTED_COURIER_NO_FC_CLIENT,Informovanie klienta bez RZ o schválení žiadosti o pôžičku - s prístupom do zóny - kuriér podpis,408,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost o pozicku c. ${contractNumber} bola schvalena. Staci uz len podpasat Zmluvu v spolupraci s kurierom a peniaze prevedieme na Vas ucet. Viac info v emaile. Pekny den","Hurá, žiadosť bola schválená!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o pôžičku č. ${contractNumber} je schválená.
+K úspešnému prevodu pôžičky na Váš účet je potrebné najprv uzatvoriť Zmluvu o elektronickej komunikácii ako aj Zmluvu o spotrebiteľskom úvere. Predmetné zmluvy Vám boli aktuálne odoslané a budú doručené kuriérom na adresu, ktorú ste uviedli na doručovanie písomností. Vzory zmlúv Vám zasielame aj v prílohe tohto emailu. Pre odšifrovanie dokumentov použite rok Vášho narodenia.
+Do AHOJ ZÓNY na https://zona.ahojsplatky.sk sa môžete prihlásiť prostredníctvom:
+Prihlasovacie meno: ${email}
+Heslo: zadajte inicializačné heslo z SMS.
+Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde vždy nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou.
+Táto zmluva Vám umožní žiadať a uzatvárať zmluvy o našich produktoch kedykoľvek a online.
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_CC_APPROVED_ASSISTED_NO_FC_CLIENT_NEW,Informovanie klienta bez RZ o schválení žiadosti o pôžičku - bez doterajšieho prístupu do zóny,409,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost o pozicku c. ${contractNumber} bola schvalena. Zmluvu o uvere podpisete v AHOJ ZONE na https://zona.ahojsplatky.sk, inicializacne heslo pre prihlasenie je ${password}. Viac info v emaile. Pekny den","Hurá, žiadosť bola schválená!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o pôžičku č. ${contractNumber} je schválená.
+K úspešnému prevodu pôžičky na Váš účet je potrebné najprv uzatvoriť Zmluvu o elektronickej komunikácii. Tá bola odoslaná a bude Vám doručená do vlastných rúk na adresu trvalého bydliska. Vzor Zmluvy Vám zasielame aj v prílohe tohto emailu.
+Je dôležité, aby ste sa po doručení  Zmluvy o elektronickej komunikácii prihlásili do AHOJ ZÓNY na https://zona.ahojsplatky.sk
+Prihlasovacie meno: ${email}
+Heslo: zadajte inicializačné heslo z SMS.
+Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde vždy nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou.
+Táto zmluva Vám umožní žiadať a uzatvárať zmluvy o našich produktoch kedykoľvek a online.
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_CC_APPROVED_ASSISTED_COURIER_NO_FC_CLIENT_NEW,Informovanie klienta bez RZ o schválení žiadosti o pôžičku - bez doterajšieho prístupu do zóny - Kuriér podpis,412,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost o pozicku c. ${contractNumber} bola schvalena. Inicializacne heslo pre prihlasenie do AHOJ ZONY na https://zona.ahojsplatky.sk je ${password}. Viac info v emaile. Pekny den","Hurá, žiadosť bola schválená!","Ahoj ${firstName},
+
+máme pre Vás super správu. Vaša žiadosť o pôžičku č. ${contractNumber} je schválená.
+K úspešnému prevodu pôžičky na Váš účet je potrebné najprv uzatvoriť Zmluvu o elektronickej komunikácii ako aj Zmluvu o spotrebiteľskom úvere. Predmetné zmluvy Vám boli aktuálne odoslané a budú doručené kuriérom na adresu, ktorú ste uviedli na doručovanie písomností. Vzory zmlúv Vám zasielame aj v prílohe tohto emailu. Pre odšifrovanie dokumentov použite rok Vášho narodenia.
+Do AHOJ ZÓNY na https://zona.ahojsplatky.sk sa môžete prihlásiť prostredníctvom:
+Prihlasovacie meno: ${email}
+Heslo: zadajte inicializačné heslo z SMS.
+Ak ste sa do Ahoj zóny už prihlasovali, použite heslo, ktorým ste sa prihlásili naposledy. Ak si ho nepamätáte, zvoľte pri prihlásení možnosť Zabudnuté heslo.
+Vďaka Zmluve o elektronickej komunikácii budete môcť plne využívať klientsku zónu - AHOJ ZÓNA, kde vždy nájdete všetky dôležité informácie týkajúce sa Vašich žiadostí a zmlúv uzatvorených s našou spoločnosťou.
+Táto zmluva Vám umožní žiadať a uzatvárať zmluvy o našich produktoch kedykoľvek a online.
+V prípade akýchkoľvek otázok nás neváhajte kontaktovať na 0850 111 999.
+
+Pekný deň
+Ahoj
+info@ahojsplatky.sk"
+APPLICATION_APPROVED_ASSISTED_BP,Informovanie obchodného partnera o schválenej žiadosti,415,FALSE,1900-01-01,9999-12-31,"Ahoj obchodny partner, ziadost klienta c. ${contractNumber} bola schvalena. Klient Vas bude kontaktovat pre podpis zmluvy a prevzatie tovaru. Prosim, NEZABUDNITE skontrolovat totoznost klienta a predmet financovania. Dakujem",Splátky cez telefón – podpis zmluvy,"Ahoj obchodný partner,
+
+žiadosť klienta č. ${contractNumber} bola schválená. Pre dokončenie nákupu a podpis zmluvy kliknite na tento odkaz: ${applicationUrl}.
+
+Pred podpisom zmluvy, prosím, NEZABUDNITE skontrolovať totožnosť klienta a predmet financovania.
+
+Ďakujeme a prajeme pekný deň
+Vaše Ahojsplátky"
+APPLICATION_APPROVED_ASSISTED_CC,Informovanie kontaktného centra o schválení žiadosti,420,FALSE,1900-01-01,9999-12-31,,Asistovaný predaj – žiadosť č. ${contractNumber} – Schválená,"Stav žiadosti Schválená.
+
+Žiadosť číslo ${contractNumber} na predajni ${businessPlaceCode} - ${businessPlaceName} klient ${customerFirstname} ${customerSurname} telefónne číslo ${customerMobile}
+
+${applicationUrl}
+
+Termín spracovania o 24 hodín od schválenia zmluvy.
+
+Skontroluj stav zmluvy, ak sa zmenil na podpísaná, ukonči úlohu.
+
+Ak je zmluva v stave schválená kontaktuj klienta, informuj ho o schválení zmluvy.
+
+Klient bol už informovaný o schválení zmluvy zaslanou sms: Vasa  ziadost o nakup na splatky bola schvalena. Staci uz len navstivit predajnu, kde podpisete zmluvu a s usmevom si odnesiete Vas tovar.  "
+APPLICATION_CC_APPROVED_ASSISTED_CC,Informovanie kontaktného centra o schválení žiadosti o pôžičku,425,FALSE,1900-01-01,9999-12-31,,Asistovaný predaj – žiadosť č. ${contractNumber} – Schválená,"Stav žiadosti Schválená.
+
+Žiadosť číslo ${contractNumber} na predajni ${businessPlaceCode} - ${businessPlaceName} klient ${customerFirstname} ${customerSurname} telefónne číslo ${customerMobile}
+
+${applicationUrl}
+
+Termín spracovania o 24 hodín od schválenia zmluvy.
+
+Skontroluj stav zmluvy, ak sa zmenil na podpísaná, ukonči úlohu.
+
+Ak je zmluva v stave Schválená,  kontaktuj klienta, informuj ho o schválení a nasmeruj ho do Ahoj zóny pre podpis zmluvy.
+
+Klient bol už informovaný o schválení zmluvy zaslanou sms,
+„Ahoj Alex, super sprava! Vasa  ziadost o pozicku c. 1234567890 bola schvalena. Teraz sa prihlaste do AHOJ ZONY na https://zona.ahojsplatky.sk, podpiste Zmluvu a peniaze prevedieme na Vas ucet. Pekny den“
+ v prípade vytvorenia nového prístupového účtu do zóny, doplnenú o
+„..., inicializacne heslo pre prihlasenie je A1B2C3D4. Viac info v emaile. Pekny den“"
+APPLICATION_SENT_ZE_ASSISTED_CLIENT,Informovanie klienta o postúpení žiadosti na ZincEuro,428,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, nic nie je stratene. Vašu zamietnutu ziadost c. ${contractNumber} sme poslali na posudenie nasmu partnerovi Zinc Euro, kde ju znovu posudia a budu Vas kontaktovat. Pekny den.",,
+APPLICATION_APPROVED_ZE_ASSISTED_CLIENT,Informovanie klienta o schválení žiadosti v ZincEuro,430,FALSE,1900-01-01,9999-12-31,"Ahoj ${firstName}, super sprava! Vasa  ziadost c. ${contractNumber} o nakup na splatky bola schvalena u nasho partnera Zinc Euro. Staci uz len navstivit predajnu, kde podpisete zmluvu a s usmevom si odnesiete Vas tovar. Tesime sa na Vas. Pekny den",,
+FILING_ENVELOPESLIP_PROCESSED,Notifikácia spracovateľa o vybavení návratky,440,FALSE,1900-01-01,9999-12-31,,Informacia o spracovani navratky,"Pre podanie č. ${filingNumber} bola zaevidovaná návratka s dátumom prevzatia listu klientom dňa ${returnDate}.
+
+Podatelna"
+APPLICANT_IN_BULLETIN_RISK,Notifikácia risk oddelenia o pozitívnom výsledku volania vestníka,450,FALSE,1900-01-01,9999-12-31,,VESTNÍK ${raw.contractNumber} ${raw.displayName},"<#list raw.results as result>
+${result.url}
+</#list>"
+CONTRACT_WRITE_FAILURE_EXCEEDED_BPM,Notifikácia o prekročení limitu spadnutých zápisov zmlúv do SPINu,460,FALSE,1900-01-01,9999-12-31,,Spadnuté zmluvy do SPINu,Za poslených ${interval} minút spadlo ${numberOfFailedContracts} zmlúv pri zápise do SPINu.
+APPLICATION_DRAFT_SAVED_ESHOP_CLIENT,Notfikácia eshop klienta pri uložení rozpracovanej žiadosti,470,FALSE,1900-01-01,9999-12-31,,Vaša rozpracovaná žiadosť o nákup na splátky v eshope,"Ahoj ${firstName},
+
+Vašu rozpracovanú žiadosť o nákup na splátky v eshope môžete kedykoľvek dokončiť jednoduchým kliknutím na tento odkaz:
+${applicationUrl}
+
+Ahoj
+info@ahojsplatky.sk"

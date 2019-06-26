@@ -1,0 +1,86 @@
+/* Expression.jjt Simple expression parser */
+options {
+    STATIC = false ;
+}
+
+PARSER_BEGIN(Parser)
+package camp.xit.jacoa.entry.parser;
+import camp.xit.jacoa.entry.parser.ast.*;
+public class Parser {
+    public Expression parse(Class<?> clazz) throws ParseException {
+        return expression(clazz);
+    }
+}
+PARSER_END(Parser)
+
+SKIP : { <WHITESPACE: " " | "\t" | "\r" | "\n" | "\r\n"> }
+TOKEN : { <EQUALS: "="> | <NOT_EQUALS: "!="> | <GT: ">"> | <LT: "<"> | <GTE: ">="> | <LTE: "<="> | <MATCH: "~="> }
+TOKEN : { <AND: "&"> | <OR: "|"> }
+TOKEN : { <OPEN_PAR: "("> }
+TOKEN : { <CLOSE_PAR: ")"> }
+TOKEN : { <LETTER: ["A"-"Z","_","a"-"z"]> }
+TOKEN : { <DIGIT: ["0"-"9"]> }
+TOKEN : { <ALL: "ALL"> }
+TOKEN : { <BOOL: "true" | "TRUE" | "false" | "FALSE"> }
+
+TOKEN: {
+  <PROPERTY_IDENTIFIER: <IDENTIFIER> (<DOT> <IDENTIFIER>)*>
+  | <#IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
+}
+
+TOKEN: {
+  <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
+}
+
+TOKEN: {
+  <NUMBER: <DIGIT> (<DIGIT>)* (<DOT> (<DIGIT>)*)? >
+  | <#DOT: ".">
+}
+
+Expression expression(Class<?> clazz) : { Expression expr = new AllExpression(clazz); } { ( expr = allExpression(clazz) | expr = orExpression(clazz) )? <EOF> { return expr; } }
+
+Expression allExpression(Class<?> clazz) : { Expression expr; } { <ALL> { return new AllExpression(clazz); } }
+
+Expression orExpression(Class<?> clazz) :
+{
+    Expression left, right, result;
+} {
+    left = andExpression(clazz) { result = left; }
+    (
+        <OR>
+        right = andExpression(clazz) { result = new OrExpression(clazz, left, right); left = result; }
+    )*
+    { return result; }
+}
+
+Expression andExpression(Class<?> clazz) :
+{
+    Expression left, right, result;
+} {
+    (
+        left = condition(clazz) | <OPEN_PAR> left = orExpression(clazz) <CLOSE_PAR> { left = new Parenthesis(clazz, left); }
+    )
+    { result = left; }
+    (
+        <AND>
+        (
+            right = condition(clazz) | <OPEN_PAR> right = orExpression(clazz) <CLOSE_PAR> { right = new Parenthesis(clazz, right); }
+        )
+        { result = new AndExpression(clazz, left, right); left = result; }
+    )*
+    { return result; }
+}
+
+Condition condition(Class<?> clazz) : { Property p; Constant v; int cmp; } { p = property(clazz) cmp = compare() v = value(clazz) { return new Condition(clazz, p, v, cmp); } }
+
+int compare() : { Token t; } { ( t=<EQUALS> | t=<NOT_EQUALS> | t=<GT> | t=<LT> | t=<GTE> | t=<LTE> | t=<MATCH> ) { return t.kind; } }
+
+int binOperator() : { Token t; } { t=<AND> { return t.kind; } }
+
+String identifier() : { Token t; } { t=<PROPERTY_IDENTIFIER> { return t.image; } }
+
+Constant constant(Class<?> clazz) : { Token t; } { (t=<NUMBER> | t=<BOOL> | t=<STRING_LITERAL>) { return new Constant(clazz, t); } }
+
+Property property(Class<?> clazz) : { String prop; } { prop = identifier() { return new Property(clazz, prop); } }
+
+Constant value(Class<?> clazz) : { Constant op; } { op = constant(clazz) { return op; } }

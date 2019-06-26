@@ -1,0 +1,6 @@
+code,name,order,selected,validFrom,validTo
+SMS,"Cez SMS, vrátane okamžitých správ (chat, viber, whatsapp, atď.)",10,FALSE,1900-01-01,9999-12-31
+EMAIL,E-mailom,20,FALSE,1900-01-01,9999-12-31
+CALL,Telefonicky,30,FALSE,1900-01-01,9999-12-31
+LETTER,Poštou,40,FALSE,1900-01-01,9999-12-31
+PROFILE_OBJECTION,Namietam proti profilovaniu mojich osobných údajov na marketingové účely,50,FALSE,1900-01-01,9999-12-31

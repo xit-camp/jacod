@@ -1,0 +1,4 @@
+code,name,order,selected,validFrom,validTo
+VOUCHER_10EUR,Zľavová poukážka 10 €,10,FALSE,1900-01-01,9999-12-31
+VOUCHER_20EUR,Zľavová poukážka 20 €,20,FALSE,1900-01-01,9999-12-31
+VOUCHER_30EUR,Zľavová poukážka 30 €,30,FALSE,1900-01-01,9999-12-31

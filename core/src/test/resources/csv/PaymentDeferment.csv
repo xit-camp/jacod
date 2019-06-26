@@ -1,0 +1,6 @@
+code,name,order,selected,validFrom,validTo,months
+1_MONTH,1 mesiac,10,FALSE,1900-01-01,9999-12-31,1
+2_MONTHS,2 mesiace,20,FALSE,1900-01-01,9999-12-31,2
+3_MONTHS,3 mesiace,30,FALSE,1900-01-01,9999-12-31,3
+4_MONTHS,4 mesiace,40,FALSE,1900-01-01,9999-12-31,4
+5_MONTHS,5 mesiacov,50,FALSE,1900-01-01,9999-12-31,5

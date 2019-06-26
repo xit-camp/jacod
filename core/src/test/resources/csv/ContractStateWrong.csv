@@ -1,0 +1,5 @@
+id,name,code,guiOrder,validFrom,validTo
+-1,"Prosím, vyberte si",XNA,-1,1899-12-31,9999-12-31
+1,aktívna,,1,1899-12-31,9999-12-31
+2,ukončená,INACTIV,2,1899-12-31,9999-12-31
+3,rozpracovaná,INPROGRESS,3,1899-12-31,9999-12-31
