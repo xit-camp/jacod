@@ -3,7 +3,6 @@
 .idea/
 *.iml
 *.ipr
-node_modules/
 node/
 dist/
 target/
@@ -17,4 +16,4 @@ nb-configuration.xml
 # Eclipse
 .project
 .classpath
-.settings/node_modules/
+
