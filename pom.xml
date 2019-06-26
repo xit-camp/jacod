@@ -44,6 +44,7 @@
     <modules>
         <module>core</module>
         <module>provider-xlsx</module>
+        <module>provider-csv</module>
         <module>bom</module>
     </modules>
 
