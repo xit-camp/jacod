@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import static camp.xit.jacoa.CodelistClient.Builder.BASE_PACKAGE;
+import static camp.xit.jacoa.CodelistClient.Builder.BASE_PACKAGES;
 
 public class CodelistEntryMapperExtension implements ParameterResolver {
 
@@ -48,7 +48,7 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
                     .getOrComputeIfAbsent("FullMapper", key -> new CodelistEntryMapper(), CodelistEntryMapper.class);
         } else if (parameter.isAnnotationPresent(BaseMapper.class)) {
             mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(BASE_PACKAGE), CodelistEntryMapper.class);
+                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(BASE_PACKAGES), CodelistEntryMapper.class);
         }
         if (mapper == null) {
             throw new ParameterResolutionException("Parameter without annotation! Use @DefaultMapper or @BaseMapper annotation");

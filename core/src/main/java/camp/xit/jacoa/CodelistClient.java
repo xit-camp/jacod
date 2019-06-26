@@ -177,11 +177,11 @@ public interface CodelistClient {
 
     public static class Builder {
 
-        public static final String BASE_PACKAGE = CodelistEntry.class.getPackageName();
+        public static final String[] BASE_PACKAGES = new String[]{CodelistEntry.class.getPackageName()};
 
         private DataProvider dataProvider = null;
         private Set<String> prefetchedCodelists = null;
-        private Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGE));
+        private Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
         private long expiryTime = 10;
         private TimeUnit expiryTimeUnit = TimeUnit.MINUTES;
         private boolean shallowReferences = false;
@@ -281,7 +281,7 @@ public interface CodelistClient {
          * @return builder
          */
         public Builder addScanOnlyPackages(boolean addBasePackages, String... whitelistPackages) {
-            if (addBasePackages) this.whitelistPackages.addAll(Arrays.asList(BASE_PACKAGE));
+            if (addBasePackages) this.whitelistPackages.addAll(Arrays.asList(BASE_PACKAGES));
             this.whitelistPackages.addAll(Arrays.asList(whitelistPackages));
             return this;
         }
