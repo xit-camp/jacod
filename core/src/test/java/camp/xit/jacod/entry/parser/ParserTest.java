@@ -1,7 +1,5 @@
 package camp.xit.jacod.entry.parser;
 
-import camp.xit.jacod.entry.parser.ParseException;
-import camp.xit.jacod.entry.parser.Parser;
 import camp.xit.jacod.entry.parser.ast.AllExpression;
 import camp.xit.jacod.entry.parser.ast.CompileException;
 import camp.xit.jacod.entry.parser.ast.Expression;
@@ -24,6 +22,15 @@ public class ParserTest {
     @Test
     public void number() throws Exception {
         StringReader reader = new StringReader("order <= 10.23");
+        Parser parser = new Parser(reader);
+        Expression expr = parser.parse(BusinessPlace.class);
+        assertNotNull(expr);
+    }
+
+
+    @Test
+    public void digit() throws Exception {
+        StringReader reader = new StringReader("order <= 2");
         Parser parser = new Parser(reader);
         Expression expr = parser.parse(BusinessPlace.class);
         assertNotNull(expr);
