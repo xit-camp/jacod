@@ -1,6 +1,5 @@
 /* Expression.jjt Simple expression parser */
 options {
-    STATIC = false ;
 }
 
 PARSER_BEGIN(Parser)
@@ -14,27 +13,31 @@ public class Parser {
 PARSER_END(Parser)
 
 SKIP : { <WHITESPACE: " " | "\t" | "\r" | "\n" | "\r\n"> }
-TOKEN : { <EQUALS: "="> | <NOT_EQUALS: "!="> | <GT: ">"> | <LT: "<"> | <GTE: ">="> | <LTE: "<="> | <MATCH: "~="> }
-TOKEN : { <AND: "&"> | <OR: "|"> }
-TOKEN : { <OPEN_PAR: "("> }
-TOKEN : { <CLOSE_PAR: ")"> }
-TOKEN : { <LETTER: ["A"-"Z","_","a"-"z"]> }
-TOKEN : { <DIGIT: ["0"-"9"]> }
-TOKEN : { <ALL: "ALL"> }
-TOKEN : { <BOOL: "true" | "TRUE" | "false" | "FALSE"> }
 
 TOKEN: {
+  <ALL: "ALL">
+|
+  <BOOLEAN: "true" | "TRUE" | "false" | "FALSE">
+|
   <PROPERTY_IDENTIFIER: <IDENTIFIER> (<DOT> <IDENTIFIER>)*>
-  | <#IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
-}
-
-TOKEN: {
+|
   <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
-}
-
-TOKEN: {
+|
   <NUMBER: <DIGIT> (<DIGIT>)* (<DOT> (<DIGIT>)*)? >
-  | <#DOT: ".">
+|
+  <EQUALS: "="> | <NOT_EQUALS: "!="> | <GT: ">"> | <LT: "<"> | <GTE: ">="> | <LTE: "<="> | <MATCH: "~=">
+|
+  <AND: "&"> | <OR: "|">
+|
+  <OPEN_PAR: "("> | <CLOSE_PAR: ")">
+|
+  <#LETTER: ["A"-"Z","_","a"-"z"]>
+|
+  <#DIGIT: ["0"-"9"]>
+|
+  <#IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)*>
+|
+  <#DOT: ".">
 }
 
 Expression expression(Class<?> clazz) : { Expression expr = new AllExpression(clazz); } { ( expr = allExpression(clazz) | expr = orExpression(clazz) )? <EOF> { return expr; } }
@@ -79,7 +82,7 @@ int binOperator() : { Token t; } { t=<AND> { return t.kind; } }
 
 String identifier() : { Token t; } { t=<PROPERTY_IDENTIFIER> { return t.image; } }
 
-Constant constant(Class<?> clazz) : { Token t; } { (t=<NUMBER> | t=<BOOL> | t=<STRING_LITERAL>) { return new Constant(clazz, t); } }
+Constant constant(Class<?> clazz) : { Token t; } { (t=<NUMBER> | t=<BOOLEAN> | t=<STRING_LITERAL>) { return new Constant(clazz, t); } }
 
 Property property(Class<?> clazz) : { String prop; } { prop = identifier() { return new Property(clazz, prop); } }
 
