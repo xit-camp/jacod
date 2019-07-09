@@ -1,7 +1,5 @@
 package camp.xit.jacod.entry;
 
-import camp.xit.jacod.entry.QueryEntryGroup;
-import camp.xit.jacod.entry.EntryGroup;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.InsuranceProduct;
@@ -9,6 +7,7 @@ import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.greaterThan;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +16,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class QueryEntryGroupTest {
 
     @Test
-    public void parse(@CsvClient CodelistClient client) throws Exception {
-        EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "rate < 1.0 & company = \"02\"");
+    public void parseNumber(@CsvClient CodelistClient client) throws Exception {
+        EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "rate < 0.5 & company = \"02\"");
         Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
         assertThat(filtered.size(), is(2));
+        assertThat(filtered.keySet(), containsInAnyOrder("A_02", "B_02"));
+    }
+
+
+    @Test
+    public void parseDigit(@CsvClient CodelistClient client) throws Exception {
+        EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "rate < 1 & selected = true");
+        Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
+        assertThat(filtered.size(), is(2));
+        assertThat(filtered.keySet(), containsInAnyOrder("A_01", "B_02"));
     }
 
 
