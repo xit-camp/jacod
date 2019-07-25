@@ -5,14 +5,13 @@ import camp.xit.jacod.InvalidEntryException;
 import camp.xit.jacod.NotNull;
 import static camp.xit.jacod.impl.EntryMetadata.getReferenceType;
 import camp.xit.jacod.impl.FieldMap.FieldMapping;
+import static camp.xit.jacod.impl.ValueParser.isSimpleType;
 import static camp.xit.jacod.impl.ValueParser.parseCollectionOfSimple;
+import static camp.xit.jacod.impl.ValueParser.parseSimpleValue;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,23 +135,8 @@ public class FlatEntryMapper {
                 throw new InvalidEntryException("You were hit by KIWIGENS-418. Field " + cls + "." + fld + " cannot be empty!");
             }
             try {
-                if (strValue.isPresent() && LocalDate.class.isAssignableFrom(type)) {
-                    String val = strValue.get();
-                    if (val.length() > 10) {
-                        result = LocalDate.parse(val, DateTimeFormatter.ISO_DATE_TIME);
-                    } else {
-                        result = LocalDate.parse(val, DateTimeFormatter.ISO_DATE);
-                    }
-                } else if (strValue.isPresent() && Integer.class.isAssignableFrom(type)) {
-                    try {
-                        result = Integer.parseInt(strValue.get());
-                    } catch (NumberFormatException e) {
-                        result = Double.valueOf(Double.parseDouble(strValue.get())).intValue();
-                    }
-                } else if (strValue.isPresent() && BigDecimal.class.isAssignableFrom(type)) {
-                    result = new BigDecimal(strValue.get());
-                } else if (strValue.isPresent() && Boolean.class.isAssignableFrom(type)) {
-                    result = Boolean.parseBoolean(strValue.get());
+                if (strValue.isPresent() && isSimpleType(type)) {
+                    result = parseSimpleValue(strValue.get(), type);
                 } else if (strValue.isPresent() && CodelistEntry.class.isAssignableFrom(type)) {
                     result = strValue.get();
                 } else if (Enum.class.isAssignableFrom(type)) {
