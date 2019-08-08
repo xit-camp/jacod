@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import static java.util.Collections.emptySet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class CSVDataProvider implements DataProvider {
 
     private Set<String> getCodelistNames() {
         File[] files = path.toFile().listFiles(f -> f.getName().endsWith(".csv"));
-        return Stream.of(files).map(f -> stripExtention(f)).collect(toSet());
+        return files == null ? emptySet() : Stream.of(files).map(f -> stripExtention(f)).collect(toSet());
     }
 
 
