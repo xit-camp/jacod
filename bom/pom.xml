@@ -10,15 +10,23 @@
     <artifactId>jacod-bom</artifactId>
     <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>camp.xit.jacod</groupId>
-            <artifactId>jacod-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>camp.xit.jacod</groupId>
-            <artifactId>jacod-provider-xlsx</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-provider-xlsx</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-provider-csv</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
