@@ -1,154 +1,236 @@
 # JACOD - Java Codelist API
 
-Single purpose java library to provide first class support for business domain of codelists. Almost every business oriented project needs codelists. Mostly read only data provided across every application component. JACOD provides these features:
-* Easy map flat data to java objects
-* Easy access to codelist (CodelistClient API)
-* Caching for instant access to data
-* Easy Spring Boot integration (example soon)
+## Installation
 
-JACOD provides API to handle any datasource. It works primary with flat data, so you can map from e.g. CSV, Excel, Google Sheet, JDBC etc. Of course you can also write your own DataProvider or merge data from multiple providers.
+**Using maven**
 
-## Tutorial
-
-### Basic example
-
-Try simple example:
-Let's say we have `LoanType.csv` CSV file:
+```xml
+<dependency>
+    <groupId>camp.xit.jaoca</groupId>
+    <artifactId>jacod-bom</artifactId>
+    <version>${jacod.version}</version>
+</dependency>
 ```
-code, name, validFrom
-MORTGAGE, Mortgage Loan, 2019-01-01
-CREDIT, Credit Loan, 2019-01-01
-STUDENT, Student Loan, 2019-01-01
-```
-Then we can write simple client:
+
+## Usage
+
+### Base Codelist (no entry class defined)
+
 ```java
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
+CodelistClient cl = new CodelistClient.Builder()
+        .addScanPackages("com.example.model").
+        .withDataProvider(new CSVDataProvider())
+        .build();
 
-public class Main {
-
-    public static void main(String[] args) throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
-                .withExpiryTime(1, TimeUnit.HOURS)
-                .withDataProvider(new CSVDataProvider("src/csv")).build();
-
-        Codelist<? extends CodelistEntry> loanType = client.getCodelist("LoanType");
-        loanType.forEach(System.out::println);
-    }
-}
-```
-Perfect, now we have cached codelist data, that will be refreshed every 1 hour and output will be:
-```
-CodelistEntry(code=CREDIT, name=Credit Loan, order=null, validFrom=2019-01-01, validTo=9999-12-31, selected=null)
-CodelistEntry(code=STUDENT, name=Student Loan, order=null, validFrom=2019-01-01, validTo=9999-12-31, selected=null)
-CodelistEntry(code=MORTGAGE, name=Mortgage Loan, order=null, validFrom=2019-01-01, validTo=9999-12-31, selected=null)
+Codelist title = cl.getCodelist("Title");
+title.getEntry("DrSC.");
+title.stream().filter(e -> e.getCode().contains("Dr")).forEach(System.out::println);
 ```
 
-But what if I need more complex structure. Let's say we need to add minimal loan rate to LoanType:
+### Extended codelist
 
-```
-code, name, validFrom, rate
-MORTGAGE, Mortgage Loan, 2019-01-01, 1.2
-CREDIT, Credit Loan, 2019-01-01, 8
-STUDENT, Student Loan, 2019-01-01, 4.7
-```
-
-We need to add class `LoanType` that extends `CodelistEntry`:
-```java
-package camp.xit.jacod.example;
-
-import camp.xit.jacod.model.CodelistEntry;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class LoanType extends CodelistEntry {
-
-    private Double rate;
-}
-```
-now Main class looks like:
-```java
-package camp.xit.jacod.example;
-
-import camp.xit.jacod.model.CodelistEntry;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class LoanType extends CodelistEntry {
-
-    private Double rate;
-}
-```java
-package camp.xit.jacod.example;
-
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
-import java.util.concurrent.TimeUnit;
-
-public class Main {
-
-    public static void main(String[] args) throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
-                .addScanPackages("camp.xit.jacod.example")
-                .withExpiryTime(1, TimeUnit.HOURS)
-                .withDataProvider(new CSVDataProvider("src/csv")).build();
-
-        LoanType credit = client.getEntry(LoanType.class, "CREDIT");
-        assert(credit.getRate() == 8d);
-    }
-}
-```
-### Referencing between codelists
-
-Let's say we have 2 codelists: Bank and LoanType. Every bank provide different set of loans.
-
-So we have `LoanType.csv`:
-```
-code, name, validFrom
-MORTGAGE, Mortgage Loan, 2019-01-01
-CREDIT, Credit Loan, 2019-01-01
-STUDENT, Student Loan, 2019-01-01
-```
-and `Bank.csv`:
-```
-code, name, validFrom, loanTypes
-BANK_OF_AMERICA, Bank of America, 2019-01-01, STUDENT
-JP_MORGAN, JP Morgan, 2019-01-01, "MORTGAGE, CREDIT"
-CHASE_BANK, Chase Bank, 2019-01-01, "STUDENT, CREDIT"
-```
-`Bank.java`
 ```java
 @Getter
 @Setter
-public class Bank extends CodelistEntry {
+@ToString(callSuper = true)
+public class Title extends CodelistEntry {
 
-    @EntryRef("LoanType")
-    private List<CodelistEntry> loanTypes;
-}
-```
-Then we can access Banks:
-```java
-package camp.xit.jacod.example;
+    public enum Position {
+        BEFORE, AFTER
+    }
 
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
-import java.util.concurrent.TimeUnit;
+    private Position position;
 
-public class Main {
 
-    public static void main(String[] args) throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
-                .addScanPackages("camp.xit.jacod.example")
-                .withExpiryTime(1, TimeUnit.HOURS)
-                .withDataProvider(new CSVDataProvider("src/csv")).build();
+    public Title() {
+    }
 
-        Codelist<Bank> banks = client.getCodelist(Bank.class);
+
+    public Title(String code) {
+        super(code);
+    }
+
+
+    public Title(CodelistEnum<Title> codeEnum) {
+        super(codeEnum.toString());
     }
 }
 ```
+
+```java
+CodelistClient cl = new CodelistClient.Builder()
+        .addScanPackages("com.example.model").
+        .withDataProvider(new CSVDataProvider())
+        .build();
+
+Codelist<Title> aps = cl.getCodelist(Title.class);
+```
+
+### Codelist references
+
+Codelist entry can reference other codelists e.g.:
+
+```java
+public class PresentedPaperSection extends CodelistEntry {
+
+    private PaperType paperType;
+}
+```
+
+If codelist reference is base codelist without entry class, you have to use @EntryRef annotation to define codelist name.
+
+Napr.
+
+```java
+public class InsuranceProduct extends CodelistEntry {
+
+
+    @EntryRef("InsuranceCompany")
+    private CodelistEntry company;
+}
+```
+
+Same for collection references:
+
+```java
+public class InsuranceProduct extends CodelistEntry {
+
+
+    @EntryRef("InsuranceCompany")
+    private List<CodelistEntry> companies;
+}
+```
+### Embedded types
+
+Every extended codelist may define properties of simple types, but also more complex (embedded) types.
+Class that define embedded type has contain `@Embeddable` annotation. Embedded type class does not need to
+extend CodelistEntry class, but can contain reference to another codelist entry.
+
+Embedded type is only wrapper for some subset of values.
+
+```java
+public class BusinessPlace extends CodelistEntry {
+
+    private LegalSubject company;
+}
+```
+
+```java
+@Embeddable
+public class LegalSubject {
+
+    private String name;
+    private String ico;
+    private String dic;
+    private String icDph;
+    private String centralRegister;
+    private Boolean taxPayer;
+    private Address businessAddress;
+}
+
+@Embeddable
+public class Address {
+
+    private String street;
+    private String referenceNumber;
+    private String zipCode;
+    private String registerNumber;
+    private String city;
+    private String displayValue;
+}
+```
+
+Systém podporuje viacero zdrojov dát. Ak daný čiselník používa iný zdrojový systém, ktorý má ine názvy polí,
+je možné prepísať východzie mapovanie z triedy [CodelistEntry](src/main/java/camp/xit/kiwi/codelist/client/model/CodelistEntry.java)
+pomocou anotácie [EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java).
+
+Príklad:
+
+```java
+@EntryMapping(provider = CrafterDataProvider.class, value = {
+    @EntryFieldMapping(field = "code", mappedField = "ID"),
+    @EntryFieldMapping(field = "name", mappedField = "DESCRIPTION"),
+    @EntryFieldMapping(field = "days", mappedField = "DAYS")
+})
+public class PaymentDeferment extends CodelistEntry {
+
+    private Integer days;
+}
+```
+
+Anotáciu `@EntryMapping` je možné vložiť aj mimo samotnej tredy definujúcej číselník napr:
+
+```java
+@EntryMapping(provider = CrafterDataProvider.class, entryClass=PaymentDeferment.class, value = {
+    @EntryFieldMapping(field = "code", mappedField = "ID"),
+    @EntryFieldMapping(field = "name", mappedField = "DESCRIPTION"),
+    @EntryFieldMapping(field = "days", mappedField = "DAYS")
+})
+class PaymentDefermentMapping {}
+```
+
+### Zdrojový systém
+
+Každý zdrojový systém musí implementovať interface [DataProvider](src/main/java/camp/xit/kiwi/codelist/provider/DataProvider.java).
+Momentálne je možné definovať maximálne jednu implementáciu zdrojového systému.
+
+### Enumerácie
+
+Je možné definovať enumeráciu pre daný číselník a to tak, že projekt, ktorý konzumuje toto API, si vytvorí enumeračnú triedu zodpovedajúcu požiadavkam. Najlepší zdroj príkladov sú [junit testy](src/test/java/camp/xit/kiwi/codelist/client/CodelistEnumTest.java). Pre každú enumeračnú triedu musí existovať odvodený číselník. Pre implicitne odvodené číselníky nie je potrebné definovať custom triedy.
+
+#### Príklad použitia
+
+```java
+public class ContractState extends CodelistEntry {
+
+    public enum States implements CodelistEnum<ContractState> {
+        ACTIVE, INACTIV, INPROGRESS, XNA
+    }
+}
+```
+
+```java
+public enum InsuranceProducts implements CodelistEnum<InsuranceProduct> {
+    XSELL_A, XSELL_B, XNA, NONE
+}
+```
+
+#### Použitie API
+
+Použitie API je v oboch prípadoch rovnaké:
+
+Potom môžeš použiť priamo [CodelistClient](src/main/java/camp/xit/kiwi/codelist/client/CodelistClient.java):
+
+```java
+CodelistClient cl = new CodelistClient.Builder().getClient();
+ContactState activeState = cl.getEntry(ContactState.States.ACTIVE);
+```
+
+alebo metôdu triedy [Codelist](src/main/java/camp/xit/kiwi/codelist/client/model/Codelist.java)
+
+```java
+CodelistClient cl = new CodelistClient.Builder().getClient();
+Codelist<ContractState> csc = cl.getCodelist(ContractState.class);
+scs.getEntry(ContractState.States.INACTIV);
+```
+
+resp.
+
+Potom môžeš použiť priamo [CodelistClient](src/main/java/camp/xit/kiwi/codelist/client/CodelistClient.java):
+
+```java
+CodelistClient cl = new CodelistClient.Builder().getClient();
+InsuranceProduct xsellA = cl.getEntry(InsuranceProducts.XSELL_A);
+```
+
+alebo metôdu triedy [Codelist](src/main/java/camp/xit/kiwi/codelist/client/model/Codelist.java)
+
+```java
+CodelistClient cl = new CodelistClient.Builder().getClient();
+Codelist<InsuranceProduct> ipc = cl.getCodelist(InsuranceProduct.class);
+InsuranceProduct xsellA = ipc.getEntry(InsuranceProducts.XSELL_A);
+```
+
+## Create Release
+
+mvn clean release:prepare release:perform -DpushChanges=false -DlocalCheckout=true -Darguments='-Dmaven.javadoc.failOnError=false -Dmaven.deploy.skip=true -Dmaven.site.skip=true'
