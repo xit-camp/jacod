@@ -3,11 +3,11 @@
 
     <parent>
         <groupId>camp.xit.jacod</groupId>
-        <artifactId>jacod</artifactId>
+        <artifactId>jacod-providers</artifactId>
         <version>1.0.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jacod-provider-xlsx</artifactId>
+    <artifactId>jacod-provider-csv</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -20,14 +20,9 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>4.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.9</version>
+            <groupId>com.univocity</groupId>
+            <artifactId>univocity-parsers</artifactId>
+            <version>2.8.2</version>
         </dependency>
     </dependencies>
 
