@@ -1,7 +1,5 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.model.CodelistEnum;
-import camp.xit.jacod.model.CodelistEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

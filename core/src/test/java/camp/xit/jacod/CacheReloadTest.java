@@ -1,6 +1,5 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;

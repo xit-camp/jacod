@@ -1,7 +1,5 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.CsvErrorDataProvider;

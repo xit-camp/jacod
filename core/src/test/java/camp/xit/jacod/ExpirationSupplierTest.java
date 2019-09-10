@@ -1,6 +1,5 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.ExpirationSupplier;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import static org.hamcrest.CoreMatchers.is;

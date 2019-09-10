@@ -1,7 +1,5 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.impl.EntryMetadata;
-import camp.xit.jacod.impl.CodelistEntryMapper;
 import camp.xit.jacod.model.BusinessPlace;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.InsuranceProduct;

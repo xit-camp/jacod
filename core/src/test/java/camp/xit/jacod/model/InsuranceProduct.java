@@ -1,7 +1,5 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.model.CodelistEnum;
-import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.EntryRef;
 import java.math.BigDecimal;
 import java.util.List;

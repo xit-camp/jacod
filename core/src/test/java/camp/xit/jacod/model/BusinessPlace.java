@@ -1,6 +1,5 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.model.CodelistEntry;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,5 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.impl.FlatEntryMapper;
-import camp.xit.jacod.impl.CodelistEntryMapper;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
 import camp.xit.jacod.test.CodelistClientExtension;
