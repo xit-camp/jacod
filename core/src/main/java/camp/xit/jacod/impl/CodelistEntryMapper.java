@@ -422,7 +422,7 @@ public final class CodelistEntryMapper implements EntryMapper {
                         if (firstValueSize == -1) firstValueSize = values.size();
                         if (values.size() != firstValueSize) {
                             throw new RuntimeException("Invalid values count for collection "
-                                    + "of embedded objects for " + fieldPrefix);
+                                    + "of embedded objects for " + fieldPrefix + ". EntryData: " + entryData);
                         }
 
                         if (idx < firstValueSize) {
