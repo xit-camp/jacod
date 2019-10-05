@@ -84,6 +84,7 @@ public class LoanType extends CodelistEntry {
 
     private Double rate;
 }
+````
 ```java
 package camp.xit.jacod.example;
 
