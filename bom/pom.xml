@@ -27,6 +27,11 @@
                 <artifactId>jacod-provider-csv</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-provider-gsheet</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
