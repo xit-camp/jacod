@@ -13,5 +13,6 @@
     <modules>
         <module>xlsx</module>
         <module>csv</module>
+        <module>gsheet</module>
     </modules>
 </project>
