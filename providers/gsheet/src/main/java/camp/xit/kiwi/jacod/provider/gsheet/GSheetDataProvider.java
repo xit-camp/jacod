@@ -9,6 +9,8 @@ import camp.xit.kiwi.jacod.provider.gsheet.service.RangeValue;
 import camp.xit.kiwi.jacod.provider.gsheet.service.SpreadSheet;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +32,27 @@ public class GSheetDataProvider implements DataProvider {
     }
 
 
+    public GSheetDataProvider(File serviceAccountFile, String spreadSheetId) {
+        this(null, serviceAccountFile, spreadSheetId);
+    }
+
+
+    public GSheetDataProvider(Path serviceAccountFile, String spreadSheetId) {
+        this(null, serviceAccountFile, spreadSheetId);
+    }
+
+
     public GSheetDataProvider(String name, String serviceAccountFile, String spreadSheetId) {
+        this(name, new File(serviceAccountFile), serviceAccountFile);
+    }
+
+
+    public GSheetDataProvider(String name, Path serviceAccountFile, String spreadSheetId) {
+        this(name, serviceAccountFile.toFile(), spreadSheetId);
+    }
+
+
+    public GSheetDataProvider(String name, File serviceAccountFile, String spreadSheetId) {
         this.gsheetService = new GSheetService(serviceAccountFile);
         this.spreadSheetId = spreadSheetId;
     }

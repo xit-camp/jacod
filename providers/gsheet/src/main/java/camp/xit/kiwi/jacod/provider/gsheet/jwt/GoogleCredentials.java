@@ -25,13 +25,18 @@ public final class GoogleCredentials {
     private static final int TOKEN_EXPIRATION = 3600;
     private static final String GSHEET_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
-    private ExpirationSupplier<ClientAccessToken> tokenCache;
+    private final ExpirationSupplier<ClientAccessToken> tokenCache;
     private final JsonMapper jsonMapper;
     private final HttpClient httpClient;
     private final ServiceAccount serviceAccount;
 
 
     public GoogleCredentials(String serviceAccountFile) {
+        this(new File(serviceAccountFile));
+    }
+
+
+    public GoogleCredentials(File serviceAccountFile) {
         this.jsonMapper = getJsonMapper();
         this.httpClient = HttpClient.newHttpClient();
         this.serviceAccount = readServiceAccount(serviceAccountFile);
@@ -51,9 +56,9 @@ public final class GoogleCredentials {
     }
 
 
-    private ServiceAccount readServiceAccount(String serviceAccountFile) {
+    private ServiceAccount readServiceAccount(File serviceAccountFile) {
         try {
-            return jsonMapper.readValue(new File(serviceAccountFile), ServiceAccount.class);
+            return jsonMapper.readValue(serviceAccountFile, ServiceAccount.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot read service account file", e);
         }

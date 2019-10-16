@@ -3,6 +3,7 @@ package camp.xit.kiwi.jacod.provider.gsheet.service;
 import camp.xit.kiwi.jacod.provider.gsheet.jwt.GoogleCredentials;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -24,6 +25,11 @@ public class GSheetService {
 
 
     public GSheetService(String serviceAccountFile) {
+        this(new File(serviceAccountFile));
+    }
+
+
+    public GSheetService(File serviceAccountFile) {
         this.httpClient = HttpClient.newHttpClient();
         this.jsonMapper = new JsonMapper();
         this.jsonMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
