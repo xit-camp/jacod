@@ -43,7 +43,7 @@ public class GSheetDataProvider implements DataProvider {
 
 
     public GSheetDataProvider(String name, String serviceAccountFile, String spreadSheetId) {
-        this(name, new File(serviceAccountFile), serviceAccountFile);
+        this(name, new File(serviceAccountFile), spreadSheetId);
     }
 
 
