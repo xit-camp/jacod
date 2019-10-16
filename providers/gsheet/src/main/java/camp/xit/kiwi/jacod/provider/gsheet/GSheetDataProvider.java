@@ -94,8 +94,8 @@ public class GSheetDataProvider implements DataProvider {
                     EntryData data = new EntryData();
                     for (int idx = 0; idx < fieldNamesNode.size(); idx++) {
                         String key = fieldNamesNode.get(idx).asText();
-                        String value = arrRowNode.get(idx).asText();
-                        if (value.isEmpty()) value = null;
+                        String value = ofNullable(arrRowNode.get(idx)).map(v -> v.asText()).orElse(null);
+                        if (value != null && value.isEmpty()) value = null;
                         data.addField(key, value);
                     }
                     result.add(data);
