@@ -5,6 +5,7 @@ import static camp.xit.kiwi.jacod.provider.gsheet.service.MajorDimension.COLUMNS
 import camp.xit.kiwi.jacod.provider.gsheet.service.RangeValue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,17 @@ public final class MetaGSheetDataProvider extends GSheetDataProvider {
     }
 
 
+    public MetaGSheetDataProvider(File serviceAccountFile, String spreadSheetId) {
+        this(serviceAccountFile, spreadSheetId, DEFAULT_META_SHEET);
+    }
+
+
     public MetaGSheetDataProvider(String serviceAccountFile, String spreadSheetId, String metaSheet) {
+        this(new File(serviceAccountFile), spreadSheetId, metaSheet);
+    }
+
+
+    public MetaGSheetDataProvider(File serviceAccountFile, String spreadSheetId, String metaSheet) {
         super(serviceAccountFile, spreadSheetId);
         this.metaSheet = metaSheet;
         this.codelists = readAllNames();
@@ -36,6 +47,11 @@ public final class MetaGSheetDataProvider extends GSheetDataProvider {
 
 
     public MetaGSheetDataProvider(String name, String serviceAccountFile, String spreadSheetId, String metaSheet) {
+        this(name, new File(serviceAccountFile), spreadSheetId, metaSheet);
+    }
+
+
+    public MetaGSheetDataProvider(String name, File serviceAccountFile, String spreadSheetId, String metaSheet) {
         super(name, serviceAccountFile, spreadSheetId);
         this.metaSheet = metaSheet;
         this.codelists = readAllNames();
