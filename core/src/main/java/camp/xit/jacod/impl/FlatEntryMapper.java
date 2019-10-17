@@ -132,7 +132,8 @@ public class FlatEntryMapper {
             if (notNull && !strValue.isPresent()) {
                 String fld = field.getName();
                 String cls = metadata.getCodelistName();
-                throw new InvalidEntryException("You were hit by KIWIGENS-418. Field " + cls + "." + fld + " cannot be empty!");
+                throw new InvalidEntryException("Value of field " + cls + "." + fld
+                        + " cannot be empty! Mapped from: " + mapping.getMappedField() + " | Data: " + data);
             }
             try {
                 if (strValue.isPresent() && isSimpleType(type)) {

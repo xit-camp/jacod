@@ -512,7 +512,7 @@ public final class CodelistEntryMapper implements EntryMapper {
             // check for not null field
             if (notNull && !strValue.isPresent()) {
                 String fld = field.getName();
-                throw new InvalidEntryException("You were hit by KIWIGENS-418. Field " + codelist + "." + fld
+                throw new InvalidEntryException("Value of field " + codelist + "." + fld
                         + " cannot be empty! Mapped from: " + mapping.getMappedField() + " | Data: " + data);
             }
             try {
