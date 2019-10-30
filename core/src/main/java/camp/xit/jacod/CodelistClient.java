@@ -173,6 +173,7 @@ public interface CodelistClient {
         private TimeUnit expiryTimeUnit = TimeUnit.MINUTES;
         private boolean shallowReferences = false;
         private boolean disableCache = false;
+        private boolean reloadReferences = false;
 
 
         public CodelistClient build() {
@@ -186,7 +187,7 @@ public interface CodelistClient {
                 return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
             } else {
                 return new CachedCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                        expiryTimeUnit, whitelistPackages, shallowReferences);
+                        expiryTimeUnit, whitelistPackages, shallowReferences, reloadReferences);
             }
         }
 
@@ -264,7 +265,7 @@ public interface CodelistClient {
          *
          * @param time time value
          * @param unit time unit
-         * @return
+         * @return builder
          */
         public Builder withExpiryTime(long time, TimeUnit unit) {
             this.expiryTime = time;
@@ -275,12 +276,22 @@ public interface CodelistClient {
 
         /**
          * Shallow references means, that {@link CodelistClient} wont fetch codelist references. It creates
-         * references with filled code property.
+         * references with filled code property. Default value: false
          *
          * @return builder
          */
         public Builder shallowReferences() {
             this.shallowReferences = true;
+            return this;
+        }
+
+
+        /**
+         * Reload all codelists that has references to changed codelist. This configuration is applied only to
+         * {@link CachedCodelistClientImpl}. Default value: false
+         */
+        public Builder reloadReferences() {
+            this.reloadReferences = true;
             return this;
         }
 

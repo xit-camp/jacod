@@ -32,20 +32,22 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
 
 
     public CachedCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, long expiryTime,
-            TimeUnit expiryTimeUnit, Set<String> whitelistPackages, boolean shallowReferences) {
+            TimeUnit expiryTimeUnit, Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences) {
         super(provider, whitelistPackages, shallowReferences);
         this.prefetchedCodelists = prefetchedCodelists;
-        this.cache = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {
-        }
+        Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {}
                 .expireAfterWrite(expiryTime, expiryTimeUnit)
                 .resilienceDuration(1, TimeUnit.MINUTES)
                 .refreshAhead(true)
                 .keepDataAfterExpired(true)
                 .loader(getLoader())
                 .enableJmx(true)
-//                .addAsyncListener(new CodelistUpdatedListener())
-                .exceptionPropagator(new CodelistExceptionPropagator())
-                .build();
+                .exceptionPropagator(new CodelistExceptionPropagator());
+
+        if (reloadReferences) {
+            cacheBuilder.addAsyncListener(new CodelistUpdatedListener());
+        }
+        this.cache = cacheBuilder.build();
 
         // prefetch all or selected codelists
         List<String> orderedPrefetched = mapper.getSortedDependencies(prefetchedCodelists);
@@ -217,6 +219,7 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
             this.lastModified = lastModified;
             return this;
         }
+
 
         public void invalidate() {
             this.lastModified = Long.MIN_VALUE;
