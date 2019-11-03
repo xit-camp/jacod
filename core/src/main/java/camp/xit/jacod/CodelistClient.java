@@ -7,6 +7,7 @@ import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
 import camp.xit.jacod.provider.DataProvider;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public interface CodelistClient {
 
@@ -169,8 +169,7 @@ public interface CodelistClient {
         private DataProvider dataProvider = null;
         private Set<String> prefetchedCodelists = null;
         private Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
-        private long expiryTime = 10;
-        private TimeUnit expiryTimeUnit = TimeUnit.MINUTES;
+        private Duration expiryTime = Duration.ofMinutes(10);
         private boolean shallowReferences = false;
         private boolean disableCache = false;
         private boolean reloadReferences = false;
@@ -187,7 +186,7 @@ public interface CodelistClient {
                 return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
             } else {
                 return new CachedCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                        expiryTimeUnit, whitelistPackages, shallowReferences, reloadReferences);
+                        whitelistPackages, shallowReferences, reloadReferences);
             }
         }
 
@@ -267,9 +266,8 @@ public interface CodelistClient {
          * @param unit time unit
          * @return builder
          */
-        public Builder withExpiryTime(long time, TimeUnit unit) {
-            this.expiryTime = time;
-            this.expiryTimeUnit = unit;
+        public Builder withExpiryTime(Duration expiryTime) {
+            this.expiryTime = expiryTime;
             return this;
         }
 

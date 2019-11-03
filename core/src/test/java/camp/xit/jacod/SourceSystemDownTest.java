@@ -3,7 +3,7 @@ package camp.xit.jacod;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.CsvErrorDataProvider;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +21,7 @@ public class SourceSystemDownTest {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new CodelistClient.Builder()
                     .withDataProvider(dp)
-                    .withExpiryTime(WAIT_TIME, TimeUnit.SECONDS).build();
+                    .withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
 
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);
             assertNotNull(ip);
@@ -48,7 +48,7 @@ public class SourceSystemDownTest {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new CodelistClient.Builder()
                     .withPrefetched()
-                    .withDataProvider(dp).withExpiryTime(WAIT_TIME, TimeUnit.SECONDS).build();
+                    .withDataProvider(dp).withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
             dp.setDown();
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);
             fail("Should not be here!");

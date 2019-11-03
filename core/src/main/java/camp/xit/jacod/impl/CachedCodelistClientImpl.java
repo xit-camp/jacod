@@ -6,6 +6,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.CodelistNotChangedException;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.cache2k.Cache;
@@ -31,12 +32,12 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
     private final Set<String> prefetchedCodelists;
 
 
-    public CachedCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, long expiryTime,
-            TimeUnit expiryTimeUnit, Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences) {
+    public CachedCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
+            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences) {
         super(provider, whitelistPackages, shallowReferences);
         this.prefetchedCodelists = prefetchedCodelists;
         Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {}
-                .expireAfterWrite(expiryTime, expiryTimeUnit)
+                .expireAfterWrite(expiryTime.toMillis(), TimeUnit.MILLISECONDS)
                 .resilienceDuration(1, TimeUnit.MINUTES)
                 .refreshAhead(true)
                 .keepDataAfterExpired(true)

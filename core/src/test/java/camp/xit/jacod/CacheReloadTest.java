@@ -3,7 +3,7 @@ package camp.xit.jacod;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +22,7 @@ public class CacheReloadTest {
     void reloadCache() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .withExpiryTime(CACHE_EXPIRY_TIME, TimeUnit.SECONDS)
+                .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
         Codelist<Title> titles = client.getCodelist(Title.class);
