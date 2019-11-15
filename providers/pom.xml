@@ -14,5 +14,6 @@
         <module>xlsx</module>
         <module>csv</module>
         <module>gsheet</module>
+        <module>proxy</module>
     </modules>
 </project>
