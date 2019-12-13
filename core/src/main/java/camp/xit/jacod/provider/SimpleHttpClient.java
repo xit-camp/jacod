@@ -41,7 +41,7 @@ public final class SimpleHttpClient {
     public <T> T doGet(final URI uri, long lastReadTime, ClientCallback<T> callback) throws IOException {
 
         try {
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1)
                     .uri(uri).GET().timeout(ofMinutes(10));
             LOG.trace("Reading URL: {} LastReadTime: {}", uri, lastReadTime);
             if (lastReadTime > -1) {
