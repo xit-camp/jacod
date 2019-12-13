@@ -23,17 +23,22 @@ public final class SimpleHttpClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleHttpClient.class);
 
+    private final HttpClient httpClient;
+
+    private static volatile SimpleHttpClient instance = null;
+
 
     private SimpleHttpClient() {
+        httpClient = HttpClient.newHttpClient();
     }
 
 
-    public static <T> T doGet(final URI uri, ClientCallback<T> callback) throws IOException {
+    public <T> T doGet(final URI uri, ClientCallback<T> callback) throws IOException {
         return doGet(uri, NEUTRAL, callback);
     }
 
 
-    public static <T> T doGet(final URI uri, long lastReadTime, ClientCallback<T> callback) throws IOException {
+    public <T> T doGet(final URI uri, long lastReadTime, ClientCallback<T> callback) throws IOException {
 
         try {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
@@ -47,13 +52,13 @@ public final class SimpleHttpClient {
                 }
             }
             HttpRequest request = requestBuilder.build();
-            HttpResponse<InputStream> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofInputStream());
+            HttpResponse<InputStream> response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
             LOG.debug("Request {}, Status: {}", uri, response.statusCode());
             switch (response.statusCode()) {
             case 200:
                 try (InputStream in = response.body()) {
-                    return callback.process(in);
-                }
+                return callback.process(in);
+            }
             case 304:
                 throw new ResourceNotChangedException(uri.toString());
             case 404:
@@ -67,8 +72,8 @@ public final class SimpleHttpClient {
     }
 
 
-    public static String doGetString(URI url) throws IOException {
-        return SimpleHttpClient.doGet(url, in -> new Scanner(in, StandardCharsets.UTF_8.name()).useDelimiter("\\A").next());
+    public String doGetString(URI url) throws IOException {
+        return doGet(url, in -> new Scanner(in, StandardCharsets.UTF_8.name()).useDelimiter("\\A").next());
     }
 
     public static interface ClientCallback<T> {
@@ -76,4 +81,16 @@ public final class SimpleHttpClient {
         T process(InputStream in) throws IOException, SAXException, ParserConfigurationException;
     }
 
+
+    public static SimpleHttpClient httpClient() {
+        if (instance == null) {
+            synchronized (SimpleHttpClient.class) {
+                if (instance == null) {
+                    instance = new SimpleHttpClient();
+                }
+            }
+        }
+
+        return instance;
+    }
 }
