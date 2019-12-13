@@ -35,7 +35,7 @@ public class ProxyDataProvider implements DataProvider {
     private static final Logger LOG = LoggerFactory.getLogger(ProxyDataProvider.class);
     private final String baseUrl;
     private final HttpClient httpClient;
-    private JsonMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
 
     public ProxyDataProvider(String baseUrl) {
@@ -113,14 +113,15 @@ public class ProxyDataProvider implements DataProvider {
         try {
             HttpRequest req = HttpRequest.newBuilder(URI.create(url)).GET().build();
             HttpResponse<InputStream> response = httpClient.send(req, BodyHandlers.ofInputStream());
-            if (response.statusCode() == 200) {
-                try (InputStream in = response.body()) {
+            switch (response.statusCode()) {
+                case 200:
+                    try (InputStream in = response.body()) {
                     return jsonMapper.readTree(in);
                 }
-            } else if (response.statusCode() == 404) {
-                throw new NotFoundException("Data not found for " + url);
-            } else {
-                throw new RuntimeException("Error " + response.statusCode() + " while getting " + url);
+                case 404:
+                    throw new NotFoundException("Data not found for " + url);
+                default:
+                    throw new RuntimeException("Error " + response.statusCode() + " while getting " + url);
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
