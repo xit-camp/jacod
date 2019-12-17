@@ -103,7 +103,7 @@ public class ProxyDataProvider implements DataProvider {
                 }
             }
         } catch (NotFoundException e) {
-            LOG.debug("Cannot find codelist list");
+            LOG.warn("Cannot find codelist list");
         }
         return result;
     }
