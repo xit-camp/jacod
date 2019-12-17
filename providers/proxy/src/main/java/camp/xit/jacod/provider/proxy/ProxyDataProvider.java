@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider.xlsx;
+package camp.xit.jacod.provider.proxy;
 
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
@@ -103,7 +103,7 @@ public class ProxyDataProvider implements DataProvider {
                 }
             }
         } catch (NotFoundException e) {
-            LOG.debug("Cannot find codelist list");
+            LOG.warn("Cannot find codelist list");
         }
         return result;
     }
