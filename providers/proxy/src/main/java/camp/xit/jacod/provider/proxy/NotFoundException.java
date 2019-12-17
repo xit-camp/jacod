@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider.xlsx;
+package camp.xit.jacod.provider.proxy;
 
 public class NotFoundException extends Exception {
 

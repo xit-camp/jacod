@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider.xlsx;
+package camp.xit.jacod.provider.proxy;
 
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
