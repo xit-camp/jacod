@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -23,24 +24,25 @@ import lombok.extern.slf4j.Slf4j;
 public final class GoogleCredentials {
 
     private static final int TOKEN_EXPIRATION = 3600;
-    private static final String GSHEET_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
     private final ExpirationSupplier<ClientAccessToken> tokenCache;
     private final JsonMapper jsonMapper;
     private final HttpClient httpClient;
     private final ServiceAccount serviceAccount;
+    private final String scopes;
 
 
-    public GoogleCredentials(String serviceAccountFile) {
-        this(new File(serviceAccountFile));
+    public GoogleCredentials(String serviceAccountFile, String... scopes) {
+        this(new File(serviceAccountFile), scopes);
     }
 
 
-    public GoogleCredentials(File serviceAccountFile) {
+    public GoogleCredentials(File serviceAccountFile, String... scopes) {
         this.jsonMapper = getJsonMapper();
         this.httpClient = HttpClient.newHttpClient();
         this.serviceAccount = readServiceAccount(serviceAccountFile);
         this.tokenCache = new ExpirationSupplier<>(this::readToken, TOKEN_EXPIRATION - 3, TimeUnit.SECONDS);
+        this.scopes = String.join("", Arrays.asList(scopes));
     }
 
 
@@ -75,7 +77,7 @@ public final class GoogleCredentials {
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plusSeconds(TOKEN_EXPIRATION)))
                 .signWith(serviceAccount.getPrivateKey(), SignatureAlgorithm.RS256)
-                .claim("scope", GSHEET_SCOPE)
+                .claim("scope", scopes)
                 .compact();
 
         String type = URLEncoder.encode(OAuthConstants.JWT_BEARER_GRANT, Charset.defaultCharset());

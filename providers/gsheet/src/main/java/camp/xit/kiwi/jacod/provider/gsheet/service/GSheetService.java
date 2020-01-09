@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 public class GSheetService {
 
     private static final String API_URI_PREFIX = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private static final String GSHEET_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
     protected final HttpClient httpClient;
     protected final JsonMapper jsonMapper;
@@ -34,7 +35,7 @@ public class GSheetService {
         this.jsonMapper = new JsonMapper();
         this.jsonMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
         this.jsonMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.credentials = new GoogleCredentials(serviceAccountFile);
+        this.credentials = new GoogleCredentials(serviceAccountFile, GSHEET_SCOPE);
     }
 
 
