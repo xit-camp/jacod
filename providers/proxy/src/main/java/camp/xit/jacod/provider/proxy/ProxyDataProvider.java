@@ -87,7 +87,7 @@ public class ProxyDataProvider implements DataProvider {
 
 
     protected String getCodelistUrl(String codelist) {
-        return baseUrl + (baseUrl.endsWith("/") ? "" : "/") + codelist;
+        return baseUrl + (baseUrl.endsWith("/") ? "" : "/") + codelist + "/flat";
     }
 
 
