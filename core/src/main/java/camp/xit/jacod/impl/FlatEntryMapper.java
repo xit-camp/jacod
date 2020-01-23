@@ -199,8 +199,8 @@ public class FlatEntryMapper {
                     Object value = mapToFieldValueFlat(field, fieldMapping, providerClass, tmpData, metadata, resultData);
                     values.add(value);
                 }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Setting value {} to class {} field {} type {}", values, objClass.getSimpleName(),
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Setting value {} to class {} field {} type {}", values, objClass.getSimpleName(),
                             field.getName(), field.getType().getName());
                 }
                 resultData.put(addPrefix(fieldPrefix, field.getName()), values);
@@ -222,8 +222,8 @@ public class FlatEntryMapper {
             Field field = entry.getKey();
             FieldMapping mappedField = fieldPrefix != null ? entry.getValue().addPrefix(fieldPrefix) : entry.getValue();
             Object value = mapToFieldValueFlat(field, mappedField, providerClass, entryData, metadata, resultData);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
                         field.getName(), field.getType().getName());
             }
             if (value != null) {

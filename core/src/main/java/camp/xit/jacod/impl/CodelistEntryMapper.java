@@ -429,8 +429,8 @@ public final class CodelistEntryMapper implements EntryMapper {
                             EntryData tmpData = new EntryData(mappedField, values.get(idx));
 
                             Object value = mapToFieldValue(field, fieldMapping, providerClass, codelist, tmpData, metadata, refProvider);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
+                            if (LOG.isTraceEnabled()) {
+                                LOG.trace("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
                                         field.getName(), field.getType().getName());
                             }
                             if (value != null) {
@@ -469,8 +469,8 @@ public final class CodelistEntryMapper implements EntryMapper {
                 fieldMapping = fieldPrefix != null ? fieldMapping.addPrefix(fieldPrefix) : fieldMapping;
                 String codelist = objClass.getSimpleName();
                 Object value = mapToFieldValue(field, fieldMapping, providerClass, codelist, entryData, metadata, refProvider);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Setting value {} to class {} field {} type {}", value, objClass.getSimpleName(),
                             field.getName(), field.getType().getName());
                 }
                 if (value != null) {
