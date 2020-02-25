@@ -30,13 +30,19 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
     private static final Logger LOG = LoggerFactory.getLogger(CachedCodelistClientImpl.class);
     private final Cache<String, Tuple<Codelist<CodelistEntry>>> cache;
     private final Set<String> prefetchedCodelists;
+    private final boolean reloadDependencies;
 
 
     public CachedCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
-            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences) {
+            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences, boolean reloadDependencies) {
+
         super(provider, whitelistPackages, shallowReferences);
+
         this.prefetchedCodelists = prefetchedCodelists;
-        Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {}
+        this.reloadDependencies = reloadDependencies;
+
+        Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {
+        }
                 .expireAfterWrite(expiryTime.toMillis(), TimeUnit.MILLISECONDS)
                 .resilienceDuration(1, TimeUnit.MINUTES)
                 .refreshAhead(true)
@@ -88,9 +94,12 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
         ReferenceProvider refProvider = shallowReferences ? new ShallowRefProvider(mapper) : (c, e) -> getEntry(c, e);
 
         Optional<Class<? extends CodelistEntry>> entryClass = mapper.getEntryClass(codelist);
-        Collection<String> deps = entryClass.map(cl -> mapper.getCodelistDependencies(cl)).orElse(Collections.emptySet());
-        LOG.info("[{}] Expiring cache of codelist {} dependencies: {}", providerName, codelist, deps);
-        deps.forEach(e -> cache.expireAt(e, ExpiryTimeValues.NOW));
+
+        if (reloadDependencies) {
+            Collection<String> deps = entryClass.map(cl -> mapper.getCodelistDependencies(cl)).orElse(Collections.emptySet());
+            LOG.info("[{}] Expiring cache of codelist {} dependencies: {}", providerName, codelist, deps);
+            deps.forEach(e -> cache.expireAt(e, ExpiryTimeValues.NOW));
+        }
 
         return readCodelist(codelist, lastReadTime, refProvider);
     }
@@ -101,8 +110,10 @@ public class CachedCodelistClientImpl extends CodelistClientImpl {
         ReferenceProvider refProvider = shallowReferences ? new ShallowRefProvider(mapper) : (c, e) -> getEntry(c, e);
 
         Collection<String> deps = mapper.getCodelistDependencies(entryClass);
-        LOG.info("[{}] Expiring cache of codelist {} dependencies: {}", providerName, entryClass.getSimpleName(), deps);
-        deps.forEach(e -> cache.expireAt(e, ExpiryTimeValues.NOW));
+        if (reloadDependencies) {
+            LOG.info("[{}] Expiring cache of codelist {} dependencies: {}", providerName, entryClass.getSimpleName(), deps);
+            deps.forEach(e -> cache.expireAt(e, ExpiryTimeValues.NOW));
+        }
 
         return readCustomCodelist(entryClass, lastReadTime, refProvider);
     }

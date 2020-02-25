@@ -173,6 +173,7 @@ public interface CodelistClient {
         private boolean shallowReferences = false;
         private boolean disableCache = false;
         private boolean reloadReferences = false;
+        private boolean reloadDependencies = false;
 
 
         public CodelistClient build() {
@@ -186,7 +187,7 @@ public interface CodelistClient {
                 return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
             } else {
                 return new CachedCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                        whitelistPackages, shallowReferences, reloadReferences);
+                        whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);
             }
         }
 
@@ -285,11 +286,22 @@ public interface CodelistClient {
 
 
         /**
-         * Reload all codelists that has references to changed codelist. This configuration is applied only to
+         * Reload all codelists that contain references to changed codelist. This configuration is applied
+         * only to
          * {@link CachedCodelistClientImpl}. Default value: false
          */
         public Builder reloadReferences() {
             this.reloadReferences = true;
+            return this;
+        }
+
+
+        /**
+         * Reload all referenced codelists (transitive dependencies) from changed codelist. This configuration
+         * is applied only to {@link CachedCodelistClientImpl}. Default value: false
+         */
+        public Builder reloadDependecies() {
+            this.reloadDependencies = true;
             return this;
         }
 
