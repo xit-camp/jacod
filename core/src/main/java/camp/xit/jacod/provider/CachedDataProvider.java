@@ -21,6 +21,23 @@ public class CachedDataProvider implements DataProvider {
 
     private final DataProvider provider;
     private final Cache<String, Tuple<Optional<List<EntryData>>>> cache;
+    private final String name;
+
+
+    public CachedDataProvider(DataProvider provider, Duration expiryTimeout) {
+        this.provider = provider;
+        this.name = provider.getName() + "@Cached";
+        Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Optional<List<EntryData>>>>() {
+        }
+                .expireAfterWrite(expiryTimeout.toMillis(), TimeUnit.MILLISECONDS)
+                .resilienceDuration(1, TimeUnit.MINUTES)
+                .refreshAhead(true)
+                .keepDataAfterExpired(true)
+                .loader(getLoader())
+                .enableJmx(true)
+                .exceptionPropagator(new CodelistExceptionPropagator());
+        this.cache = cacheBuilder.build();
+    }
 
 
     @Override
@@ -37,22 +54,7 @@ public class CachedDataProvider implements DataProvider {
 
     @Override
     public String getName() {
-        return provider.getName() + "@Cached";
-    }
-
-
-    public CachedDataProvider(DataProvider provider, Duration expiryTimeout) {
-        this.provider = provider;
-        Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Optional<List<EntryData>>>>() {
-        }
-                .expireAfterWrite(expiryTimeout.toMillis(), TimeUnit.MILLISECONDS)
-                .resilienceDuration(1, TimeUnit.MINUTES)
-                .refreshAhead(true)
-                .keepDataAfterExpired(true)
-                .loader(getLoader())
-                .enableJmx(true)
-                .exceptionPropagator(new CodelistExceptionPropagator());
-        this.cache = cacheBuilder.build();
+        return name;
     }
 
 
