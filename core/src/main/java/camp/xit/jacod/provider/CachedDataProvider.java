@@ -5,6 +5,7 @@ import camp.xit.jacod.impl.CodelistExceptionPropagator;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
@@ -20,6 +21,24 @@ public class CachedDataProvider implements DataProvider {
 
     private final DataProvider provider;
     private final Cache<String, Tuple<Optional<List<EntryData>>>> cache;
+
+
+    @Override
+    public Set<String> readAllNames() {
+        return provider.readAllNames();
+    }
+
+
+    @Override
+    public Class<? extends DataProvider> getProviderClass() {
+        return provider.getProviderClass();
+    }
+
+
+    @Override
+    public String getName() {
+        return provider.getName() + "@Cached";
+    }
 
 
     public CachedDataProvider(DataProvider provider, Duration expiryTimeout) {
