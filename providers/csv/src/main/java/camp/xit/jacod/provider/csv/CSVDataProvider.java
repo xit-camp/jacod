@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider.xlsx;
+package camp.xit.jacod.provider.csv;
 
 import camp.xit.jacod.provider.CodelistNotChangedException;
 import camp.xit.jacod.provider.DataProvider;
