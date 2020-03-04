@@ -6,6 +6,7 @@ import camp.xit.jacod.impl.CodelistClientImpl;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
+import camp.xit.jacod.provider.CachedDataProvider;
 import camp.xit.jacod.provider.DataProvider;
 import java.time.Duration;
 import java.util.Arrays;
@@ -173,6 +174,7 @@ public interface CodelistClient {
         private boolean shallowReferences = false;
         private boolean disableCache = false;
         private boolean reloadReferences = false;
+        private boolean reloadDependencies = true;
 
 
         public CodelistClient build() {
@@ -186,7 +188,7 @@ public interface CodelistClient {
                 return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
             } else {
                 return new CachedCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                        whitelistPackages, shallowReferences, reloadReferences);
+                        whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);
             }
         }
 
@@ -258,6 +260,35 @@ public interface CodelistClient {
 
 
         /**
+         * Set instance of data provider implementation and wrap it with {@link CachedDataProvider}. It caches
+         * all provider responses for time defined by {@link #withExpiryTime(java.time.Duration)} method. This
+         * is mandatory attribute. Application throws {@link IllegalArgumentException} when no data provider
+         * is set.
+         *
+         * @param dataProvider data provider
+         * @return builder
+         */
+        public Builder withCachedDataProvider(DataProvider dataProvider) {
+            this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
+            return this;
+        }
+
+
+        /**
+         * Set instance of data provider implementation and wrap it with {@link CachedDataProvider}. It caches
+         * all provider responses for defined time period. This is mandatory attribute. Application throws
+         * {@link IllegalArgumentException} when no data provider is set.
+         *
+         * @param dataProvider data provider
+         * @return builder
+         */
+        public Builder withCachedDataProvider(DataProvider dataProvider, Duration expiryTime) {
+            this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
+            return this;
+        }
+
+
+        /**
          * Set expiry time. Default value is 10 minutes. It means that every codelist expired in this time and
          * will be refreshed when it was changed. This setting is applicable only for
          * {@link CachedCodelistClientImpl} implementation.
@@ -285,11 +316,22 @@ public interface CodelistClient {
 
 
         /**
-         * Reload all codelists that has references to changed codelist. This configuration is applied only to
+         * Reload all codelists that contain references to changed codelist. This configuration is applied
+         * only to
          * {@link CachedCodelistClientImpl}. Default value: false
          */
         public Builder reloadReferences() {
             this.reloadReferences = true;
+            return this;
+        }
+
+
+        /**
+         * Don't reload all referenced codelists (transitive dependencies) from changed codelist. This
+         * configuration is applied only to {@link CachedCodelistClientImpl}. Default value: true
+         */
+        public Builder withoutReloadDependecies() {
+            this.reloadDependencies = false;
             return this;
         }
 

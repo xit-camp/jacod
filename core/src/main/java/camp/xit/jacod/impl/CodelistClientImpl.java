@@ -143,7 +143,7 @@ public class CodelistClientImpl implements CodelistClient {
         LOG.debug("[{}] Reading codelist {}", providerName, codelist);
         Codelist<CodelistEntry> result = mapper.mapToCodelist(codelist, provider, lastReadTime, refProvider)
                 .orElseThrow(() -> notFoundException(codelist, provider, mapper));
-        LOG.info("Codelist {} fully loaded from provider {}", codelist, providerName);
+        LOG.info("[{}] Codelist {} fully loaded", providerName, codelist);
         return result;
     }
 
@@ -159,7 +159,7 @@ public class CodelistClientImpl implements CodelistClient {
         LOG.debug("[{}] Reading custom codelist {}", providerName, entryClass.getName());
         Codelist<? extends CodelistEntry> result = mapper.mapToCodelist(entryClass, provider, lastReadTime, refProvider)
                 .orElseThrow(() -> notFoundException(entryClass, provider, mapper));
-        LOG.info("Codelist {} fully loaded from provider {}", entryClass.getSimpleName(), providerName);
+        LOG.info("[{}] Codelist {} fully loaded", providerName, entryClass.getSimpleName());
         return result;
     }
 
