@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-class EntryMetadata {
+public class EntryMetadata {
 
     protected final Class<?> entryClass;
     protected final Map<Field, FieldMap.FieldMapping> fieldMap;

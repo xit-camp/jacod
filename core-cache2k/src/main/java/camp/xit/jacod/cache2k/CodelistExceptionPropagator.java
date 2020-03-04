@@ -1,4 +1,4 @@
-package camp.xit.jacod.impl;
+package camp.xit.jacod.cache2k;
 
 import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.EntryNotFoundException;

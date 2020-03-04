@@ -1,6 +1,8 @@
-package camp.xit.jacod.impl;
+package camp.xit.jacod.cache2k;
 
 import camp.xit.jacod.CodelistNotFoundException;
+import camp.xit.jacod.impl.CodelistClientImpl;
+import camp.xit.jacod.impl.ShallowRefProvider;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.CodelistNotChangedException;
@@ -25,15 +27,15 @@ import org.slf4j.LoggerFactory;
  *
  * @author Michal Hlavac
  */
-public class CachedCodelistClientImpl extends CodelistClientImpl {
+public class Cache2kCodelistClientImpl extends CodelistClientImpl {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CachedCodelistClientImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Cache2kCodelistClientImpl.class);
     private final Cache<String, Tuple<Codelist<CodelistEntry>>> cache;
     private final Set<String> prefetchedCodelists;
     private final boolean reloadDependencies;
 
 
-    public CachedCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
+    public Cache2kCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
             Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences, boolean reloadDependencies) {
 
         super(provider, whitelistPackages, shallowReferences);

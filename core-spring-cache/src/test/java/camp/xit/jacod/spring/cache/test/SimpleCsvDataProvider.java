@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider.csv;
+package camp.xit.jacod.spring.cache.test;
 
 import camp.xit.jacod.provider.CodelistNotChangedException;
 import camp.xit.jacod.provider.DataProvider;

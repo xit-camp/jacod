@@ -1,9 +1,9 @@
-package camp.xit.jacod.provider.csv;
+package camp.xit.jacod.cache2k.test;
 
 import camp.xit.jacod.provider.CodelistNotChangedException;
-import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,13 +15,18 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleCsvDataProvider implements DataProvider {
+public class CsvErrorDataProvider extends SimpleCsvDataProvider {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SimpleCsvDataProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CsvErrorDataProvider.class);
+
+    private boolean down = false;
 
 
     @Override
     public Optional<List<EntryData>> readEntries(String entryName, long lastReadTime) {
+        if (down) {
+            return Optional.empty();
+        }
         if (lastReadTime < 0) {
             return parseCsv(entryName);
         } else {
@@ -39,7 +44,7 @@ public class SimpleCsvDataProvider implements DataProvider {
     private Optional<List<EntryData>> parseCsv(String entryName) {
         List<EntryData> result = null;
         List<String> names = new ArrayList<>();
-        URL resourceUrl = SimpleCsvDataProvider.class.getResource("/csv/" + entryName + ".csv");
+        URL resourceUrl = CsvErrorDataProvider.class.getResource("/csv/" + entryName + ".csv");
         if (resourceUrl != null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceUrl.openStream()))) {
                 String line;
@@ -59,10 +64,20 @@ public class SimpleCsvDataProvider implements DataProvider {
                         result.add(entry);
                     }
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 LOG.error("Cannot read CSV " + entryName, e);
             }
         }
         return Optional.ofNullable(result);
+    }
+
+
+    public void setDown() {
+        this.down = true;
+    }
+
+
+    public void setUp() {
+        this.down = false;
     }
 }

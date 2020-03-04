@@ -1,8 +1,9 @@
-package camp.xit.jacod;
+package camp.xit.jacod.spring.cache;
 
+import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.spring.cache.model.Title;
+import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.Title;
-import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import java.time.Duration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -10,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 public class CacheReloadTest {
 
@@ -20,8 +24,11 @@ public class CacheReloadTest {
 
     @Test
     void reloadCache() throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
+        CacheManager cacheManager = new CaffeineCacheManager();
+
+        CodelistClient client = new SpringCacheCodelistClient.Builder(cacheManager.getCache("reloadCache"))
                 .withDataProvider(new SimpleCsvDataProvider())
+                .addScanPackages(Title.class.getPackageName())
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -37,6 +44,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
+                .addScanPackages(Title.class.getPackageName())
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

@@ -14,7 +14,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import javax.xml.parsers.ParserConfigurationException;
-import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -34,7 +33,7 @@ public final class SimpleHttpClient {
 
 
     public <T> T doGet(final URI uri, ClientCallback<T> callback) throws IOException {
-        return doGet(uri, NEUTRAL, callback);
+        return doGet(uri, -1, callback);
     }
 
 
