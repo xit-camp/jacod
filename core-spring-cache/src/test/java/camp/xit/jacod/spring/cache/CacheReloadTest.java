@@ -4,6 +4,7 @@ import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.spring.cache.model.Title;
 import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -11,25 +12,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 public class CacheReloadTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(CacheReloadTest.class);
-    private static final int CACHE_EXPIRY_TIME = 1;
+    private static final Duration CACHE_EXPIRY_TIME = Duration.ofSeconds(1);
     private static final int WAIT_TIME = 3;
 
 
     @Test
     void reloadCache() throws Exception {
-        CacheManager cacheManager = new CaffeineCacheManager();
+        Caffeine caffeine = Caffeine.newBuilder().expireAfterWrite(CACHE_EXPIRY_TIME).maximumSize(100);
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setCaffeine(caffeine);
 
         CodelistClient client = new SpringCacheCodelistClient.Builder(cacheManager.getCache("reloadCache"))
                 .withDataProvider(new SimpleCsvDataProvider())
                 .addScanPackages(Title.class.getPackageName())
-                .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
         Codelist<Title> titles = client.getCodelist(Title.class);

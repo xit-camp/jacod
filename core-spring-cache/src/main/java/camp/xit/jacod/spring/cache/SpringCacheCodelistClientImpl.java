@@ -6,7 +6,6 @@ import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
@@ -24,16 +23,14 @@ public class SpringCacheCodelistClientImpl extends CodelistClientImpl {
     private final Cache cache;
     private final Set<String> prefetchedCodelists;
     private final boolean reloadDependencies;
-    private final Duration expiryTimeout;
 
 
-    public SpringCacheCodelistClientImpl(DataProvider provider, Cache cache, Duration expiryTimeout,
-            Set<String> prefetchedCodelists, Set<String> whitelistPackages, boolean shallowReferences, boolean reloadDependencies) {
+    public SpringCacheCodelistClientImpl(DataProvider provider, Cache cache, Set<String> prefetchedCodelists,
+            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadDependencies) {
 
         super(provider, whitelistPackages, shallowReferences);
 
         this.cache = cache;
-        this.expiryTimeout = expiryTimeout;
         this.prefetchedCodelists = prefetchedCodelists;
         this.reloadDependencies = reloadDependencies;
 
@@ -48,8 +45,7 @@ public class SpringCacheCodelistClientImpl extends CodelistClientImpl {
 
     @Override
     public Codelist<? extends CodelistEntry> getCodelist(String codelist) {
-        Tuple<Codelist<CodelistEntry>> tuple = cache.get(codelist, getLoader(codelist));
-        return tuple != null ? tuple.value : null;
+        return cache.get(codelist, getLoader(codelist));
     }
 
 
@@ -60,18 +56,11 @@ public class SpringCacheCodelistClientImpl extends CodelistClientImpl {
     }
 
 
-    Callable<Tuple<Codelist<CodelistEntry>>> getLoader(String codelist) {
+    Callable<Codelist<CodelistEntry>> getLoader(String codelist) {
         return () -> {
-            Tuple<Codelist<CodelistEntry>> tuple = cache.get(codelist, Tuple.class);
-            if (tuple == null) {
-                tuple = new Tuple<>(readCodelist(codelist, -1));
-                LOG.debug("Codelist {} sucessfully loaded", codelist);
-            } else if (tuple.isInvalid(expiryTimeout)) {
-                long lastReload = tuple.lastModified;
-                tuple = new Tuple<>(readCodelist(codelist, lastReload));
-                LOG.debug("Codelist {} sucessfully reloaded", codelist);
-            }
-            return tuple;
+            Codelist<CodelistEntry> result = readCodelist(codelist, -1);
+            LOG.debug("Codelist {} sucessfully loaded", codelist);
+            return result;
         };
     }
 
