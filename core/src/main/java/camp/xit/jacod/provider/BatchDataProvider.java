@@ -41,11 +41,11 @@ public abstract class BatchDataProvider implements DataProvider {
      *
      * @return all codelist values
      */
-    abstract Map<String, List<EntryData>> readEntriesBatch();
+    protected abstract Map<String, List<EntryData>> readEntriesBatch();
 
 
     @Override
-    public Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
+    public final Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
         if (!inTime()) readEntriesBatchInternal();
         return ofNullable(shortTermCache.get(codelist));
     }
