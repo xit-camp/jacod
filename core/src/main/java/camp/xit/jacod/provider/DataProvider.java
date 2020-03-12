@@ -2,7 +2,9 @@ package camp.xit.jacod.provider;
 
 import camp.xit.jacod.model.CodelistEntry;
 import java.util.Collections;
+import static java.util.Collections.emptyMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,6 +45,11 @@ public interface DataProvider {
     }
 
 
+    /**
+     * Get DataProvider name used e.g. in logs
+     *
+     * @return name
+     */
     default String getName() {
         return getClass().getSimpleName();
     }

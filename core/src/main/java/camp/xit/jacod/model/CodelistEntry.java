@@ -2,6 +2,7 @@ package camp.xit.jacod.model;
 
 import camp.xit.jacod.DateUtil;
 import camp.xit.jacod.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CodelistEntry {
+public class CodelistEntry implements Serializable {
 
     /**
      * Jednoznačný identifikátor číselníkovej hodnoty. Je zároveň aj primárny kľúč.
