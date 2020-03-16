@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GSheetDataProvider implements DataProvider {
 
+    private final String name;
     protected final GSheetService gsheetService;
     protected final String spreadSheetId;
 
@@ -50,7 +51,13 @@ public class GSheetDataProvider implements DataProvider {
 
 
     public GSheetDataProvider(String name, File serviceAccountFile, String spreadSheetId) {
-        this.gsheetService = new GSheetService(serviceAccountFile);
+        this(name, new GSheetService(serviceAccountFile), spreadSheetId);
+    }
+
+
+    GSheetDataProvider(String name, GSheetService gsheetService, String spreadSheetId) {
+        this.name = name;
+        this.gsheetService = gsheetService;
         this.spreadSheetId = spreadSheetId;
     }
 
@@ -74,5 +81,11 @@ public class GSheetDataProvider implements DataProvider {
             log.warn("Error occured while fetching codelist " + codelist, e);
         }
         return result;
+    }
+
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

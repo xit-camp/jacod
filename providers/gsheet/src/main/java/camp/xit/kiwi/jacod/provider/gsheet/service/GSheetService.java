@@ -149,18 +149,18 @@ public class GSheetService {
         try {
             HttpResponse<InputStream> response = httpClient.send(request, BodyHandlers.ofInputStream());
             int status = response.statusCode();
-            if (status == 200) {
-                try (InputStream in = response.body()) {
-                    return jsonMapper.readValue(in, objClass);
-                }
-            } else if (status == 404) {
-                throw new NotFoundException("Requested data not found! URI: " + request.uri());
-            } else {
-                String content = "";
-                try (InputStream in = response.body()) {
-                    content = consumeContent(in);
-                }
-                throw new GoogleApiException(content, response.statusCode());
+            switch (status) {
+                case 200:
+                    try (InputStream in = response.body()) {
+                        return jsonMapper.readValue(in, objClass);
+                    }
+                case 404:
+                    throw new NotFoundException("Requested data not found! URI: " + request.uri());
+                default:
+                    try (InputStream in = response.body()) {
+                        String content = consumeContent(in);
+                        throw new GoogleApiException(content, response.statusCode());
+                    }
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Unexpected error!", e);
