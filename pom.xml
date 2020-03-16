@@ -45,6 +45,7 @@
         <module>core</module>
         <module>core-cache2k</module>
         <module>core-spring-cache</module>
+        <module>core-jcache</module>
         <module>providers</module>
         <module>bom</module>
     </modules>
@@ -136,6 +137,7 @@
                             </goals>
                             <configuration>
                                 <doclint>none</doclint>
+                                <detectJavaApiLink>false</detectJavaApiLink>
                             </configuration>
                         </execution>
                     </executions>
