@@ -19,7 +19,17 @@
             </dependency>
             <dependency>
                 <groupId>camp.xit.jacod</groupId>
-                <artifactId>jacod-provider-xlsx</artifactId>
+                <artifactId>jacod-core-cache2k</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-core-spring-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-core-jcache</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
