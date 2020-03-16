@@ -11,7 +11,6 @@ import camp.xit.jacod.model.CodelistEnum;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
 import java.util.*;
-import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,12 +48,12 @@ public class CodelistClientImpl implements CodelistClient {
 
     @Override
     public Codelist<? extends CodelistEntry> getCodelist(String codelist) {
-        return readCodelist(codelist, NEUTRAL);
+        return readCodelist(codelist, -1);
     }
 
 
     protected Codelist<? extends CodelistEntry> getCustomCodelist(Class<? extends CodelistEntry> entryClass) {
-        return readCustomCodelist(entryClass, NEUTRAL);
+        return readCustomCodelist(entryClass, -1);
     }
 
 
@@ -116,7 +115,7 @@ public class CodelistClientImpl implements CodelistClient {
 
     @Override
     public List<Map<String, Object>> getFlatEntries(String codelist) {
-        return mapper.mapToFlat(codelist, provider, NEUTRAL)
+        return mapper.mapToFlat(codelist, provider, -1)
                 .orElseThrow(() -> notFoundException(codelist, provider, mapper));
     }
 

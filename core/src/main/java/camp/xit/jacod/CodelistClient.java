@@ -1,14 +1,11 @@
 package camp.xit.jacod;
 
 import camp.xit.jacod.entry.parser.ast.CompileException;
-import camp.xit.jacod.impl.CachedCodelistClientImpl;
 import camp.xit.jacod.impl.CodelistClientImpl;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
-import camp.xit.jacod.provider.CachedDataProvider;
 import camp.xit.jacod.provider.DataProvider;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -163,18 +160,14 @@ public interface CodelistClient {
      */
     void clearCache();
 
-    public static class Builder {
+    public static class Builder<T extends Builder> {
 
         public static final String[] BASE_PACKAGES = new String[]{CodelistEntry.class.getPackageName()};
 
-        private DataProvider dataProvider = null;
-        private Set<String> prefetchedCodelists = null;
-        private Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
-        private Duration expiryTime = Duration.ofMinutes(10);
-        private boolean shallowReferences = false;
-        private boolean disableCache = false;
-        private boolean reloadReferences = false;
-        private boolean reloadDependencies = true;
+        protected DataProvider dataProvider = null;
+        protected Set<String> prefetchedCodelists = null;
+        protected Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
+        protected boolean shallowReferences = false;
 
 
         public CodelistClient build() {
@@ -184,12 +177,7 @@ public interface CodelistClient {
             if (prefetchedCodelists == null) {
                 prefetchedCodelists = dataProvider.readAllNames();
             }
-            if (disableCache) {
-                return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
-            } else {
-                return new CachedCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                        whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);
-            }
+            return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
         }
 
 
@@ -201,9 +189,9 @@ public interface CodelistClient {
          * @param prefetchedCodelists zoznam číselníkov, ktoré budú nahrane do cache
          * @return builder
          */
-        public Builder withPrefetched(String... prefetchedCodelists) {
+        public T withPrefetched(String... prefetchedCodelists) {
             this.prefetchedCodelists = new HashSet<>(Arrays.asList(prefetchedCodelists));
-            return this;
+            return (T) this;
         }
 
 
@@ -213,9 +201,9 @@ public interface CodelistClient {
          *
          * @return builder
          */
-        public Builder noPrefetched() {
+        public T noPrefetched() {
             this.prefetchedCodelists = Collections.emptySet();
-            return this;
+            return (T) this;
         }
 
 
@@ -226,9 +214,9 @@ public interface CodelistClient {
          *
          * @return builder
          */
-        public Builder scanFullClasspath() {
+        public T scanFullClasspath() {
             this.whitelistPackages.clear();
-            return this;
+            return (T) this;
         }
 
 
@@ -240,9 +228,9 @@ public interface CodelistClient {
          * @param whitelistPackages list of packages, that will be scanned
          * @return builder
          */
-        public Builder addScanPackages(String... whitelistPackages) {
+        public T addScanPackages(String... whitelistPackages) {
             this.whitelistPackages.addAll(Arrays.asList(whitelistPackages));
-            return this;
+            return (T) this;
         }
 
 
@@ -253,53 +241,9 @@ public interface CodelistClient {
          * @param dataProvider data provider
          * @return builder
          */
-        public Builder withDataProvider(DataProvider dataProvider) {
+        public T withDataProvider(DataProvider dataProvider) {
             this.dataProvider = dataProvider;
-            return this;
-        }
-
-
-        /**
-         * Set instance of data provider implementation and wrap it with {@link CachedDataProvider}. It caches
-         * all provider responses for time defined by {@link #withExpiryTime(java.time.Duration)} method. This
-         * is mandatory attribute. Application throws {@link IllegalArgumentException} when no data provider
-         * is set.
-         *
-         * @param dataProvider data provider
-         * @return builder
-         */
-        public Builder withCachedDataProvider(DataProvider dataProvider) {
-            this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
-            return this;
-        }
-
-
-        /**
-         * Set instance of data provider implementation and wrap it with {@link CachedDataProvider}. It caches
-         * all provider responses for defined time period. This is mandatory attribute. Application throws
-         * {@link IllegalArgumentException} when no data provider is set.
-         *
-         * @param dataProvider data provider
-         * @return builder
-         */
-        public Builder withCachedDataProvider(DataProvider dataProvider, Duration expiryTime) {
-            this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
-            return this;
-        }
-
-
-        /**
-         * Set expiry time. Default value is 10 minutes. It means that every codelist expired in this time and
-         * will be refreshed when it was changed. This setting is applicable only for
-         * {@link CachedCodelistClientImpl} implementation.
-         *
-         * @param time time value
-         * @param unit time unit
-         * @return builder
-         */
-        public Builder withExpiryTime(Duration expiryTime) {
-            this.expiryTime = expiryTime;
-            return this;
+            return (T) this;
         }
 
 
@@ -309,30 +253,9 @@ public interface CodelistClient {
          *
          * @return builder
          */
-        public Builder shallowReferences() {
+        public T shallowReferences() {
             this.shallowReferences = true;
-            return this;
-        }
-
-
-        /**
-         * Reload all codelists that contain references to changed codelist. This configuration is applied
-         * only to
-         * {@link CachedCodelistClientImpl}. Default value: false
-         */
-        public Builder reloadReferences() {
-            this.reloadReferences = true;
-            return this;
-        }
-
-
-        /**
-         * Don't reload all referenced codelists (transitive dependencies) from changed codelist. This
-         * configuration is applied only to {@link CachedCodelistClientImpl}. Default value: true
-         */
-        public Builder withoutReloadDependecies() {
-            this.reloadDependencies = false;
-            return this;
+            return (T) this;
         }
 
 
@@ -342,32 +265,9 @@ public interface CodelistClient {
          *
          * @return builder
          */
-        public Builder deepReferences() {
+        public T deepReferences() {
             this.shallowReferences = false;
-            return this;
-        }
-
-
-        /**
-         * Turn off cache. Cache is enabled by default, but it's useful in some scenarios e.g. debug.
-         * !!! Be aware that this setting has huge impact on application performace !!!
-         *
-         * @return builder
-         */
-        public Builder disableCache() {
-            this.disableCache = true;
-            return this;
-        }
-
-
-        /**
-         * Enable cache. This is default behaviour.
-         *
-         * @return builder
-         */
-        public Builder enableCache() {
-            this.disableCache = false;
-            return this;
+            return (T) this;
         }
     }
 }

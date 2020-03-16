@@ -43,6 +43,11 @@ public interface DataProvider {
     }
 
 
+    /**
+     * Get DataProvider name used e.g. in logs
+     *
+     * @return name
+     */
     default String getName() {
         return getClass().getSimpleName();
     }

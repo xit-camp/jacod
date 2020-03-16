@@ -1,8 +1,11 @@
-package camp.xit.jacod;
+package camp.xit.jacod.cache2k;
 
+import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.CodelistNotFoundException;
+import camp.xit.jacod.cache2k.model.InsuranceProduct;
+import camp.xit.jacod.cache2k.model.Title;
+import camp.xit.jacod.cache2k.test.CsvErrorDataProvider;
 import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.provider.csv.CsvErrorDataProvider;
 import java.time.Duration;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,8 +22,9 @@ public class SourceSystemDownTest {
     public void simulatePartialSystemOutage() {
         try {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
-            CodelistClient cl = new CodelistClient.Builder()
+            CodelistClient cl = new Cache2kCodelistClient.Builder()
                     .withDataProvider(dp)
+                    .addScanPackages(InsuranceProduct.class.getPackageName())
                     .withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
 
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);
@@ -46,8 +50,9 @@ public class SourceSystemDownTest {
     public void simulateFatalSystemOutage() {
         try {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
-            CodelistClient cl = new CodelistClient.Builder()
-                    .withPrefetched()
+            CodelistClient cl = new Cache2kCodelistClient.Builder()
+                    .addScanPackages(InsuranceProduct.class.getPackageName())
+                    .withPrefetched() //empty
                     .withDataProvider(dp).withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
             dp.setDown();
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);

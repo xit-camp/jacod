@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.cache2k.expiry.ExpiryTimeValues;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,7 @@ public class SimpleCsvDataProvider implements DataProvider {
 
     @Override
     public Optional<List<EntryData>> readEntries(String entryName, long lastReadTime) {
-        if (ExpiryTimeValues.NEUTRAL == lastReadTime) {
+        if (lastReadTime < 0) {
             return parseCsv(entryName);
         } else {
             throw new CodelistNotChangedException(entryName);

@@ -1,12 +1,21 @@
-package camp.xit.jacod;
+package camp.xit.jacod.spring.cache;
 
+import camp.xit.jacod.jcache.JCacheCodelistClient;
+import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.spring.cache.model.Title;
+import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.Title;
-import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
+import camp.xit.jacod.model.CodelistEntry;
 import java.time.Duration;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.spi.CachingProvider;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +29,15 @@ public class CacheReloadTest {
 
     @Test
     void reloadCache() throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
+        CachingProvider cachingProvider = Caching.getCachingProvider();
+        CacheManager cacheManager = cachingProvider.getCacheManager();
+        MutableConfiguration<String, Codelist<CodelistEntry>> config = new MutableConfiguration<>();
+        Cache<String, Codelist<CodelistEntry>> cache = cacheManager.createCache("reloadCache", config);
+        assertNotNull(cache);
+
+        CodelistClient client = new JCacheCodelistClient.Builder(cache)
                 .withDataProvider(new SimpleCsvDataProvider())
+                .addScanPackages(Title.class.getPackageName())
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -37,6 +53,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
+                .addScanPackages(Title.class.getPackageName())
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

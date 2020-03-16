@@ -8,7 +8,7 @@
     </parent>
 
     <properties>
-        <jjwt.version>0.10.7</jjwt.version>
+        <jjwt.version>0.11.0</jjwt.version>
         <jackson.version>2.10.0</jackson.version>
     </properties>
 
@@ -55,6 +55,12 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
         </dependency>
     </dependencies>
 
