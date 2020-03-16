@@ -4,6 +4,8 @@ import camp.xit.jacod.provider.EntryData;
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
+import static java.util.Optional.empty;
 import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,16 @@ public class MetaGSheetBatchDataProvider extends GSheetBatchDataProvider {
         this.metaSheet = metaSheet;
         this.metadata = readMetadata();
         this.nameColumn = nameColumn;
+    }
+
+
+    @Override
+    public Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
+        Optional<List<EntryData>> result = empty();
+        if (getAllNames().contains(codelist)) {
+            result = super.readEntries(codelist, lastReadTime);
+        }
+        return result;
     }
 
 

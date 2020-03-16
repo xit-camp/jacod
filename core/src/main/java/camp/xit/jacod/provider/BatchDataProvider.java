@@ -49,7 +49,7 @@ public abstract class BatchDataProvider implements DataProvider, Closeable {
 
 
     @Override
-    public final Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
+    public Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
         if (!inTime()) readEntriesBatchInternal();
         return ofNullable(shortTermCache.get(codelist));
     }
