@@ -61,4 +61,9 @@ public class CachedDataProvider implements DataProvider {
             return result;
         };
     }
+
+
+    public void clearCache() {
+        cache.clear();
+    }
 }

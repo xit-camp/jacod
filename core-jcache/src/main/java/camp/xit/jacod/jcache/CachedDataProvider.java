@@ -85,4 +85,9 @@ public class CachedDataProvider implements DataProvider {
             }
         }
     }
+
+
+    public void clearCache() {
+        cache.clear();
+    }
 }

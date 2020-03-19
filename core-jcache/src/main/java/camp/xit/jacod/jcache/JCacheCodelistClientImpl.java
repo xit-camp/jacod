@@ -124,6 +124,10 @@ public class JCacheCodelistClientImpl extends CodelistClientImpl {
 
     @Override
     public void clearCache() {
+        if (provider instanceof CachedDataProvider) {
+            ((CachedDataProvider) provider).clearCache();
+            LOG.info("[{}] Cache of data provider is now empty", providerName);
+        }
         cache.clear();
         LOG.info("[{}] Codelist cache is now empty", providerName);
     }

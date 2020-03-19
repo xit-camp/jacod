@@ -191,7 +191,11 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
 
     @Override
     public void clearCache() {
-        cache.removeAll();
+        if (provider instanceof CachedDataProvider) {
+            ((CachedDataProvider) provider).clearCache();
+            LOG.info("[{}] Cache of data provider is now empty", providerName);
+        }
+        cache.clear();
         LOG.info("[{}] Codelist cache is now empty", providerName);
 
         List<String> ordered = mapper.getSortedDependencies(prefetchedCodelists);

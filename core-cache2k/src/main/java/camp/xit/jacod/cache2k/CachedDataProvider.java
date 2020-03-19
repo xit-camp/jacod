@@ -42,6 +42,11 @@ public class CachedDataProvider implements DataProvider {
     }
 
 
+    public void clearCache() {
+        cache.clear();
+    }
+
+
     @Override
     public Set<String> readAllNames() {
         return provider.readAllNames();
