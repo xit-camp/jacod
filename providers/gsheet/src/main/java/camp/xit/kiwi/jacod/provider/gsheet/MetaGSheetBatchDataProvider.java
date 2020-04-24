@@ -67,7 +67,7 @@ public class MetaGSheetBatchDataProvider extends GSheetBatchDataProvider {
 
 
     @Override
-    public final Set<String> readAllNames() {
+    public final Set<String> getCodelistNames() {
         return getAllNames();
     }
 

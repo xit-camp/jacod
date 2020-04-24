@@ -36,7 +36,7 @@ public class CsvErrorDataProvider extends SimpleCsvDataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         return Collections.emptySet();
     }
 

@@ -63,7 +63,7 @@ public class GSheetDataProvider implements DataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         SpreadSheet spreadSheet = gsheetService.getSpreadSheet(spreadSheetId);
         return spreadSheet.getSheets().stream().map(s -> s.getProperties().getTitle()).collect(toSet());
     }

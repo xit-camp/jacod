@@ -67,7 +67,7 @@ public final class MetaGSheetDataProvider extends GSheetDataProvider {
 
 
     @Override
-    public final Set<String> readAllNames() {
+    public final Set<String> getCodelistNames() {
         return getAllNames();
     }
 

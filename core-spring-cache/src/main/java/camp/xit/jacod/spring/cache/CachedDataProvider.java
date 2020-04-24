@@ -28,8 +28,8 @@ public class CachedDataProvider implements DataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
-        return provider.readAllNames();
+    public Set<String> getCodelistNames() {
+        return provider.getCodelistNames();
     }
 
 

@@ -175,7 +175,7 @@ public interface CodelistClient {
                 throw new IllegalArgumentException("No DataProvider provided!");
             }
             if (prefetchedCodelists == null) {
-                prefetchedCodelists = dataProvider.readAllNames();
+                prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
         }

@@ -92,7 +92,7 @@ public class ProxyDataProvider implements DataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         Set<String> result = emptySet();
         try {
             JsonNode node = readData(baseUrl);

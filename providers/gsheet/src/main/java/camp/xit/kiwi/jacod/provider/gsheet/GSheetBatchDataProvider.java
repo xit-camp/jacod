@@ -71,7 +71,7 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         SpreadSheet spreadSheet = gsheetService.getSpreadSheet(spreadSheetId);
         return spreadSheet.getSheets().stream().map(s -> s.getProperties().getTitle()).collect(toSet());
     }
@@ -79,7 +79,7 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
 
     @Override
     protected Map<String, List<EntryData>> readEntriesBatch() {
-        ValueRanges ranges = gsheetService.getValuesBatch(spreadSheetId, readAllNames());
+        ValueRanges ranges = gsheetService.getValuesBatch(spreadSheetId, getCodelistNames());
         Map<String, List<EntryData>> result = new HashMap();
         for (RangeValue range : ranges.getValueRanges()) {
             result.put(getNameFromRange(range.getRange()), EntryParser.parse(range));

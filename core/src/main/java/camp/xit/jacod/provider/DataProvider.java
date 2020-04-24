@@ -27,7 +27,7 @@ public interface DataProvider {
      *
      * @return zoznam všetkých číselníkov
      */
-    default Set<String> readAllNames() {
+    default Set<String> getCodelistNames() {
         return Collections.emptySet();
     }
 

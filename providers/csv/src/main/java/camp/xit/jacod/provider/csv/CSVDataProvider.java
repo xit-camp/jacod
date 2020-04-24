@@ -30,21 +30,21 @@ public class CSVDataProvider implements DataProvider {
     public CSVDataProvider(Path csvDirectory) {
         this.path = csvDirectory;
         this.parserSettings = new CsvParserSettings();
-        this.codelistNames = getCodelistNames();
+        this.codelistNames = readCodelistNames();
     }
 
 
     public CSVDataProvider(String csvDirectory) {
         this.path = Paths.get(csvDirectory);
         this.parserSettings = new CsvParserSettings();
-        this.codelistNames = getCodelistNames();
+        this.codelistNames = readCodelistNames();
     }
 
 
     public CSVDataProvider(String csvDirectory, CsvParserSettings parserSettings) {
         path = Paths.get(csvDirectory);
         this.parserSettings = parserSettings;
-        this.codelistNames = getCodelistNames();
+        this.codelistNames = readCodelistNames();
     }
 
 
@@ -83,12 +83,12 @@ public class CSVDataProvider implements DataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         return codelistNames;
     }
 
 
-    private Set<String> getCodelistNames() {
+    private Set<String> readCodelistNames() {
         File[] files = path.toFile().listFiles(f -> f.getName().endsWith(".csv"));
         return files == null ? emptySet() : Stream.of(files).map(f -> stripExtention(f)).collect(toSet());
     }

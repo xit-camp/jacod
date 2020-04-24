@@ -19,7 +19,7 @@ public class Cache2kCodelistClient {
                 throw new IllegalArgumentException("No DataProvider provided!");
             }
             if (prefetchedCodelists == null) {
-                prefetchedCodelists = dataProvider.readAllNames();
+                prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new Cache2kCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
                     whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);

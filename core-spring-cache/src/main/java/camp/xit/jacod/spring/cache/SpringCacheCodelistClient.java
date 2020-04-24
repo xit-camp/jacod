@@ -27,7 +27,7 @@ public class SpringCacheCodelistClient {
                 throw new IllegalArgumentException("No Spring Cache provided!");
             }
             if (prefetchedCodelists == null) {
-                prefetchedCodelists = dataProvider.readAllNames();
+                prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new SpringCacheCodelistClientImpl(dataProvider, cache, prefetchedCodelists,
                     whitelistPackages, shallowReferences, reloadDependencies);

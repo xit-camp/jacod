@@ -31,7 +31,7 @@ public class SimpleCsvDataProvider implements DataProvider {
 
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         return Collections.emptySet();
     }
 

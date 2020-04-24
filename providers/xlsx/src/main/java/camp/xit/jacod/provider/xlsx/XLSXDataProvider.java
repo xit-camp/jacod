@@ -84,7 +84,7 @@ public class XLSXDataProvider implements DataProvider, Closeable {
     }
 
     @Override
-    public Set<String> readAllNames() {
+    public Set<String> getCodelistNames() {
         Set<String> sheets = new HashSet<>();
         workbook.forEach(sheet -> sheets.add(sheet.getSheetName()));
         return sheets;

@@ -31,7 +31,7 @@ public class JCacheCodelistClient {
                 throw new IllegalArgumentException("No JCache provided!");
             }
             if (prefetchedCodelists == null) {
-                prefetchedCodelists = dataProvider.readAllNames();
+                prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new JCacheCodelistClientImpl(dataProvider, cache, expiryTime, prefetchedCodelists,
                     whitelistPackages, shallowReferences, reloadDependencies);
