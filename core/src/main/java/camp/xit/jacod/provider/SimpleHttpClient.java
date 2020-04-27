@@ -89,7 +89,6 @@ public final class SimpleHttpClient {
                 }
             }
         }
-
         return instance;
     }
 }
