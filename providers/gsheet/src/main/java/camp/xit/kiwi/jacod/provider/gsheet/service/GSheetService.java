@@ -1,6 +1,6 @@
 package camp.xit.kiwi.jacod.provider.gsheet.service;
 
-import camp.xit.kiwi.jacod.provider.gsheet.jwt.GoogleCredentials;
+import camp.xit.google.api.serviceaccount.GoogleCredentials;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.File;
@@ -152,15 +152,15 @@ public class GSheetService {
             switch (status) {
                 case 200:
                     try (InputStream in = response.body()) {
-                        return jsonMapper.readValue(in, objClass);
-                    }
+                    return jsonMapper.readValue(in, objClass);
+                }
                 case 404:
                     throw new NotFoundException("Requested data not found! URI: " + request.uri());
                 default:
                     try (InputStream in = response.body()) {
-                        String content = consumeContent(in);
-                        throw new GoogleApiException(content, response.statusCode());
-                    }
+                    String content = consumeContent(in);
+                    throw new GoogleApiException(content, response.statusCode());
+                }
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Unexpected error!", e);
