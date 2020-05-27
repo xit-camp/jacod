@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>camp.xit.google</groupId>
-            <artifactId>google-api-service-account</artifactId>
+            <artifactId>google-api-credentials</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
