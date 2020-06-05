@@ -4,7 +4,7 @@
     <parent>
         <groupId>camp.xit.jacod</groupId>
         <artifactId>jacod</artifactId>
-        <version>1.2</version>
+        <version>1.2.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>jacod-core-cache2k</artifactId>
