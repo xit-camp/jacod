@@ -1,5 +1,7 @@
 package camp.xit.jacod.entry;
 
+import java.util.List;
+
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 
@@ -23,6 +25,15 @@ public interface EntryGroup<T extends CodelistEntry> {
      * @return
      */
     Codelist<T> getEntries(Codelist<T> entries, boolean validOnly);
+    
+    /**
+     * Vráti zoznam ID (bp kód alebo kód skupiny) entries 
+     * 
+     * @param entries
+     * @param validOnly
+     * @return
+     */
+    List<String> getEntriesLazy(Codelist<T> entries, boolean validOnly);
 
 
     public static <T extends CodelistEntry> Codelist<T> getEntries(EntryGroup<T> group, Codelist<T> entries, boolean validOnly) {

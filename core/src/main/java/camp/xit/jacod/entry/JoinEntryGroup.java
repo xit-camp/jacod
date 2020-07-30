@@ -3,7 +3,9 @@ package camp.xit.jacod.entry;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JoinEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 
@@ -26,6 +28,18 @@ public class JoinEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
         return entryGroups.parallelStream()
                 .flatMap(e -> e.getEntries(entries).stream(validOnly))
                 .collect(Codelist.collect(entries.getName()));
+    }
+    
+    public List<String> getEntriesLazy(Codelist<T> entries, boolean validOnly) {
+        return entryGroups.parallelStream()
+                .map(item -> {
+                    if (item instanceof QueryEntryGroup) {
+                        return Arrays.asList(((QueryEntryGroup)item).getObjectId());
+                    }
+                    return item.getEntriesLazy(entries, validOnly);
+                })
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
     }
 
 
