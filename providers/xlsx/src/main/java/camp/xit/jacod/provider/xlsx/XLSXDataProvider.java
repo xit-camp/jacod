@@ -122,12 +122,10 @@ public class XLSXDataProvider implements DataProvider, Closeable {
     }
 
     private XSSFWorkbook loadResource(String resource) {
-        XSSFWorkbook result;
         try (InputStream in = XLSXDataProvider.class.getResourceAsStream(resource)) {
-            result = getWorkbook(in);
+            return getWorkbook(in);
         } catch (IOException e) {
             throw new IllegalArgumentException("Can't load xlsx workbook", e);
         }
-        return result;
     }
 }
