@@ -6,8 +6,6 @@ import camp.xit.jacod.entry.parser.ast.Expression;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 
@@ -27,7 +25,7 @@ public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
             }
         }
     }
-    
+
     public QueryEntryGroup(String objectId, Class<T> entryClass, String query) {
         this(entryClass, query);
         this.objectId = objectId;
@@ -38,12 +36,7 @@ public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
     public Codelist<T> getEntries(Codelist<T> entries, boolean validOnly) {
         return entries.parallelStream(validOnly).filter(e -> expression.filter(e)).collect(Codelist.collect(entries.getName()));
     }
-    
-    @Override
-    public List<String> getEntriesLazy(Codelist<T> entries, boolean validOnly) {
-        return new ArrayList<String>();
-    }
-    
+
     public String getObjectId() {
         return objectId;
     }
