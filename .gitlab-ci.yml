@@ -4,7 +4,7 @@ cache:
     - .m2/repository/
 
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_OPTS: '-Dmaven.repo.local=.m2/repository'
 
 stages:
   - build
@@ -19,8 +19,8 @@ build:
   artifacts:
     reports:
       junit:
-        - **/target/surefire-reports/TEST-*.xml
-        - **/target/failsafe-reports/TEST-*.xml
+        - '**/target/surefire-reports/TEST-*.xml'
+        - '**/target/failsafe-reports/TEST-*.xml'
 
 include:
   - project: 'xit/common/ci-scripts'
