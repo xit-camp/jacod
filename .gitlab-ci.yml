@@ -16,6 +16,11 @@ build:
     - maven3-jdk11
   script:
     - mvn -U -B clean install -DskipITs
+  artifacts:
+    reports:
+      junit:
+        - **/target/surefire-reports/TEST-*.xml
+        - **/target/failsafe-reports/TEST-*.xml
 
 include:
   - project: 'xit/common/ci-scripts'
