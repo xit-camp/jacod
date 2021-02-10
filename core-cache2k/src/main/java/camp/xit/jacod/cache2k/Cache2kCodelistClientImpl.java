@@ -46,11 +46,11 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {
         }
                 .expireAfterWrite(expiryTime.toMillis(), TimeUnit.MILLISECONDS)
-                .resilienceDuration(1, TimeUnit.MINUTES)
+                // TODO: implement this
+                // .resilienceDuration(1, TimeUnit.MINUTES)
                 .refreshAhead(true)
                 .keepDataAfterExpired(true)
                 .loader(getLoader())
-                .enableJmx(true)
                 .exceptionPropagator(new CodelistExceptionPropagator());
 
         if (reloadReferences) {
