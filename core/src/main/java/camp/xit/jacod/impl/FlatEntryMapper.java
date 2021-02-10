@@ -113,66 +113,65 @@ public class FlatEntryMapper {
 
         Object result = null;
 
-        if (values != null) {
-            boolean collection = EntryMetadata.isCollection(field);
+        boolean collection = EntryMetadata.isCollection(field);
 
-            if (collection && values != null && values.size() == 1) {
-                String[] valuesArray = values.iterator().next().split(",");
-                values = Arrays.stream(valuesArray).map(v -> v.trim()).collect(Collectors.toList());
+        if (collection && values != null && values.size() == 1) {
+            String[] valuesArray = values.iterator().next().split(",");
+            values = Arrays.stream(valuesArray).map(v -> v.trim()).collect(Collectors.toList());
+        }
+
+        boolean notNull = field.isAnnotationPresent(NotNull.class);
+
+        if (!collection) {
+            int valuesCount = values != null ? values.size() : 0;
+            Optional<String> strValue = valuesCount == 1 ? Optional.of(values.iterator().next()) : Optional.empty();
+            if (notNull) {
+                String defaultValue = field.getAnnotation(NotNull.class).defaultValue();
+                strValue = strValue.or(() -> Optional.ofNullable(defaultValue.isEmpty() ? null : defaultValue));
             }
-
-            boolean notNull = field.isAnnotationPresent(NotNull.class);
-
-            if (!collection) {
-                Optional<String> strValue = values.size() == 1 ? Optional.of(values.iterator().next()) : Optional.empty();
-                if (notNull) {
-                    String defaultValue = field.getAnnotation(NotNull.class).defaultValue();
-                    strValue = strValue.or(() -> Optional.ofNullable(defaultValue.isEmpty() ? null : defaultValue));
-                }
-                // check for not null field
-                if (notNull && !strValue.isPresent()) {
-                    String fld = field.getName();
-                    String cls = metadata.getCodelistName();
-                    throw new InvalidEntryException("Value of field " + cls + "." + fld
-                            + " cannot be empty! Mapped from: " + mapping.getMappedField() + " | Data: " + data);
-                }
-                try {
-                    if (strValue.isPresent() && isSimpleType(type)) {
-                        result = parseSimpleValue(strValue.get(), type);
-                    } else if (strValue.isPresent() && CodelistEntry.class.isAssignableFrom(type)) {
-                        result = strValue.get();
-                    } else if (Enum.class.isAssignableFrom(type)) {
-                        if (strValue.isPresent() && !strValue.get().isEmpty()) {
-                            try {
-                                result = Enum.valueOf((Class<? extends Enum>) type, strValue.get());
-                            } catch (IllegalArgumentException e) {
-                                LOG.warn("Cannot map enum value " + strValue + " of " + type.getName(), e);
-                            }
+            // check for not null field
+            if (notNull && !strValue.isPresent()) {
+                String fld = field.getName();
+                String cls = metadata.getCodelistName();
+                throw new InvalidEntryException("Value of field " + cls + "." + fld
+                        + " cannot be empty! Mapped from: " + mapping.getMappedField() + " | Data: " + data);
+            }
+            try {
+                if (strValue.isPresent() && isSimpleType(type)) {
+                    result = parseSimpleValue(strValue.get(), type);
+                } else if (strValue.isPresent() && CodelistEntry.class.isAssignableFrom(type)) {
+                    result = strValue.get();
+                } else if (Enum.class.isAssignableFrom(type)) {
+                    if (strValue.isPresent() && !strValue.get().isEmpty()) {
+                        try {
+                            result = Enum.valueOf((Class<? extends Enum>) type, strValue.get());
+                        } catch (IllegalArgumentException e) {
+                            LOG.warn("Cannot map enum value " + strValue + " of " + type.getName(), e);
                         }
-                    } else if (strValue.isPresent() && String.class.isAssignableFrom(type)) {
-                        result = strValue.get();
-                    } else if (type.isAnnotationPresent(Embeddable.class)) {
-                        EntryMetadata fm = metadata.getEmbeddedFor(field);
-                        mapToEmbeddedFlat(type, mappedField, providerClass, fm, data, resultData);
-                    } else if (strValue.isPresent()) {
-                        throw new RuntimeException("Cannot map value. Invalid property type " + type.getName()
-                                + " for " + metadata.getCodelistName() + "." + field.getName());
                     }
-                } catch (NumberFormatException | DateTimeParseException e) {
-                    String msg = "Cannot map value " + strValue + " to " + type.getName();
-                    LOG.warn(msg, e);
-                    throw new IllegalArgumentException(msg, e);
-                }
-            } else { // Collection
-                Class<?> refType = getReferenceType(field);
-                if (refType.isAnnotationPresent(Embeddable.class)) {
+                } else if (strValue.isPresent() && String.class.isAssignableFrom(type)) {
+                    result = strValue.get();
+                } else if (type.isAnnotationPresent(Embeddable.class)) {
                     EntryMetadata fm = metadata.getEmbeddedFor(field);
-                    mapToEmbeddedListFlat(refType, mapping.getMappedField(), providerClass, fm, data, resultData);
-                } else if (CodelistEntry.class.isAssignableFrom(refType)) {
-                    result = values;
-                } else {
-                    result = parseCollectionOfSimple(values, refType);
+                    mapToEmbeddedFlat(type, mappedField, providerClass, fm, data, resultData);
+                } else if (strValue.isPresent()) {
+                    throw new RuntimeException("Cannot map value. Invalid property type " + type.getName()
+                            + " for " + metadata.getCodelistName() + "." + field.getName());
                 }
+            } catch (NumberFormatException | DateTimeParseException e) {
+                String msg = "Cannot map value " + strValue + " to " + type.getName();
+                LOG.warn(msg, e);
+                throw new IllegalArgumentException(msg, e);
+            }
+        } else { // Collection
+            Class<?> refType = getReferenceType(field);
+            if (refType.isAnnotationPresent(Embeddable.class)) {
+                EntryMetadata fm = metadata.getEmbeddedFor(field);
+                mapToEmbeddedListFlat(refType, mapping.getMappedField(), providerClass, fm, data, resultData);
+            } else if (CodelistEntry.class.isAssignableFrom(refType)) {
+                result = values;
+            } else if (values != null) {
+                result = parseCollectionOfSimple(values, refType);
             }
         }
         return result;

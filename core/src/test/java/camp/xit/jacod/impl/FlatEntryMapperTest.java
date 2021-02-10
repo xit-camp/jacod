@@ -34,5 +34,7 @@ public class FlatEntryMapperTest {
         assertThat(flatData, not(hasKey("allowedBonusesBonusType")));
         assertThat(flatData, not(hasKey("allowedBonusesValidTo")));
         assertThat(flatData, not(hasKey("allowedBonusesValidFrom")));
+        assertThat(flatData, hasKey("businessAddressStreet"));
+        assertThat(flatData, hasKey("businessAddressZipCode"));
     }
 }
