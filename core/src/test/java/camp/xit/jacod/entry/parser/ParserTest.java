@@ -38,6 +38,15 @@ public class ParserTest {
 
 
     @Test
+    public void nullExpression() throws Exception {
+        StringReader reader = new StringReader("order is empty");
+        Parser parser = new Parser(reader);
+        Expression expr = parser.parse(BusinessPlace.class);
+        assertNotNull(expr);
+    }
+
+
+    @Test
     public void compileError() throws Exception {
         try {
             StringReader reader = new StringReader("compana = \"NAY\" & (code = \"XCODE\" | code = \"HEY\")");
