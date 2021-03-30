@@ -37,6 +37,14 @@ public class QueryEntryGroupTest {
     public void nullValues(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order > 10");
         Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
-        assertThat(filtered.size(), greaterThan(0));
+        assertThat(filtered.size(), is(4));
+    }
+
+
+    @Test
+    public void nullExpression(@CsvClient CodelistClient client) throws Exception {
+        EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order is empty");
+        Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
+        assertThat(filtered.size(), is(1));
     }
 }
