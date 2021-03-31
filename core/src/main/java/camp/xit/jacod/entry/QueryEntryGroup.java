@@ -11,6 +11,7 @@ public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 
     private final String query;
     private Expression expression;
+    private String objectId;
 
 
     public QueryEntryGroup(Class<T> entryClass, String query) {
@@ -25,10 +26,19 @@ public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
         }
     }
 
+    public QueryEntryGroup(String objectId, Class<T> entryClass, String query) {
+        this(entryClass, query);
+        this.objectId = objectId;
+    }
+
 
     @Override
     public Codelist<T> getEntries(Codelist<T> entries, boolean validOnly) {
         return entries.parallelStream(validOnly).filter(e -> expression.filter(e)).collect(Codelist.collect(entries.getName()));
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 
 
@@ -39,6 +49,6 @@ public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 
     @Override
     public String toString() {
-        return "QueryEntryGroup{" + "query=" + query + '}';
+        return "QueryEntryGroup{" + "query=" + query  + ";objectId=" + objectId + "}";
     }
 }

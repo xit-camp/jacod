@@ -18,10 +18,10 @@ public class Constant extends Expression {
 
     public String getValue() {
         switch (kind) {
-            case ParserConstants.STRING_LITERAL:
-                return value.substring(1, value.length() - 1);
-            default:
-                return value;
+        case ParserConstants.STRING_LITERAL:
+            return value.substring(1, value.length() - 1);
+        default:
+            return value;
         }
     }
 

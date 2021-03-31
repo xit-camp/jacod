@@ -10,6 +10,10 @@
     <artifactId>jacod-core-cache2k</artifactId>
     <packaging>bundle</packaging>
 
+    <properties>
+        <cache2k.version>2.0.0.Final</cache2k.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>camp.xit.jacod</groupId>
@@ -17,9 +21,19 @@
         </dependency>
         <dependency>
             <groupId>org.cache2k</groupId>
-            <artifactId>cache2k-base-bom</artifactId>
-            <version>1.4.1.Final</version>
-            <type>pom</type>
+            <artifactId>cache2k-api</artifactId>
+            <version>${cache2k.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cache2k</groupId>
+            <artifactId>cache2k-core</artifactId>
+            <version>${cache2k.version}</version>
+            <!--<scope>runtime</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.cache2k</groupId>
+            <artifactId>cache2k-addon</artifactId>
+            <version>${cache2k.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

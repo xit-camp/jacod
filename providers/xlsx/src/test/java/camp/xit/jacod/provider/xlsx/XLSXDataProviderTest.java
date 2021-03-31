@@ -1,6 +1,5 @@
 package camp.xit.jacod.provider.xlsx;
 
-import camp.xit.jacod.provider.xlsx.XLSXDataProvider;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.model.Title;
 import camp.xit.jacod.CodelistClient;
@@ -61,5 +60,5 @@ public class XLSXDataProviderTest {
 
     private XLSXDataProvider getProvider() {
         return new XLSXDataProvider("/codelists.xlsx");
+        }
     }
-}

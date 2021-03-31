@@ -32,11 +32,11 @@ public class CachedDataProvider implements DataProvider {
         Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Optional<List<EntryData>>>>() {
         }
                 .expireAfterWrite(expiryTimeout.toMillis(), TimeUnit.MILLISECONDS)
-                .resilienceDuration(1, TimeUnit.MINUTES)
+                // TODO: implement this
+                // .resilienceDuration(1, TimeUnit.MINUTES)
                 .refreshAhead(true)
                 .keepDataAfterExpired(true)
                 .loader(getLoader())
-                .enableJmx(true)
                 .exceptionPropagator(new CodelistExceptionPropagator());
         this.cache = cacheBuilder.build();
     }

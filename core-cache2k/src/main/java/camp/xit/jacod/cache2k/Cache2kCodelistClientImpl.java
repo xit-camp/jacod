@@ -14,11 +14,11 @@ import java.util.concurrent.TimeUnit;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.cache2k.CacheEntry;
-import org.cache2k.CacheOperationCompletionListener;
+import org.cache2k.addon.UniversalResiliencePolicy;
 import org.cache2k.event.CacheEntryUpdatedListener;
 import org.cache2k.expiry.ExpiryTimeValues;
 import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
-import org.cache2k.integration.AdvancedCacheLoader;
+import org.cache2k.io.AdvancedCacheLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,11 +46,12 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         Cache2kBuilder cacheBuilder = new Cache2kBuilder<String, Tuple<Codelist<CodelistEntry>>>() {
         }
                 .expireAfterWrite(expiryTime.toMillis(), TimeUnit.MILLISECONDS)
-                .resilienceDuration(1, TimeUnit.MINUTES)
+                // TODO: implement this
+                // .resilienceDuration(1, TimeUnit.MINUTES)
+                .setup(UniversalResiliencePolicy::enable)
                 .refreshAhead(true)
                 .keepDataAfterExpired(true)
                 .loader(getLoader())
-                .enableJmx(true)
                 .exceptionPropagator(new CodelistExceptionPropagator());
 
         if (reloadReferences) {
@@ -62,15 +63,10 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         List<String> orderedPrefetched = mapper.getSortedDependencies(prefetchedCodelists);
         LOG.debug("Prefetching codelists: " + orderedPrefetched);
         // Do not use prefetchAll method while it stops prefetching on first cache access
-        cache.loadAll(orderedPrefetched, new CacheOperationCompletionListener() {
-            @Override
-            public void onCompleted() {
+        cache.loadAll(orderedPrefetched).whenComplete((f, e) -> {
+            if (e == null) {
                 LOG.info("[{}] All prefetched codelists loaded", providerName);
-            }
-
-
-            @Override
-            public void onException(Throwable e) {
+            } else {
                 LOG.warn("[" + providerName + "] Cannot prefetch codelists data", e);
             }
         });
@@ -164,15 +160,10 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         cache.removeAll(usages);
         Set<String> toLoad = new HashSet<>(usages);
         toLoad.retainAll(getCacheKeys());
-        cache.loadAll(toLoad, new CacheOperationCompletionListener() {
-            @Override
-            public void onCompleted() {
+        cache.loadAll(toLoad).whenComplete((f, e) -> {
+            if (e == null) {
                 LOG.info("[{}] Usages successfully reload for {}", providerName, codelist);
-            }
-
-
-            @Override
-            public void onException(Throwable e) {
+            } else {
                 LOG.warn("[" + providerName + "] Error while realoading usages of " + codelist, e);
             }
         });
@@ -185,7 +176,7 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         Collection<String> deps = entryClass.map(cl -> mapper.getAllDependencies(cl)).orElse(Collections.singleton(codelist));
         LOG.info("[{}] Reloading codelist {} dependencies: {}", providerName, codelist, deps);
         cache.removeAll(deps);
-        cache.loadAll(Collections.singleton(codelist), null);
+        cache.loadAll(Collections.singleton(codelist));
     }
 
 
@@ -199,15 +190,10 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
         LOG.info("[{}] Codelist cache is now empty", providerName);
 
         List<String> ordered = mapper.getSortedDependencies(prefetchedCodelists);
-        cache.loadAll(ordered, new CacheOperationCompletionListener() {
-            @Override
-            public void onCompleted() {
+        cache.loadAll(ordered).whenComplete((f, e) -> {
+            if (e == null) {
                 LOG.info("[{}] All codelists reloaded", providerName);
-            }
-
-
-            @Override
-            public void onException(Throwable e) {
+            } else {
                 LOG.warn("[" + providerName + "] Cannot prefetch codelists data", e);
             }
         });

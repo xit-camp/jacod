@@ -9,17 +9,18 @@ public class JoinEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 
     private final List<EntryGroup<T>> entryGroups;
 
-
     public JoinEntryGroup(List<EntryGroup<T>> entryGroups) {
         this.entryGroups = entryGroups;
     }
-
 
     public JoinEntryGroup(List<? extends EntryGroup<T>> groups, EnumeratedEntryGroup<T> enumerated) {
         this.entryGroups = new ArrayList<>(groups);
         this.entryGroups.add(enumerated);
     }
 
+    public List<EntryGroup<T>> getEntryGroups() {
+        return entryGroups;
+    }
 
     @Override
     public Codelist<T> getEntries(Codelist<T> entries, boolean validOnly) {
@@ -27,7 +28,6 @@ public class JoinEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
                 .flatMap(e -> e.getEntries(entries).stream(validOnly))
                 .collect(Codelist.collect(entries.getName()));
     }
-
 
     @Override
     public String toString() {
