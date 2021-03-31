@@ -114,6 +114,7 @@ public class XLSXDataProvider implements DataProvider, Closeable {
     @Override
     public void close() throws IOException {
         this.workbook.close();
+        this.workbook = null;
     }
 
     @Override
@@ -122,12 +123,10 @@ public class XLSXDataProvider implements DataProvider, Closeable {
     }
 
     private XSSFWorkbook loadResource(String resource) {
-        XSSFWorkbook result;
         try (InputStream in = XLSXDataProvider.class.getResourceAsStream(resource)) {
-            result = getWorkbook(in);
+            return new XSSFWorkbook(in);
         } catch (IOException e) {
             throw new IllegalArgumentException("Can't load xlsx workbook", e);
         }
-        return result;
     }
 }

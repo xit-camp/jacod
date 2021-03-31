@@ -27,6 +27,8 @@ TOKEN: {
 |
   <EQUALS: "="> | <NOT_EQUALS: "!="> | <GT: ">"> | <LT: "<"> | <GTE: ">="> | <LTE: "<="> | <MATCH: "~=">
 |
+  <IS_EMPTY: "is empty">
+|
   <AND: "&"> | <OR: "|">
 |
   <OPEN_PAR: "("> | <CLOSE_PAR: ")">
@@ -74,7 +76,31 @@ Expression andExpression(Class<?> clazz) :
     { return result; }
 }
 
-Condition condition(Class<?> clazz) : { Property p; Constant v; int cmp; } { p = property(clazz) cmp = compare() v = value(clazz) { return new Condition(clazz, p, v, cmp); } }
+UniCondition uniCondition(Class<?> clazz) : { Property p; int cmp; } { p = property(clazz) cmp = uniCompare() { return new UniCondition(clazz, p, cmp); } }
+
+BiCondition biCondition(Class<?> clazz) : { Property p; Constant v; int cmp; } { p = property(clazz) cmp = compare() v = value(clazz) { return new BiCondition(clazz, p, v, cmp); } }
+
+
+Condition condition(Class<?> clazz) :
+{
+    Property p; Constant v; int cmp; Condition cond;
+} {
+    (
+        p = property(clazz)
+        (
+            cmp = uniCompare() { cond = new UniCondition(clazz, p, cmp); }
+            |
+            cmp = compare() v = value(clazz) { cond = new BiCondition(clazz, p, v, cmp); }
+        )
+    )
+    { return cond; }
+}
+
+
+
+
+
+int uniCompare() : { Token t; } { ( t=<IS_EMPTY> ) { return t.kind; } }
 
 int compare() : { Token t; } { ( t=<EQUALS> | t=<NOT_EQUALS> | t=<GT> | t=<LT> | t=<GTE> | t=<LTE> | t=<MATCH> ) { return t.kind; } }
 

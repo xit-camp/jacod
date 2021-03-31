@@ -8,7 +8,6 @@ import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.greaterThan;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -37,6 +36,14 @@ public class QueryEntryGroupTest {
     public void nullValues(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order > 10");
         Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
-        assertThat(filtered.size(), greaterThan(0));
+        assertThat(filtered.size(), is(4));
+    }
+
+
+    @Test
+    public void nullExpression(@CsvClient CodelistClient client) throws Exception {
+        EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order is empty");
+        Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
+        assertThat(filtered.size(), is(1));
     }
 }
