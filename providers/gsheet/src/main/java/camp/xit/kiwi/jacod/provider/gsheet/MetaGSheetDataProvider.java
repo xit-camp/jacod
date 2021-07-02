@@ -7,9 +7,7 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 import java.util.Set;
 import static java.util.stream.Collectors.toSet;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public final class MetaGSheetDataProvider extends GSheetDataProvider {
 
     private static final String DEFAULT_META_SHEET = "Codelists";

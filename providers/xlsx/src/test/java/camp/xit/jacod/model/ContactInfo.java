@@ -2,18 +2,8 @@ package camp.xit.jacod.model;
 
 import camp.xit.jacod.Embeddable;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Embeddable
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class ContactInfo {
 
     /**
@@ -52,5 +42,41 @@ public class ContactInfo {
     @Deprecated
     public String getTelephone() {
         return telephones != null && !telephones.isEmpty() ? telephones.get(0) : null;
+    }
+
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
+    }
+
+
+    public List<String> getMobiles() {
+        return mobiles;
+    }
+
+
+    public void setMobiles(List<String> mobiles) {
+        this.mobiles = mobiles;
+    }
+
+
+    public List<String> getTelephones() {
+        return telephones;
+    }
+
+
+    public void setTelephones(List<String> telephones) {
+        this.telephones = telephones;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ContactInfo{" + "emails=" + emails + ", mobiles=" + mobiles + ", telephones=" + telephones + '}';
     }
 }

@@ -1,13 +1,19 @@
 package camp.xit.jacod.model;
 
 import camp.xit.jacod.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
 
 @Embeddable
-@Getter
-@Setter
 class LegalSubject {
 
     private String name;
+
+
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

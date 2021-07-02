@@ -35,13 +35,6 @@
             <artifactId>cache2k-addon</artifactId>
             <version>${cache2k.version}</version>
         </dependency>
-
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

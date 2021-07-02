@@ -16,10 +16,6 @@
             <artifactId>jacod-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>camp.xit.google</groupId>
             <artifactId>google-api-credentials</artifactId>
             <version>1.1</version>

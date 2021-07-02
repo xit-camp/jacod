@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import static java.util.stream.Collectors.toSet;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class GSheetBatchDataProvider extends BatchDataProvider {
 
     protected final GSheetService gsheetService;

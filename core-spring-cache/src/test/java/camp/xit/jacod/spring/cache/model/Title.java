@@ -2,13 +2,7 @@ package camp.xit.jacod.spring.cache.model;
 
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString(callSuper = true)
 public class Title extends CodelistEntry {
 
     public enum Position {
@@ -30,4 +24,21 @@ public class Title extends CodelistEntry {
     public Title(CodelistEnum<Title> codeEnum) {
         super(codeEnum.toString());
     }
+
+
+    public Position getPosition() {
+        return position;
+    }
+
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Title{" + super.toStringAttrs() + ", position=" + position + '}';
+    }
+
 }
