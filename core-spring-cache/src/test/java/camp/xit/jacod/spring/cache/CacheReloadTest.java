@@ -29,7 +29,7 @@ public class CacheReloadTest {
 
         CodelistClient client = new SpringCacheCodelistClient.Builder(cacheManager.getCache("reloadCache"))
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withPrefetched("Title").build();
 
         Codelist<Title> titles = client.getCodelist(Title.class);
@@ -44,7 +44,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

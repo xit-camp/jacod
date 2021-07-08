@@ -2,6 +2,7 @@ package camp.xit.jacod.cache2k;
 
 import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.impl.CodelistClientImpl;
+import camp.xit.jacod.impl.MappersReg;
 import camp.xit.jacod.impl.ShallowRefProvider;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
@@ -36,9 +37,9 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
 
 
     public Cache2kCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
-            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences, boolean reloadDependencies) {
+            MappersReg mappersReg, boolean shallowReferences, boolean reloadReferences, boolean reloadDependencies) {
 
-        super(provider, whitelistPackages, shallowReferences);
+        super(provider, mappersReg, shallowReferences);
 
         this.prefetchedCodelists = prefetchedCodelists;
         this.reloadDependencies = reloadDependencies;

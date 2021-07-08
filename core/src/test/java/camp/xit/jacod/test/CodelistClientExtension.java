@@ -1,6 +1,12 @@
 package camp.xit.jacod.test;
 
 import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.model.BonusType;
+import camp.xit.jacod.model.BusinessPlace;
+import camp.xit.jacod.model.ContractState;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.PaymentDeferment;
+import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import java.lang.annotation.ElementType;
@@ -18,12 +24,12 @@ public class CodelistClientExtension implements ParameterResolver {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
-    public @interface FullScanCsvClient {
+    public @interface CsvClient {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
-    public @interface CsvClient {
+    public @interface ShallowCsvClient {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -35,7 +41,7 @@ public class CodelistClientExtension implements ParameterResolver {
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         return parameterContext.isAnnotated(CsvClient.class)
-                | parameterContext.isAnnotated(FullScanCsvClient.class)
+                | parameterContext.isAnnotated(ShallowCsvClient.class)
                 | parameterContext.isAnnotated(CsvDP.class);
     }
 
@@ -51,12 +57,12 @@ public class CodelistClientExtension implements ParameterResolver {
 
         Object result = null;
         if (CodelistClient.class.isAssignableFrom(type)) {
-            if (parameter.isAnnotationPresent(FullScanCsvClient.class)) {
+            if (parameter.isAnnotationPresent(CsvClient.class)) {
                 result = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                        .getOrComputeIfAbsent("FullCsvClient", key -> getCsvClient(true), CodelistClient.class);
-            } else if (parameter.isAnnotationPresent(CsvClient.class)) {
+                        .getOrComputeIfAbsent("CsvClient", key -> getCsvClient(false), CodelistClient.class);
+            } else if (parameter.isAnnotationPresent(ShallowCsvClient.class)) {
                 result = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                        .getOrComputeIfAbsent("BaseCsvClient", key -> getCsvClient(false), CodelistClient.class);
+                        .getOrComputeIfAbsent("ShallowCsvClient", key -> getCsvClient(true), CodelistClient.class);
             }
         } else if (DataProvider.class.isAssignableFrom(type)) {
             if (parameter.isAnnotationPresent(CsvDP.class)) {
@@ -73,10 +79,16 @@ public class CodelistClientExtension implements ParameterResolver {
     }
 
 
-    private CodelistClient getCsvClient(boolean fullScan) {
+    private CodelistClient getCsvClient(boolean shallow) {
         DataProvider provider = new SimpleCsvDataProvider();
-        CodelistClient.Builder builder = new CodelistClient.Builder().withDataProvider(provider);
-        if (fullScan) builder.scanFullClasspath();
+        CodelistClient.Builder builder = new CodelistClient.Builder()
+                .withDataProvider(provider)
+                .disableMappers()
+                .codelists(BonusType.class, BusinessPlace.class, ContractState.class, InsuranceProduct.class,
+                        Title.class, PaymentDeferment.class);
+
+        if (shallow) builder.shallowReferences();
+
         return builder.build();
     }
 }

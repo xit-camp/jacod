@@ -4,7 +4,13 @@ import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.cache2k.model.Title;
 import camp.xit.jacod.cache2k.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,10 +26,16 @@ public class CacheReloadTest {
 
 
     @Test
+    void reloadFiles() throws IOException {
+        System.out.println("URLS: " + loadResources("META-INF/codelist-mappers", null));
+    }
+
+
+    @Test
     void reloadCache() throws Exception {
         CodelistClient client = new Cache2kCodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -39,7 +51,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();
@@ -47,5 +59,16 @@ public class CacheReloadTest {
         Thread.sleep(WAIT_TIME * 1000);
         Title dr2 = client.getCodelist(Title.class).getEntry("ThDr.");
         assertEquals(dr1, dr2);
+    }
+
+
+    public static List<URL> loadResources(final String name, final ClassLoader classLoader) throws IOException {
+        final List<URL> list = new ArrayList<>();
+        final ClassLoader cl = classLoader == null ? ClassLoader.getSystemClassLoader() : classLoader;
+        final Enumeration<URL> systemResources = cl.getResources(name);
+        while (systemResources.hasMoreElements()) {
+            list.add(systemResources.nextElement());
+        }
+        return list;
     }
 }

@@ -2,7 +2,7 @@ package camp.xit.jacod;
 
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.test.CodelistClientExtension;
-import camp.xit.jacod.test.CodelistClientExtension.FullScanCsvClient;
+import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
 import camp.xit.jacod.test.model.Brand;
 import camp.xit.jacod.test.model.CommunicationChannel;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class CustomCodelistTest {
 
 
     @Test
-    void customBonusType(@FullScanCsvClient CodelistClient client) {
+    void customBonusType(@CsvClient CodelistClient client) {
         Codelist<Brand> title = client.getCodelist(Brand.class);
         assertThat(title.size(), is(1));
         assertThat(title.stream(true).filter(e -> e.getCode().equals("GENIUS")).count(), is(1L));
@@ -30,7 +30,7 @@ public class CustomCodelistTest {
 
 
     @Test
-    void enumEquals(@FullScanCsvClient CodelistClient client) {
+    void enumEquals(@CsvClient CodelistClient client) {
         Codelist<CommunicationChannel> channels = client.getCodelist(CommunicationChannel.class);
         CommunicationChannel email = channels.getEntry("EMAIL");
         assertTrue(email.equals(CommunicationChannel.Types.EMAIL));
@@ -40,7 +40,7 @@ public class CustomCodelistTest {
 
     @Test
     @Disabled("Non deterministic")
-    void cache(@FullScanCsvClient CodelistClient client) {
+    void cache(@CsvClient CodelistClient client) {
 
         List<Long> times = new ArrayList<>();
         for (int i = 0; i < CACHE_ITERATIONS; i++) {

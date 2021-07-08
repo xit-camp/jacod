@@ -5,7 +5,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
-import camp.xit.jacod.test.CodelistClientExtension.FullScanCsvClient;
+import camp.xit.jacod.test.CodelistClientExtension.ShallowCsvClient;
 import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,6 +27,7 @@ class CodelistClientTest {
         assertThat(title.stream(true).filter(e -> e.getCode().contains("Dr")).count(), is(25L));
     }
 
+
     @Test
     void advancedWithFullReference(@CsvClient CodelistClient client) {
         Codelist<InsuranceProduct> cdl = client.getCodelist(InsuranceProduct.class);
@@ -39,7 +40,7 @@ class CodelistClientTest {
 
 
     @Test
-    void advancedWithShallowReference(@FullScanCsvClient CodelistClient client) {
+    void advancedWithShallowReference(@ShallowCsvClient CodelistClient client) {
         Codelist<InsuranceProduct> cdl = client.getCodelist(InsuranceProduct.class);
         assertThat(cdl.stream(true).filter(e -> e.getType() != null).count(), is(6L));
         InsuranceProduct entry = cdl.getEntry(InsuranceProducts.A_02);

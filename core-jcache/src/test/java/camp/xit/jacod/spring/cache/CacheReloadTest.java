@@ -37,7 +37,7 @@ public class CacheReloadTest {
 
         CodelistClient client = new JCacheCodelistClient.Builder(cache)
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -53,7 +53,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .codelists(Title.class)
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

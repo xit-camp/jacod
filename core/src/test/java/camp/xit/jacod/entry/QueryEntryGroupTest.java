@@ -25,7 +25,8 @@ public class QueryEntryGroupTest {
     @Test
     public void parseDigit(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "(rate < 1 & selected = true)");
-        Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
+        Codelist<InsuranceProduct> products = client.getCodelist(InsuranceProduct.class);
+        Codelist<InsuranceProduct> filtered = group.getEntries(products);
         assertThat(filtered.size(), is(2));
         assertThat(filtered.keySet(), containsInAnyOrder("A_01", "B_02"));
     }

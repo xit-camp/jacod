@@ -22,7 +22,7 @@ public class Cache2kCodelistClient {
                 prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new Cache2kCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                    whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);
+                    getMappersReg(), shallowReferences, reloadReferences, reloadDependencies);
         }
 
 

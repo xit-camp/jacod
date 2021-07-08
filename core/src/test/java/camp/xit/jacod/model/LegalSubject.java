@@ -3,7 +3,7 @@ package camp.xit.jacod.model;
 import camp.xit.jacod.Embeddable;
 
 @Embeddable
-class LegalSubject {
+public class LegalSubject {
 
     private String name;
 

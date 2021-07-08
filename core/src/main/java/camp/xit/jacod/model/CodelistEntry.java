@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class CodelistEntry implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Jednoznačný identifikátor číselníkovej hodnoty. Je zároveň aj primárny kľúč.
      *

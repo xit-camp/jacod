@@ -28,8 +28,8 @@ public class CodelistClientImpl implements CodelistClient {
     protected final boolean shallowReferences;
 
 
-    public CodelistClientImpl(DataProvider provider, Set<String> whitelistPackages, boolean shallowReferences) {
-        this.mapper = new CodelistEntryMapper(whitelistPackages.toArray(new String[0]));
+    public CodelistClientImpl(final DataProvider provider, final MappersReg mappers, final boolean shallowReferences) {
+        this.mapper = new CodelistEntryMapper(mappers);
         this.provider = provider;
         this.providerName = provider.getName();
         this.shallowReferences = shallowReferences;
@@ -82,7 +82,7 @@ public class CodelistClientImpl implements CodelistClient {
 
 
     @Override
-    public Map<String, Codelist<?>> getCodelists(String... codelists) {
+    public Map<String, Codelist<? extends CodelistEntry>> getCodelists(String... codelists) {
         Map<String, Codelist<?>> result = new HashMap<>();
         for (String codelist : codelists) {
             Optional<Codelist<? extends CodelistEntry>> entries = getCodelistInternal(codelist);

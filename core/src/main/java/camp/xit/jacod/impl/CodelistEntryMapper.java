@@ -15,19 +15,20 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
 import camp.xit.jacod.provider.ReferenceProvider;
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import static java.util.Collections.singleton;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toSet;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,50 +43,38 @@ public final class CodelistEntryMapper implements EntryMapper {
     private final BaseEntryMetadata baseEntryMetadata;
 
 
-    public CodelistEntryMapper(String... whitelistPackages) {
-        this.advancedCodelists = new HashMap<>();
+    public CodelistEntryMapper(MappersReg mappersReg) {
+        this.advancedCodelists = new ConcurrentHashMap<>();
         this.entryMappings = new HashMap<>();
         this.baseEntryMappings = new HashMap();
-        scanClassPath(whitelistPackages, this.advancedCodelists, this.entryMappings, this.baseEntryMappings);
+//        scanClassPath(whitelistPackages, this.advancedCodelists, this.entryMappings, this.baseEntryMappings);
+        registerEntryMetadata(mappersReg);
         this.baseEntryMetadata = createBaseEntryMetadata();
         this.metadataMap = createMetadataMap(this.advancedCodelists);
     }
 
 
-    private void scanClassPath(String[] whitelistPackages,
-            Map<String, Class<? extends CodelistEntry>> advancedCodelists,
-            Map<Class<?>, Map<Class<? extends DataProvider>, EntryMapping>> entryMappings,
-            Map<String, Map<Class<? extends DataProvider>, BaseEntryMapping>> baseEntryMapping) {
-
-        ClassGraph classGraph = new ClassGraph().enableClassInfo().enableAnnotationInfo();
-        if (whitelistPackages.length > 0) {
-            classGraph = classGraph.whitelistPackages(whitelistPackages);
-        }
-
-        // run scanner
-        long start = System.currentTimeMillis();
-        try (ScanResult result = classGraph.scan()) {
-
-            for (ClassInfo info : result.getSubclasses(CodelistEntry.class.getName())) {
-                Class<? extends CodelistEntry> entryClass = info.loadClass(CodelistEntry.class);
-                String codelistName = entryClass.getSimpleName();
-                if (advancedCodelists.containsKey(codelistName)) {
-                    Class<? extends CodelistEntry> existing = advancedCodelists.get(codelistName);
-                    throw new RuntimeException("Duplicate codelist class declaration for name " + codelistName
-                            + ". Conflicting classes: [" + existing.getName() + ", " + entryClass.getName() + "]");
-                }
-                advancedCodelists.put(codelistName, entryClass);
+    private void registerEntryMetadata(MappersReg mappersReg) {
+        for (Map.Entry<String, Class<? extends CodelistEntry>> entry : mappersReg.getCodelistMapping().entrySet()) {
+            String codelistName = entry.getKey();
+            Class<? extends CodelistEntry> entryClass = entry.getValue();
+            if (advancedCodelists.containsKey(codelistName)) {
+                Class<? extends CodelistEntry> existing = advancedCodelists.get(codelistName);
+                throw new RuntimeException("Duplicate codelist class declaration for name " + codelistName
+                        + ". Conflicting classes: [" + existing.getName() + ", " + entryClass.getName() + "]");
             }
-
-            result.getClassesWithAnnotation(BaseEntryMapping.class.getName())
-                    .forEach(info -> setBaseEntryMappings(baseEntryMapping, info.loadClass()));
-
-            result.getClassesWithAnnotation(EntryMapping.class.getName())
-                    .union(result.getClassesWithAnnotation(EntryMappings.class.getName()))
-                    .forEach(info -> setEntryMappings(entryMappings, info.loadClass()));
+            advancedCodelists.put(codelistName, entryClass);
         }
-        long end = System.currentTimeMillis();
-        LOG.info("Classpath scanned in {} ms", (end - start));
+
+        mappersReg.getMapperClasses()
+                .stream()
+                .filter(mappersReg::isMapperClassAllowed)
+                .forEach(mapperClass -> setBaseEntryMappings(baseEntryMappings, mapperClass));
+
+        mappersReg.getMapperClasses()
+                .stream()
+                .filter(mappersReg::isMapperClassAllowed)
+                .forEach(mapperClass -> setEntryMappings(entryMappings, mapperClass));
     }
 
 
@@ -123,21 +112,23 @@ public final class CodelistEntryMapper implements EntryMapper {
 
 
     private void setBaseEntryMappings(Map<String, Map<Class<? extends DataProvider>, BaseEntryMapping>> mappings, Class<?> clazz) {
-        BaseEntryMapping mapping = clazz.getAnnotation(BaseEntryMapping.class);
-        Class<? extends DataProvider> providerClass = mapping.provider();
+        if (clazz.isAnnotationPresent(BaseEntryMapping.class)) {
+            BaseEntryMapping mapping = clazz.getAnnotation(BaseEntryMapping.class);
+            Class<? extends DataProvider> providerClass = mapping.provider();
 
-        Map<Class<? extends DataProvider>, BaseEntryMapping> entryMappings = mappings.get(mapping.codelist());
-        if (entryMappings == null) {
-            entryMappings = new HashMap<>();
-            mappings.put(mapping.codelist(), entryMappings);
+            Map<Class<? extends DataProvider>, BaseEntryMapping> entryMappings = mappings.get(mapping.codelist());
+            if (entryMappings == null) {
+                entryMappings = new HashMap<>();
+                mappings.put(mapping.codelist(), entryMappings);
+            }
+            if (entryMappings.containsKey(providerClass)) {
+                String providerName = providerClass.getSimpleName();
+                String entryName = mapping.codelist();
+                throw new RuntimeException("Duplicate entry mapping for provider = " + providerName
+                        + ", entry = " + entryName + ", class: " + clazz);
+            }
+            entryMappings.put(providerClass, mapping);
         }
-        if (entryMappings.containsKey(providerClass)) {
-            String providerName = providerClass.getSimpleName();
-            String entryName = mapping.codelist();
-            throw new RuntimeException("Duplicate entry mapping for provider = " + providerName
-                    + ", entry = " + entryName + ", class: " + clazz);
-        }
-        entryMappings.put(providerClass, mapping);
     }
 
 
@@ -201,8 +192,8 @@ public final class CodelistEntryMapper implements EntryMapper {
         Set<Field> refs = new HashSet<>();
         Map<Field, EntryMetadata> embedded = new HashMap<>();
 
-        List<Field> declaredFields = new ArrayList<>(Arrays.asList(objClass.getDeclaredFields()));
-        Set<Field> declaredFieldsSet = new HashSet<>(declaredFields);
+        Set<Field> declaredFields = Stream.of(objClass.getDeclaredFields())
+                .filter(f -> !Modifier.isStatic(f.getModifiers())).collect(toSet());
 
         if (baseEntryMetadata != null && CodelistEntry.class.isAssignableFrom(objClass)) {
             declaredFields.addAll(baseEntryMetadata.getFields());
@@ -213,7 +204,7 @@ public final class CodelistEntryMapper implements EntryMapper {
 
             String mappedField = field.getName();
 
-            if (declaredFieldsSet.contains(field)) {
+            if (declaredFields.contains(field)) {
                 fields.put(field, new FieldMapping(mappedField));
             }
 
@@ -316,7 +307,7 @@ public final class CodelistEntryMapper implements EntryMapper {
             DataProvider provider, long lastReadTime, ReferenceProvider refProvider) {
 
         Class<? extends DataProvider> providerClass = provider.getProviderClass();
-        EntryMetadata metadata = metadataMap.get(entryClass);
+        EntryMetadata metadata = getEntryMetadata(entryClass);
         String codelistName = metadata.getCodelistName();
         String providerSpecificName = metadata.getProviderCodelistName(providerClass, codelistName).orElse(codelistName);
         Optional<List<EntryData>> entries = provider.readEntries(providerSpecificName, lastReadTime);
@@ -351,7 +342,7 @@ public final class CodelistEntryMapper implements EntryMapper {
         Class<? extends CodelistEntry> entryClass = advancedCodelists.containsKey(identifier)
                 ? advancedCodelists.get(identifier) : CodelistEntry.class;
 
-        EntryMetadata metadata = metadataMap.get(entryClass);
+        EntryMetadata metadata = getEntryMetadata(entryClass);
 
         return entries.stream()
                 .map(values -> mapToEntry(entryClass, identifier, metadata, providerClass, values, refProvider))
@@ -366,7 +357,7 @@ public final class CodelistEntryMapper implements EntryMapper {
         Class<? extends CodelistEntry> entryClass = advancedCodelists.containsKey(identifier)
                 ? advancedCodelists.get(identifier) : CodelistEntry.class;
 
-        EntryMetadata metadata = metadataMap.get(entryClass);
+        EntryMetadata metadata = getEntryMetadata(entryClass);
 
         return mapToEntry(entryClass, identifier, metadata, providerClass, entryData, refProvider);
     }
@@ -574,7 +565,13 @@ public final class CodelistEntryMapper implements EntryMapper {
     public <T extends CodelistEntry> EntryMetadata getEntryMetadata(Class<T> clazz) {
         EntryMetadata metadata = metadataMap.get(clazz);
         if (metadata == null) {
-            throw new IllegalArgumentException("Cannot find entry metadata for " + clazz.getSimpleName());
+            metadata = createCodelistMetadata(clazz);
+            if (metadata != null) {
+                metadataMap.put(clazz, metadata);
+                advancedCodelists.put(clazz.getSimpleName(), clazz);
+            } else {
+                throw new IllegalArgumentException("Cannot find entry metadata for " + clazz.getSimpleName());
+            }
         }
         return metadata;
     }
@@ -625,8 +622,7 @@ public final class CodelistEntryMapper implements EntryMapper {
     DirectedGraph<String> getDependencyGraph(Iterable<Class<? extends CodelistEntry>> entryClasses) {
         DirectedGraph<String> result = new DirectedGraph<>();
         for (Class<? extends CodelistEntry> entryClass : entryClasses) {
-            EntryMetadata metadata = metadataMap.get(entryClass);
-            recursiveGraphReferences(entryClass, metadata, null, result);
+            recursiveGraphReferences(entryClass, getEntryMetadata(entryClass), null, result);
         }
         return result;
     }
@@ -636,18 +632,18 @@ public final class CodelistEntryMapper implements EntryMapper {
         DirectedGraph<String> result = new DirectedGraph<>();
         for (String codelist : codelists) {
             Optional<Class<? extends CodelistEntry>> entryClass = getEntryClass(codelist);
-            entryClass.ifPresentOrElse(cl -> recursiveGraphReferences(cl, metadataMap.get(cl), null, result),
+            entryClass.ifPresentOrElse(cl -> recursiveGraphReferences(cl, getEntryMetadata(cl), null, result),
                     () -> result.addNode(codelist));
         }
         return result;
     }
 
 
-    private void recursiveGraphReferences(Class<?> entryClass, EntryMetadata metadata, Class<?> parentEntryClass,
-            DirectedGraph<String> graph) {
+    private void recursiveGraphReferences(Class<?> entryClass, EntryMetadata metadata,
+            Class<? extends CodelistEntry> parentEntryClass, DirectedGraph<String> graph) {
         if (metadata != null && !entryClass.equals(CodelistEntry.class)) {
             if (CodelistEntry.class.isAssignableFrom(entryClass)) {
-                parentEntryClass = entryClass;
+                parentEntryClass = (Class<? extends CodelistEntry>) entryClass;
                 graph.addNode(metadata.getCodelistName());
             }
             for (Field field : metadata.getReferencies()) {
@@ -657,11 +653,12 @@ public final class CodelistEntryMapper implements EntryMapper {
                     String parentCodelistName = metadataMap.get(parentEntryClass).getCodelistName();
                     graph.addEdge(refCodelist, parentCodelistName);
                     if (!refType.equals(CodelistEntry.class)) {
-                        recursiveGraphReferences(refType, metadataMap.get(refType), parentEntryClass, graph);
+                        Class<? extends CodelistEntry> entryRefType = (Class<? extends CodelistEntry>) refType;
+                        recursiveGraphReferences(entryRefType, getEntryMetadata(entryRefType), parentEntryClass, graph);
                     }
                 }
                 if (refType.isAnnotationPresent(Embeddable.class)) {
-                    EntryMetadata emeta = metadataMap.get(parentEntryClass).getEmbeddedFor(field);
+                    EntryMetadata emeta = getEntryMetadata(parentEntryClass).getEmbeddedFor(field);
                     recursiveGraphReferences(refType, emeta, parentEntryClass, graph);
                 }
             }
@@ -677,7 +674,7 @@ public final class CodelistEntryMapper implements EntryMapper {
 
     @Override
     public Collection<String> getCodelistDependencies(Class<? extends CodelistEntry> entryClass) {
-        Set<String> excluded = singleton(metadataMap.get(entryClass).getCodelistName());
+        Set<String> excluded = singleton(getEntryMetadata(entryClass).getCodelistName());
         return getDependencyGraph(singleton(entryClass)).sort(excluded);
     }
 

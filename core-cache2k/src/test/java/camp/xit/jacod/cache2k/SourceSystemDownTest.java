@@ -3,7 +3,6 @@ package camp.xit.jacod.cache2k;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.cache2k.model.InsuranceProduct;
-import camp.xit.jacod.cache2k.model.Title;
 import camp.xit.jacod.cache2k.test.CsvErrorDataProvider;
 import camp.xit.jacod.model.Codelist;
 import java.time.Duration;
@@ -24,7 +23,7 @@ public class SourceSystemDownTest {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new Cache2kCodelistClient.Builder()
                     .withDataProvider(dp)
-                    .addScanPackages(InsuranceProduct.class.getPackageName())
+                    .codelists(InsuranceProduct.class)
                     .withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
 
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);
@@ -51,7 +50,7 @@ public class SourceSystemDownTest {
         try {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new Cache2kCodelistClient.Builder()
-                    .addScanPackages(InsuranceProduct.class.getPackageName())
+                    .codelists(InsuranceProduct.class)
                     .withPrefetched() //empty
                     .withDataProvider(dp).withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
             dp.setDown();

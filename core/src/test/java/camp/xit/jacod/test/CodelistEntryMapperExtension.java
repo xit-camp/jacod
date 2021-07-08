@@ -1,12 +1,21 @@
 package camp.xit.jacod.test;
 
-import static camp.xit.jacod.CodelistClient.Builder.BASE_PACKAGES;
 import camp.xit.jacod.impl.CodelistEntryMapper;
+import camp.xit.jacod.impl.MappersReg;
+import camp.xit.jacod.model.BonusType;
+import camp.xit.jacod.model.BusinessPlace;
+import camp.xit.jacod.model.ContractState;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.PaymentDeferment;
+import camp.xit.jacod.model.Title;
+import camp.xit.jacod.test.model.CustomNameMapper;
+import camp.xit.jacod.test.model.InsuranceProductMapper;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Parameter;
+import java.util.Set;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -17,19 +26,13 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
-    public @interface FullMapper {
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.PARAMETER)
-    public @interface BaseMapper {
+    public @interface EntryMapper {
     }
 
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        return parameterContext.isAnnotated(FullMapper.class)
-                | parameterContext.isAnnotated(BaseMapper.class);
+        return parameterContext.isAnnotated(EntryMapper.class);
     }
 
 
@@ -43,12 +46,9 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
         Class<?> type = parameter.getType();
         CodelistEntryMapper mapper = null;
 
-        if (parameter.isAnnotationPresent(FullMapper.class)) {
+        if (parameter.isAnnotationPresent(EntryMapper.class)) {
             mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("FullMapper", key -> new CodelistEntryMapper(), CodelistEntryMapper.class);
-        } else if (parameter.isAnnotationPresent(BaseMapper.class)) {
-            mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(BASE_PACKAGES), CodelistEntryMapper.class);
+                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(getMappersReg()), CodelistEntryMapper.class);
         }
         if (mapper == null) {
             throw new ParameterResolutionException("Parameter without annotation! Use @DefaultMapper or @BaseMapper annotation");
@@ -57,5 +57,13 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
             return mapper;
         }
         throw new ParameterResolutionException("Cannot assing CodelistEntryMapper to " + type);
+    }
+
+
+    private MappersReg getMappersReg() {
+        var codelistMapping = MappersReg.mappingFromClasses(BonusType.class, BusinessPlace.class,
+                ContractState.class, InsuranceProduct.class, Title.class, PaymentDeferment.class);
+
+        return new MappersReg(codelistMapping, Set.of(InsuranceProductMapper.class, CustomNameMapper.class));
     }
 }

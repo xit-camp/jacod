@@ -30,7 +30,7 @@ public class SpringCacheCodelistClient {
                 prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new SpringCacheCodelistClientImpl(dataProvider, cache, prefetchedCodelists,
-                    whitelistPackages, shallowReferences, reloadDependencies);
+                    getMappersReg(), shallowReferences, reloadDependencies);
         }
 
 
