@@ -34,7 +34,7 @@ public class JCacheCodelistClient {
                 prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new JCacheCodelistClientImpl(dataProvider, cache, expiryTime, prefetchedCodelists,
-                    getMappersReg(), shallowReferences, reloadDependencies);
+                    whitelistPackages, shallowReferences, reloadDependencies);
         }
 
 

@@ -5,7 +5,6 @@ import camp.xit.jacod.cache2k.model.Title;
 import camp.xit.jacod.cache2k.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public class CacheReloadTest {
     void reloadCache() throws Exception {
         CodelistClient client = new Cache2kCodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .codelists(Title.class)
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -51,7 +49,6 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .codelists(Title.class)
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

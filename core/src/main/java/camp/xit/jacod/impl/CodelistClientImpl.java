@@ -28,8 +28,8 @@ public class CodelistClientImpl implements CodelistClient {
     protected final boolean shallowReferences;
 
 
-    public CodelistClientImpl(final DataProvider provider, final MappersReg mappers, final boolean shallowReferences) {
-        this.mapper = new CodelistEntryMapper(mappers);
+    public CodelistClientImpl(final DataProvider provider, Set<String> whitelistPackages, final boolean shallowReferences) {
+        this.mapper = new CodelistEntryMapper(whitelistPackages);
         this.provider = provider;
         this.providerName = provider.getName();
         this.shallowReferences = shallowReferences;

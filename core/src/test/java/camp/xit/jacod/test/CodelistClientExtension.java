@@ -1,12 +1,6 @@
 package camp.xit.jacod.test;
 
 import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.model.BonusType;
-import camp.xit.jacod.model.BusinessPlace;
-import camp.xit.jacod.model.ContractState;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.PaymentDeferment;
-import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import java.lang.annotation.ElementType;
@@ -82,10 +76,7 @@ public class CodelistClientExtension implements ParameterResolver {
     private CodelistClient getCsvClient(boolean shallow) {
         DataProvider provider = new SimpleCsvDataProvider();
         CodelistClient.Builder builder = new CodelistClient.Builder()
-                .withDataProvider(provider)
-                .disableMappers()
-                .codelists(BonusType.class, BusinessPlace.class, ContractState.class, InsuranceProduct.class,
-                        Title.class, PaymentDeferment.class);
+                .withDataProvider(provider);
 
         if (shallow) builder.shallowReferences();
 

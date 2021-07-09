@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -43,18 +44,22 @@ public final class CodelistEntryMapper implements EntryMapper {
     private final BaseEntryMetadata baseEntryMetadata;
 
 
-    public CodelistEntryMapper(MappersReg mappersReg) {
+    public CodelistEntryMapper() {
+        this(emptySet());
+    }
+
+
+    public CodelistEntryMapper(Set<String> whitelistPackages) {
         this.advancedCodelists = new ConcurrentHashMap<>();
         this.entryMappings = new HashMap<>();
         this.baseEntryMappings = new HashMap();
-//        scanClassPath(whitelistPackages, this.advancedCodelists, this.entryMappings, this.baseEntryMappings);
-        registerEntryMetadata(mappersReg);
+        registerEntryMetadata(new MappersRef(whitelistPackages));
         this.baseEntryMetadata = createBaseEntryMetadata();
         this.metadataMap = createMetadataMap(this.advancedCodelists);
     }
 
 
-    private void registerEntryMetadata(MappersReg mappersReg) {
+    private void registerEntryMetadata(MappersRef mappersReg) {
         for (Map.Entry<String, Class<? extends CodelistEntry>> entry : mappersReg.getCodelistMapping().entrySet()) {
             String codelistName = entry.getKey();
             Class<? extends CodelistEntry> entryClass = entry.getValue();
@@ -63,17 +68,19 @@ public final class CodelistEntryMapper implements EntryMapper {
                 throw new RuntimeException("Duplicate codelist class declaration for name " + codelistName
                         + ". Conflicting classes: [" + existing.getName() + ", " + entryClass.getName() + "]");
             }
-            advancedCodelists.put(codelistName, entryClass);
+            if (mappersReg.isAllowedClass(entryClass)) {
+                advancedCodelists.put(codelistName, entryClass);
+            }
         }
 
         mappersReg.getMapperClasses()
                 .stream()
-                .filter(mappersReg::isMapperClassAllowed)
+                .filter(mappersReg::isAllowedClass)
                 .forEach(mapperClass -> setBaseEntryMappings(baseEntryMappings, mapperClass));
 
         mappersReg.getMapperClasses()
                 .stream()
-                .filter(mappersReg::isMapperClassAllowed)
+                .filter(mappersReg::isAllowedClass)
                 .forEach(mapperClass -> setEntryMappings(entryMappings, mapperClass));
     }
 

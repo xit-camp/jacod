@@ -2,21 +2,12 @@ package camp.xit.jacod;
 
 import camp.xit.jacod.entry.parser.ast.CompileException;
 import camp.xit.jacod.impl.CodelistClientImpl;
-import static camp.xit.jacod.impl.EntryAnnotationProcessor.MAPPERS_FILE;
-import camp.xit.jacod.impl.MappersReg;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
 import camp.xit.jacod.provider.DataProvider;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -172,11 +163,12 @@ public interface CodelistClient {
 
     public static class Builder<T extends Builder> {
 
+        public static final String[] BASE_PACKAGES = new String[]{CodelistEntry.class.getPackageName()};
+
         protected DataProvider dataProvider = null;
         protected Set<String> prefetchedCodelists = null;
-        protected Set<String> whitelistMapperPackages = new HashSet<>();
+        protected Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
         protected boolean shallowReferences = false;
-        protected Map<String, Class<? extends CodelistEntry>> codelistMapping = new HashMap<>();
 
 
         public CodelistClient build() {
@@ -186,12 +178,7 @@ public interface CodelistClient {
             if (prefetchedCodelists == null) {
                 prefetchedCodelists = dataProvider.getCodelistNames();
             }
-            return new CodelistClientImpl(dataProvider, getMappersReg(), shallowReferences);
-        }
-
-
-        protected MappersReg getMappersReg() {
-            return new MappersReg(codelistMapping, loadMapperClasses(null), whitelistMapperPackages);
+            return new CodelistClientImpl(dataProvider, whitelistPackages, shallowReferences);
         }
 
 
@@ -209,33 +196,43 @@ public interface CodelistClient {
         }
 
 
-        public T codelists(Class<? extends CodelistEntry>... entryClasses) {
-            Stream.of(entryClasses).forEach(clazz -> codelistMapping.put(clazz.getSimpleName(), clazz));
+        /**
+         * In the default setting, only the default classpath (camp.xit.jacod.model) is scanned, which may
+         * result in not finding all application classes. This setting tells that the entire classpath will be
+         * scanned.
+         *
+         * @return builder
+         */
+        public T scanFullClasspath() {
+            this.whitelistPackages.clear();
             return (T) this;
         }
 
 
-        public T codelist(String customName, Class<? extends CodelistEntry> entryClass) {
-            codelistMapping.put(customName, entryClass);
+        /**
+         * In the default setting, only the default classpath (camp.xit.jacod.model) is scanned, which may
+         * result in not finding all application classes. This method adds defined packages, that will be
+         * scanned.
+         *
+         * @param packages list of packages, that will be scanned
+         * @return builder
+         */
+        public T addScanPackages(String... packages) {
+            this.whitelistPackages.addAll(Arrays.asList(packages));
             return (T) this;
         }
 
 
-        public T whitelistMapperPackages(String... packages) {
-            whitelistMapperPackages.addAll(Arrays.asList(packages));
-            return (T) this;
-        }
-
-
-        public T whitelistMapperPackages(Package... packages) {
-            whitelistMapperPackages.addAll(Stream.of(packages).map(Package::getName).collect(toList()));
-            return (T) this;
-        }
-
-
-        public T disableMappers() {
-            whitelistMapperPackages.clear();
-            whitelistMapperPackages.add(CodelistEntry.class.getPackageName());
+        /**
+         * In the default setting, only the default classpath (camp.xit.jacod.model) is scanned, which may
+         * result in not finding all application classes. This method adds defined packages, that will be
+         * scanned.
+         *
+         * @param packages list of packages, that will be scanned
+         * @return builder
+         */
+        public T addScanPackages(Package... packages) {
+            whitelistPackages.addAll(Stream.of(packages).map(Package::getName).collect(toList()));
             return (T) this;
         }
 
@@ -286,31 +283,6 @@ public interface CodelistClient {
         public T deepReferences() {
             this.shallowReferences = false;
             return (T) this;
-        }
-
-
-        public static Set<Class<?>> loadMapperClasses(final ClassLoader classLoader) {
-            final Set<Class<?>> result = new HashSet<>();
-            try {
-                final ClassLoader cl = classLoader == null ? ClassLoader.getSystemClassLoader() : classLoader;
-                final Enumeration<URL> systemResources = cl.getResources(MAPPERS_FILE);
-                while (systemResources.hasMoreElements()) {
-                    InputStream in = systemResources.nextElement().openStream();
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                        List<String> classNames = reader.lines().collect(toList());
-                        for (String className : classNames) {
-                            Class<?> clazz = cl.loadClass(className);
-                            result.add(clazz);
-                        }
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("Loaded Classes: " + result);
-            return result;
         }
     }
 }

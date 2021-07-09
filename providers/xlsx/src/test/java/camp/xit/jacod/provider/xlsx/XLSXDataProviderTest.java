@@ -1,11 +1,10 @@
 package camp.xit.jacod.provider.xlsx;
 
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.Title;
 import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.model.BonusType;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.EntryData;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +58,6 @@ public class XLSXDataProviderTest {
 
     private CodelistClient getCodelistClient() {
         return new CodelistClient.Builder()
-                .codelists(BonusType.class, InsuranceProduct.class, Title.class)
                 .withDataProvider(getProvider()).build();
     }
 

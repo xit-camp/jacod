@@ -1,21 +1,11 @@
 package camp.xit.jacod.test;
 
 import camp.xit.jacod.impl.CodelistEntryMapper;
-import camp.xit.jacod.impl.MappersReg;
-import camp.xit.jacod.model.BonusType;
-import camp.xit.jacod.model.BusinessPlace;
-import camp.xit.jacod.model.ContractState;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.PaymentDeferment;
-import camp.xit.jacod.model.Title;
-import camp.xit.jacod.test.model.CustomNameMapper;
-import camp.xit.jacod.test.model.InsuranceProductMapper;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Parameter;
-import java.util.Set;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -48,7 +38,7 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
 
         if (parameter.isAnnotationPresent(EntryMapper.class)) {
             mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(getMappersReg()), CodelistEntryMapper.class);
+                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(), CodelistEntryMapper.class);
         }
         if (mapper == null) {
             throw new ParameterResolutionException("Parameter without annotation! Use @DefaultMapper or @BaseMapper annotation");
@@ -57,13 +47,5 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
             return mapper;
         }
         throw new ParameterResolutionException("Cannot assing CodelistEntryMapper to " + type);
-    }
-
-
-    private MappersReg getMappersReg() {
-        var codelistMapping = MappersReg.mappingFromClasses(BonusType.class, BusinessPlace.class,
-                ContractState.class, InsuranceProduct.class, Title.class, PaymentDeferment.class);
-
-        return new MappersReg(codelistMapping, Set.of(InsuranceProductMapper.class, CustomNameMapper.class));
     }
 }

@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -15,19 +14,25 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
-@SupportedAnnotationTypes({"camp.xit.jacod.BaseEntryMapping", "camp.xit.jacod.EntryMapping", "camp.xit.jacod.EntryMappings"})
+@SupportedAnnotationTypes("camp.xit.jacod.BaseEntry")
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
-public class EntryAnnotationProcessor extends AbstractProcessor {
+// https://hannesdorfmann.com/annotation-processing/annotationprocessing101/
+public class CodelistAnnotationProcessor extends AbstractProcessor {
 
-    public static final String MAPPERS_FILE = "META-INF/jacod-mappers";
+    public static final String CODELISTS_FILE = "META-INF/jacod-codelists";
 
-    private Messager messager;
-    private Filer filer;
+    protected Filer filer;
+
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+        super.init(processingEnv);
+        this.filer = processingEnv.getFiler();
+    }
 
 
     @Override
@@ -35,7 +40,7 @@ public class EntryAnnotationProcessor extends AbstractProcessor {
         // get elements annotated with the @Setter annotation
         if (!roundEnv.processingOver() && !annotations.isEmpty()) {
             try {
-                FileObject obj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", MAPPERS_FILE);
+                FileObject obj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", CODELISTS_FILE);
                 try (Writer writer = obj.openWriter()) {
                     for (TypeElement annotation : annotations) {
                         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
@@ -49,19 +54,5 @@ public class EntryAnnotationProcessor extends AbstractProcessor {
             }
         }
         return true;
-    }
-
-
-    private void printError(Element element, String message) {
-        messager.printMessage(Diagnostic.Kind.ERROR, message, element);
-    }
-
-
-    @Override
-    public void init(ProcessingEnvironment processingEnvironment) {
-        super.init(processingEnvironment);
-
-        this.filer = processingEnvironment.getFiler();
-        this.messager = processingEnvironment.getMessager();
     }
 }

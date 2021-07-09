@@ -1,7 +1,6 @@
 package camp.xit.jacod.jcache;
 
 import camp.xit.jacod.impl.CodelistClientImpl;
-import camp.xit.jacod.impl.MappersReg;
 import camp.xit.jacod.impl.ShallowRefProvider;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
@@ -31,9 +30,10 @@ public class JCacheCodelistClientImpl extends CodelistClientImpl {
 
 
     public JCacheCodelistClientImpl(DataProvider provider, Cache cache, Duration expiryTimeout,
-            Set<String> prefetchedCodelists, MappersReg mappersReg, boolean shallowReferences, boolean reloadDependencies) {
+            Set<String> prefetchedCodelists, Set<String> whitelistPackages, boolean shallowReferences,
+            boolean reloadDependencies) {
 
-        super(provider, mappersReg, shallowReferences);
+        super(provider, whitelistPackages, shallowReferences);
 
         this.cache = cache;
         this.prefetchedCodelists = prefetchedCodelists;

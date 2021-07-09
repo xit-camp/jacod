@@ -1,5 +1,6 @@
 package camp.xit.jacod.model;
 
+import camp.xit.jacod.BaseEntry;
 import camp.xit.jacod.DateUtil;
 import camp.xit.jacod.NotNull;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.util.Objects;
  * Základná trieda číselníkovej hodnoty. Číselník je definovaný množinou týchto hodnôt.
  *
  */
+@BaseEntry
 public class CodelistEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;

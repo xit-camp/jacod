@@ -5,6 +5,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import camp.xit.jacod.test.CodelistEntryMapperExtension;
+import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 
 @ExtendWith(CodelistEntryMapperExtension.class)
 class CodelistEntryMapperTest {

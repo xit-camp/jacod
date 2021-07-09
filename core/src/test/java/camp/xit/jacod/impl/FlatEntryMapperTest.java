@@ -5,6 +5,7 @@ import camp.xit.jacod.provider.EntryData;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvDP;
 import camp.xit.jacod.test.CodelistEntryMapperExtension;
+import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,7 +14,6 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 
 @ExtendWith(CodelistEntryMapperExtension.class)
 @ExtendWith(CodelistClientExtension.class)
