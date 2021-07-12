@@ -4,6 +4,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -19,6 +20,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -134,17 +136,22 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         for (Element enclosed : codelistType.getEnclosedElements()) {
             if (enclosed.getKind() == ElementKind.CONSTRUCTOR) {
                 ExecutableElement constructorElement = (ExecutableElement) enclosed;
-                if (constructorElement.getParameters().size() == 0/* && constructorElement.getModifiers()
+                List<? extends VariableElement> parameters = constructorElement.getParameters();
+                if (parameters.size() == 0/* && constructorElement.getModifiers()
                           .contains(Modifier.PUBLIC)*/) {
                     // Found an empty constructor
                     return;
+                } else if (parameters.size() == 1
+                        && parameters.get(0).asType().toString().equals(String.class.getName())) {
+                    return;
                 }
+
             }
         }
 
         // No empty constructor found
         throw new ProcessingException(codelistType,
-                "The class %s must provide an empty default constructor",
+                "The class %s must provide an empty default constructor or constructor with 1 string code parameter",
                 codelistType.getQualifiedName().toString());
     }
 
