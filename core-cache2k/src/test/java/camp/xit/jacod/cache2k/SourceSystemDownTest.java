@@ -23,6 +23,7 @@ public class SourceSystemDownTest {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new Cache2kCodelistClient.Builder()
                     .withDataProvider(dp)
+                    .addScanPackages(InsuranceProduct.class.getPackageName())
                     .withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
 
             Codelist<InsuranceProduct> ip = cl.getCodelist(InsuranceProduct.class);
@@ -49,6 +50,7 @@ public class SourceSystemDownTest {
         try {
             CsvErrorDataProvider dp = new CsvErrorDataProvider();
             CodelistClient cl = new Cache2kCodelistClient.Builder()
+                    .addScanPackages(InsuranceProduct.class.getPackageName())
                     .withPrefetched() //empty
                     .withDataProvider(dp).withExpiryTime(Duration.ofSeconds(WAIT_TIME)).build();
             dp.setDown();

@@ -572,13 +572,7 @@ public final class CodelistEntryMapper implements EntryMapper {
     public <T extends CodelistEntry> EntryMetadata getEntryMetadata(Class<T> clazz) {
         EntryMetadata metadata = metadataMap.get(clazz);
         if (metadata == null) {
-            metadata = createCodelistMetadata(clazz);
-            if (metadata != null) {
-                metadataMap.put(clazz, metadata);
-                advancedCodelists.put(clazz.getSimpleName(), clazz);
-            } else {
-                throw new IllegalArgumentException("Cannot find entry metadata for " + clazz.getSimpleName());
-            }
+            throw new IllegalArgumentException("Cannot find entry metadata for " + clazz.getName());
         }
         return metadata;
     }

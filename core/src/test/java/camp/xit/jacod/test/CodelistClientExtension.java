@@ -18,6 +18,11 @@ public class CodelistClientExtension implements ParameterResolver {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
+    public @interface FullScanCsvClient {
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.PARAMETER)
     public @interface CsvClient {
     }
 
@@ -35,6 +40,7 @@ public class CodelistClientExtension implements ParameterResolver {
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         return parameterContext.isAnnotated(CsvClient.class)
+                | parameterContext.isAnnotated(FullScanCsvClient.class)
                 | parameterContext.isAnnotated(ShallowCsvClient.class)
                 | parameterContext.isAnnotated(CsvDP.class);
     }
@@ -53,10 +59,13 @@ public class CodelistClientExtension implements ParameterResolver {
         if (CodelistClient.class.isAssignableFrom(type)) {
             if (parameter.isAnnotationPresent(CsvClient.class)) {
                 result = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                        .getOrComputeIfAbsent("CsvClient", key -> getCsvClient(false), CodelistClient.class);
+                        .getOrComputeIfAbsent("CsvClient", key -> getCsvClient(), CodelistClient.class);
+            } else if (parameter.isAnnotationPresent(FullScanCsvClient.class)) {
+                result = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
+                        .getOrComputeIfAbsent("FullScanCsvClient", key -> getFullScanCsvClient(), CodelistClient.class);
             } else if (parameter.isAnnotationPresent(ShallowCsvClient.class)) {
                 result = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                        .getOrComputeIfAbsent("ShallowCsvClient", key -> getCsvClient(true), CodelistClient.class);
+                        .getOrComputeIfAbsent("ShallowCsvClient", key -> getShallowCsvClient(), CodelistClient.class);
             }
         } else if (DataProvider.class.isAssignableFrom(type)) {
             if (parameter.isAnnotationPresent(CsvDP.class)) {
@@ -73,13 +82,23 @@ public class CodelistClientExtension implements ParameterResolver {
     }
 
 
-    private CodelistClient getCsvClient(boolean shallow) {
-        DataProvider provider = new SimpleCsvDataProvider();
-        CodelistClient.Builder builder = new CodelistClient.Builder()
-                .withDataProvider(provider);
+    private CodelistClient getCsvClient() {
+        return getCodelistClientBuilder().build();
+    }
 
-        if (shallow) builder.shallowReferences();
 
-        return builder.build();
+    private CodelistClient getFullScanCsvClient() {
+        return getCodelistClientBuilder().scanFullClasspath().build();
+    }
+
+
+    private CodelistClient getShallowCsvClient() {
+        return getCodelistClientBuilder().scanFullClasspath().shallowReferences().build();
+    }
+
+
+    private CodelistClient.Builder getCodelistClientBuilder() {
+        return new CodelistClient.Builder()
+                .withDataProvider(new SimpleCsvDataProvider());
     }
 }
