@@ -28,7 +28,7 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -199,8 +199,10 @@ public final class CodelistEntryMapper implements EntryMapper {
         Set<Field> refs = new HashSet<>();
         Map<Field, EntryMetadata> embedded = new HashMap<>();
 
-        Set<Field> declaredFields = Stream.of(objClass.getDeclaredFields())
-                .filter(f -> !Modifier.isStatic(f.getModifiers())).collect(toSet());
+        List<Field> declaredFields = Stream.of(objClass.getDeclaredFields())
+                .filter(f -> !Modifier.isStatic(f.getModifiers())).collect(toList());
+        Set<Field> declaredFieldsSet = new HashSet<>(declaredFields);
+
 
         if (baseEntryMetadata != null && CodelistEntry.class.isAssignableFrom(objClass)) {
             declaredFields.addAll(baseEntryMetadata.getFields());
@@ -211,7 +213,7 @@ public final class CodelistEntryMapper implements EntryMapper {
 
             String mappedField = field.getName();
 
-            if (declaredFields.contains(field)) {
+            if (declaredFieldsSet.contains(field)) {
                 fields.put(field, new FieldMapping(mappedField));
             }
 
