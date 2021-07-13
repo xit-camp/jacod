@@ -40,7 +40,7 @@ final class MappersRef {
         this.mapperClasses = loadMapperClasses();
         this.whitelistPackages = whitelistMapperPackages;
         long duration = System.currentTimeMillis() - start;
-        LOG.info("Loaded all resources in {} ms", duration);
+        LOG.info("Loaded {} codelists and {} mapper classes in {} ms", codelistMapping.size(), mapperClasses.size(), duration);
     }
 
 
