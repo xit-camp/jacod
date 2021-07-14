@@ -1,15 +1,5 @@
 package camp.xit.jacod.impl;
 
-import static javax.lang.model.element.Modifier.ABSTRACT;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.PROTECTED;
-import static javax.lang.model.element.Modifier.PUBLIC;
-import static javax.lang.model.element.Modifier.STATIC;
-import static javax.lang.model.element.Modifier.SYNCHRONIZED;
-import static javax.lang.model.element.Modifier.TRANSIENT;
-import static javax.lang.model.element.Modifier.VOLATILE;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Writer;
@@ -29,8 +19,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
-
 import javax.lang.model.element.Modifier;
+import static javax.lang.model.element.Modifier.ABSTRACT;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PROTECTED;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
+import static javax.lang.model.element.Modifier.SYNCHRONIZED;
+import static javax.lang.model.element.Modifier.TRANSIENT;
+import static javax.lang.model.element.Modifier.VOLATILE;
 
 /**
  * A utility class which aids in generating Java source files.
