@@ -4,12 +4,7 @@ import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.cache2k.model.Title;
 import camp.xit.jacod.cache2k.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
-import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,12 +17,6 @@ public class CacheReloadTest {
     private static final Logger LOG = LoggerFactory.getLogger(CacheReloadTest.class);
     private static final int CACHE_EXPIRY_TIME = 1;
     private static final int WAIT_TIME = 3;
-
-
-    @Test
-    void reloadFiles() throws IOException {
-        System.out.println("URLS: " + loadResources("META-INF/codelist-mappers", null));
-    }
 
 
     @Test
@@ -58,16 +47,5 @@ public class CacheReloadTest {
         Thread.sleep(WAIT_TIME * 1000);
         Title dr2 = client.getCodelist(Title.class).getEntry("ThDr.");
         assertEquals(dr1, dr2);
-    }
-
-
-    public static List<URL> loadResources(final String name, final ClassLoader classLoader) throws IOException {
-        final List<URL> list = new ArrayList<>();
-        final ClassLoader cl = classLoader == null ? ClassLoader.getSystemClassLoader() : classLoader;
-        final Enumeration<URL> systemResources = cl.getResources(name);
-        while (systemResources.hasMoreElements()) {
-            list.add(systemResources.nextElement());
-        }
-        return list;
     }
 }

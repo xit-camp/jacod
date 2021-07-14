@@ -58,6 +58,7 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         // get elements annotated with the @Setter annotation
         if (!roundEnv.processingOver() && !annotations.isEmpty()) {
             try {
+                int count = 0;
                 FileObject obj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", CODELISTS_FILE);
                 try (Writer writer = obj.openWriter()) {
                     for (TypeElement annotation : annotations) {
@@ -68,8 +69,10 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
                             }
                             checkValidClass((TypeElement) el, annotation);
                             writer.append(el.toString()).append("\n");
+                            count++;
                         }
                     }
+                    printMsg("Found " + count + " advanced codelists.");
                 }
             } catch (IOException e) {
                 throw new RuntimeException("Cannot process annotations", e);
@@ -153,6 +156,11 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         throw new ProcessingException(codelistType,
                 "The class %s must provide an empty default constructor or constructor with 1 string code parameter",
                 codelistType.getQualifiedName().toString());
+    }
+
+
+    private void printMsg(String message) {
+        messager.printMessage(Diagnostic.Kind.NOTE, message);
     }
 
 

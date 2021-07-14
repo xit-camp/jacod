@@ -6,6 +6,7 @@ public class IsEmptyCondition extends UnaryCondition {
 
     private final boolean negate;
 
+
     public IsEmptyCondition(Class<?> clazz, Property property, boolean negate) {
         super(clazz, property);
         this.negate = negate;

@@ -10,7 +10,8 @@ public class JsonDataReader {
     private static final JsonMapper JSON_MAPPER = getJsonMapper();
 
 
-    private JsonDataReader() {}
+    private JsonDataReader() {
+    }
 
 
     public static <T> T readResourceAs(String resource, Class<T> objClass) {

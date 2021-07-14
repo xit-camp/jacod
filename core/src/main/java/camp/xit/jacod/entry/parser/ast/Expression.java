@@ -47,7 +47,9 @@ public abstract class Expression {
         return operator;
     }
 
+
     public abstract boolean filter(Object obj);
+
 
     @Override
     public String toString() {

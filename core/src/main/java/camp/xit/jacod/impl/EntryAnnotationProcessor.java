@@ -32,18 +32,20 @@ public class EntryAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        // get elements annotated with the @Setter annotation
         if (!roundEnv.processingOver() && !annotations.isEmpty()) {
             try {
+                int count = 0;
                 FileObject obj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", MAPPERS_FILE);
                 try (Writer writer = obj.openWriter()) {
                     for (TypeElement annotation : annotations) {
                         Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
                         for (Element el : annotatedElements) {
                             writer.append(el.toString()).append("\n");
+                            count++;
                         }
                     }
                 }
+                printMsg("Found " + count + " classes with codelist mapper annotation.");
             } catch (IOException e) {
                 throw new RuntimeException("Cannot process annotations", e);
             }
@@ -52,8 +54,8 @@ public class EntryAnnotationProcessor extends AbstractProcessor {
     }
 
 
-    private void printError(Element element, String message) {
-        messager.printMessage(Diagnostic.Kind.ERROR, message, element);
+    private void printMsg(String message) {
+        messager.printMessage(Diagnostic.Kind.NOTE, message);
     }
 
 

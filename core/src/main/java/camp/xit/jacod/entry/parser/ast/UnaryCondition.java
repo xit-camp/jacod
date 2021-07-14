@@ -8,9 +8,11 @@ public abstract class UnaryCondition extends Condition {
         super(clazz, property, null, operator);
     }
 
+
     public UnaryCondition(Class<?> clazz, Property property) {
         super(clazz, property);
     }
+
 
     @Override
     public String toString() {

@@ -49,6 +49,11 @@ public final class CodelistEntryMapper implements EntryMapper {
     }
 
 
+    public CodelistEntryMapper(String... whitelistPackages) {
+        this(new HashSet<>(Arrays.asList(whitelistPackages)));
+    }
+
+
     public CodelistEntryMapper(Set<String> whitelistPackages) {
         this.advancedCodelists = new ConcurrentHashMap<>();
         this.entryMappings = new HashMap<>();
@@ -202,7 +207,6 @@ public final class CodelistEntryMapper implements EntryMapper {
         List<Field> declaredFields = Stream.of(objClass.getDeclaredFields())
                 .filter(f -> !Modifier.isStatic(f.getModifiers())).collect(toList());
         Set<Field> declaredFieldsSet = new HashSet<>(declaredFields);
-
 
         if (baseEntryMetadata != null && CodelistEntry.class.isAssignableFrom(objClass)) {
             declaredFields.addAll(baseEntryMetadata.getFields());

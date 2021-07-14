@@ -76,7 +76,6 @@ class CsvReader {
 //                    if (chars[0] != '"' && customQuote == '\"') {
 //                        curVal.append('"');
 //                    }
-
                     //double quotes in column will hit this!
                     if (startCollectChar) {
                         curVal.append('"');
@@ -105,6 +104,7 @@ class CsvReader {
         result.add(curVal.toString());
         return result;
     }
+
 
     public static void main(String[] args) throws Exception {
         String csv = "A,\"EMPLOYEE, TRADESMAN, STUDENT, UNEMPLOYED, MATERNITY_LEAVE, NANNY, CIVIL_SERVANT, SERVICE_PENSIONER, HOUSEPERSON, EMPLOYEE_ABROAD\"";

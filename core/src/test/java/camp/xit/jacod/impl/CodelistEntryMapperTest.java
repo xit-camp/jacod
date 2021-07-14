@@ -67,7 +67,6 @@ class CodelistEntryMapperTest {
         assertFalse(usagesOfBPC.isEmpty());
         assertThat(usagesOfBPC, containsInAnyOrder("InsuranceProduct"));
 
-
         Collection<String> usagesOfIS = mapper.getUsagesOf("IncomeSource");
         assertFalse(usagesOfIS.isEmpty());
         assertThat(usagesOfIS, containsInAnyOrder("InsuranceProduct"));
