@@ -1,4 +1,4 @@
-package camp.xit.jacod.impl;
+package camp.xit.jacod;
 
 import java.util.Collection;
 

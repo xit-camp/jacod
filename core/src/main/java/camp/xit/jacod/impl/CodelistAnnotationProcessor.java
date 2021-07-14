@@ -1,5 +1,6 @@
 package camp.xit.jacod.impl;
 
+import camp.xit.jacod.AdvancedCodelistProvider;
 import camp.xit.jacod.model.CodelistEntry;
 import com.google.auto.service.AutoService;
 import java.io.IOException;

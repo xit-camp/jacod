@@ -1,5 +1,6 @@
 package camp.xit.jacod.impl;
 
+import camp.xit.jacod.CodelistMappingProvider;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.io.Writer;
@@ -49,7 +50,7 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
         if (!roundEnv.processingOver() && !annotations.isEmpty()) {
             try {
                 int count = 0;
-                Map<String, Set<TypeElement>> codelists = new HashMap<>();
+                Map<String, Set<TypeElement>> mapperClasses = new HashMap<>();
                 for (TypeElement annotation : annotations) {
                     Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
                     for (Element el : annotatedElements) {
@@ -61,10 +62,10 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
 
                         PackageElement pkgEl = processingEnv.getElementUtils().getPackageOf(el);
                         String pkg = pkgEl.getQualifiedName().toString();
-                        Set<TypeElement> pkgEls = codelists.get(pkg);
+                        Set<TypeElement> pkgEls = mapperClasses.get(pkg);
                         if (pkgEls == null) {
                             pkgEls = new HashSet<>();
-                            codelists.put(pkg, pkgEls);
+                            mapperClasses.put(pkg, pkgEls);
                         }
                         pkgEls.add(typeEl);
                         count++;
@@ -72,7 +73,7 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
                 }
                 printMsg("Found " + count + " classes with codelist mapper annotation.");
 
-                List<String> providers = codelists.entrySet().stream()
+                List<String> providers = mapperClasses.entrySet().stream()
                         .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
                         .collect(toList());
                 writeServices(filer, providers);

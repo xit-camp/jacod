@@ -1,5 +1,7 @@
 package camp.xit.jacod.impl;
 
+import camp.xit.jacod.AdvancedCodelistProvider;
+import camp.xit.jacod.CodelistMappingProvider;
 import camp.xit.jacod.model.CodelistEntry;
 import static java.util.Collections.emptySet;
 import java.util.Map;
