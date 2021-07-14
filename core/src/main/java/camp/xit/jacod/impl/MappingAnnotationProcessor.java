@@ -107,7 +107,6 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
                 jw.emitPackage(pkgName);
                 jw.emitEmptyLine();
                 jw.emitImports(Collection.class, Set.class);
-                jw.emitImports(pkgName + ".*");
                 jw.emitEmptyLine();
                 jw.beginType(PROVIDER_CLASS, "class", EnumSet.of(Modifier.PUBLIC), null, PROVIDER_INTERFACE);
                 jw.emitEmptyLine();

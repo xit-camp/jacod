@@ -129,7 +129,6 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
                 jw.emitPackage(pkgName);
                 jw.emitEmptyLine();
                 jw.emitImports(Collection.class, Set.class, CodelistEntry.class);
-                jw.emitImports(pkgName + ".*");
                 jw.emitEmptyLine();
                 jw.beginType(PROVIDER_CLASS, "class", EnumSet.of(Modifier.PUBLIC), null, PROVIDER_INTERFACE);
                 jw.emitEmptyLine();
