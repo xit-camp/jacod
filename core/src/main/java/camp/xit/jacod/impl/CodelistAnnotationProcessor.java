@@ -4,8 +4,15 @@ import camp.xit.jacod.model.CodelistEntry;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -19,6 +26,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
@@ -27,6 +35,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 @SupportedAnnotationTypes("camp.xit.jacod.BaseEntry")
@@ -35,7 +44,9 @@ import javax.tools.StandardLocation;
 // https://hannesdorfmann.com/annotation-processing/annotationprocessing101/
 public final class CodelistAnnotationProcessor extends AbstractProcessor {
 
-    public static final String CODELISTS_FILE = "META-INF/jacod-codelists";
+    private static final String PROVIDER_INTERFACE = AdvancedCodelistProvider.class.getCanonicalName();
+    private static final String SERVICES_PATH = "META-INF/services/" + PROVIDER_INTERFACE;
+    private static final String PROVIDER_CLASS = "_" + AdvancedCodelistProvider.class.getSimpleName() + "Impl";
 
     protected Filer filer;
     private Messager messager;
@@ -59,28 +70,80 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         if (!roundEnv.processingOver() && !annotations.isEmpty()) {
             try {
                 int count = 0;
-                FileObject obj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", CODELISTS_FILE);
-                try (Writer writer = obj.openWriter()) {
-                    for (TypeElement annotation : annotations) {
-                        Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
-                        for (Element el : annotatedElements) {
-                            if (el.getKind() != ElementKind.CLASS) {
-                                throw new ProcessingException(el, "Only classes can be annotated with @%s", annotation.getSimpleName());
-                            }
-                            checkValidClass((TypeElement) el, annotation);
-                            writer.append(el.toString()).append("\n");
-                            count++;
+                Map<String, Set<TypeElement>> codelists = new HashMap<>();
+                for (TypeElement annotation : annotations) {
+                    Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
+                    for (Element el : annotatedElements) {
+                        if (el.getKind() != ElementKind.CLASS) {
+                            throw new ProcessingException(el, "Only classes can be annotated with @%s", annotation.getSimpleName());
                         }
+                        TypeElement codelistEl = (TypeElement) el;
+                        checkValidClass(codelistEl, annotation);
+
+                        PackageElement pkgEl = elementUtils.getPackageOf(codelistEl);
+                        String pkg = pkgEl.getQualifiedName().toString();
+                        Set<TypeElement> pkgEls = codelists.get(pkg);
+                        if (pkgEls == null) {
+                            pkgEls = new HashSet<>();
+                            codelists.put(pkg, pkgEls);
+                        }
+                        pkgEls.add(codelistEl);
+                        count++;
                     }
-                    printMsg("Found " + count + " advanced codelists.");
                 }
-            } catch (IOException e) {
-                throw new RuntimeException("Cannot process annotations", e);
+                printMsg("Found " + count + " advanced codelists.");
+
+                List<String> providers = codelists.entrySet().stream()
+                        .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
+                        .collect(toList());
+                writeServices(filer, providers);
+
             } catch (ProcessingException e) {
                 printError(null, e.getMessage());
             }
         }
         return true;
+    }
+
+
+    private void writeServices(Filer filer, List<String> providers) {
+        try {
+            final FileObject fo = filer.createResource(StandardLocation.CLASS_OUTPUT, "", SERVICES_PATH);
+            try (Writer writer = fo.openWriter()) {
+                for (String provider : providers) {
+                    writer.append(provider).append("\n");
+                };
+            }
+        } catch (IOException e) {
+            printError(null, e.getMessage());
+        }
+    }
+
+
+    private String generateProvider(Filer filer, String pkgName, Set<TypeElement> codelists) {
+        String providerClassName = pkgName + "." + PROVIDER_CLASS;
+        try {
+            JavaFileObject obj = filer.createSourceFile(providerClassName);
+            try (JavaWriter jw = new JavaWriter(obj.openWriter())) {
+                jw.emitPackage(pkgName);
+                jw.emitEmptyLine();
+                jw.emitImports(Collection.class, Set.class, CodelistEntry.class);
+                jw.emitImports(pkgName + ".*");
+                jw.emitEmptyLine();
+                jw.beginType(PROVIDER_CLASS, "class", EnumSet.of(Modifier.PUBLIC), null, PROVIDER_INTERFACE);
+                jw.emitEmptyLine();
+                jw.emitAnnotation(Override.class);
+                jw.beginMethod("Collection<Class<? extends CodelistEntry>>", "getAdvancedCodelists", EnumSet.of(Modifier.PUBLIC));
+                jw.emitEmptyLine();
+                String codelistClasses = codelists.stream().map(t -> t.getSimpleName() + ".class").collect(joining(",\n"));
+                jw.emitStatement("return Set.of(\n%s\n)", codelistClasses);
+                jw.endMethod();
+                jw.endType();
+            }
+        } catch (IOException e) {
+            printError(null, e.getMessage());
+        }
+        return providerClassName;
     }
 
 
