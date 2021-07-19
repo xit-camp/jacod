@@ -5,6 +5,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -54,6 +55,8 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
     private Elements elementUtils;
     private Types typeUtils;
 
+    private List<CodelistElement> codelists;
+
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -62,16 +65,16 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         this.elementUtils = processingEnv.getElementUtils();
         this.messager = processingEnv.getMessager();
         this.typeUtils = processingEnv.getTypeUtils();
+        this.codelists = new ArrayList<>();
     }
 
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // get elements annotated with the @Setter annotation
-        if (!roundEnv.processingOver() && !annotations.isEmpty()) {
+        if (!roundEnv.processingOver()) {
             try {
                 int count = 0;
-                Map<String, Set<TypeElement>> codelists = new HashMap<>();
                 for (TypeElement annotation : annotations) {
                     Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
                     for (Element el : annotatedElements) {
@@ -79,29 +82,39 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
                             throw new ProcessingException(el, "Only classes can be annotated with @%s", annotation.getSimpleName());
                         }
                         TypeElement codelistEl = (TypeElement) el;
-                        checkValidClass(codelistEl, annotation);
-
-                        PackageElement pkgEl = elementUtils.getPackageOf(codelistEl);
-                        String pkg = pkgEl.getQualifiedName().toString();
-                        Set<TypeElement> pkgEls = codelists.get(pkg);
-                        if (pkgEls == null) {
-                            pkgEls = new HashSet<>();
-                            codelists.put(pkg, pkgEls);
-                        }
-                        pkgEls.add(codelistEl);
+                        codelists.add(new CodelistElement(codelistEl, annotation));
                         count++;
                     }
                 }
                 printMsg("Found " + count + " advanced codelists.");
-
-                List<String> providers = codelists.entrySet().stream()
-                        .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
-                        .collect(toList());
-                writeServices(filer, providers);
-
             } catch (ProcessingException e) {
                 printError(null, e.getMessage());
             }
+        } else {
+            Map<String, Set<TypeElement>> result = new HashMap<>();
+            for (CodelistElement codelistEl : codelists) {
+                try {
+                    TypeElement codelist = codelistEl.codelistElement;
+                    TypeElement annotation = codelistEl.annotationElement;
+                    checkValidClass(codelist, annotation);
+
+                    PackageElement pkgEl = elementUtils.getPackageOf(codelist);
+                    String pkg = pkgEl.getQualifiedName().toString();
+                    Set<TypeElement> pkgEls = result.get(pkg);
+                    if (pkgEls == null) {
+                        pkgEls = new HashSet<>();
+                        result.put(pkg, pkgEls);
+                    }
+                    pkgEls.add(codelist);
+                } catch (ProcessingException e) {
+                    printError(null, e.getMessage());
+                }
+            }
+
+            List<String> providers = result.entrySet().stream()
+                    .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
+                    .collect(toList());
+            writeServices(filer, providers);
         }
         return true;
     }
@@ -113,7 +126,7 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             try (Writer writer = fo.openWriter()) {
                 for (String provider : providers) {
                     writer.append(provider).append("\n");
-                };
+                }
             }
         } catch (IOException e) {
             printError(null, e.getMessage());
@@ -160,7 +173,7 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         // Check if it's an abstract class
         if (codelistType.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new ProcessingException(codelistType,
-                    "The class %s is abstract. You can't annotate abstract classes with @%",
+                    "The class %s is abstract. You can't annotate abstract classes with @%s",
                     codelistType.getQualifiedName().toString(), annotation.getSimpleName());
         }
 
@@ -223,5 +236,17 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
      */
     public void printError(Element e, String msg) {
         messager.printMessage(Diagnostic.Kind.ERROR, msg, e);
+    }
+
+    private static class CodelistElement {
+
+        private final TypeElement codelistElement;
+        private final TypeElement annotationElement;
+
+
+        public CodelistElement(TypeElement codelistElement, TypeElement annotationElement) {
+            this.codelistElement = codelistElement;
+            this.annotationElement = annotationElement;
+        }
     }
 }
