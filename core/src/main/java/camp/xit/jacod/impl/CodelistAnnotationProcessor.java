@@ -164,38 +164,26 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
                     codelistType.getQualifiedName().toString(), annotation.getSimpleName());
         }
 
-        // Check inheritance: Class must be childclass as specified in @Factory.type();
-        TypeElement superClassElement = elementUtils.getTypeElement(codelistType.getClass().getCanonicalName());
-        if (superClassElement.getKind() != ElementKind.CLASS && superClassElement.asType() != null) {
-            // Check interface implemented
-            if (!codelistType.getInterfaces().contains(superClassElement.asType())) {
+        // Check subclassing
+        TypeElement currentClass = codelistType;
+        while (true) {
+            TypeMirror superClassType = currentClass.getSuperclass();
+
+            if (superClassType.getKind() == TypeKind.NONE) {
+                // Basis class (java.lang.Object) reached, so exit
                 throw new ProcessingException(codelistType,
-                        "The class %s annotated with @%s must extends the class %s",
-                        codelistType.getQualifiedName().toString(), annotation.getSimpleName(),
-                        CodelistEntry.class.getSimpleName());
+                        "The class %s annotated with @%s must inherit from %s",
+                        codelistType.getQualifiedName().toString(), annotation,
+                        codelistType.getSimpleName());
             }
-        } else {
-            // Check subclassing
-            TypeElement currentClass = codelistType;
-            while (true) {
-                TypeMirror superClassType = currentClass.getSuperclass();
 
-                if (superClassType.getKind() == TypeKind.NONE) {
-                    // Basis class (java.lang.Object) reached, so exit
-                    throw new ProcessingException(codelistType,
-                            "The class %s annotated with @%s must inherit from %s",
-                            codelistType.getQualifiedName().toString(), annotation,
-                            codelistType.getSimpleName());
-                }
-
-                if (superClassType.toString().equals(CodelistEntry.class.getName())) {
-                    // Required super class found
-                    break;
-                }
-
-                // Moving up in inheritance tree
-                currentClass = (TypeElement) typeUtils.asElement(superClassType);
+            if (superClassType.toString().equals(CodelistEntry.class.getName())) {
+                // Required super class found
+                break;
             }
+
+            // Moving up in inheritance tree
+            currentClass = (TypeElement) typeUtils.asElement(superClassType);
         }
 
         // Check if an empty public constructor is given
