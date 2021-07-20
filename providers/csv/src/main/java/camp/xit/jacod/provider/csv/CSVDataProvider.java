@@ -51,14 +51,14 @@ public class CSVDataProvider implements DataProvider {
     @Override
     public Optional<List<EntryData>> readEntries(String codelist, long lastReadTime) {
         if (lastReadTime == -1) {
-            return parseXlsx(codelist);
+            return parseCsv(codelist);
         } else {
             throw new CodelistNotChangedException(codelist);
         }
     }
 
 
-    protected Optional<List<EntryData>> parseXlsx(String codelist) {
+    protected Optional<List<EntryData>> parseCsv(String codelist) {
         CsvParser parser = new CsvParser(parserSettings);
         parser.beginParsing(path.resolve(codelist + ".csv").toFile());
         String[] headers = null;
