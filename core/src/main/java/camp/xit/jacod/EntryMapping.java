@@ -19,7 +19,7 @@ public @interface EntryMapping {
     String resourceName() default "";
 
 
-    Class<? extends CodelistEntry> entryClass() default CodelistEntry.class;
+    Class<?> entryClass() default CodelistEntry.class;
 
 
     boolean inheritParent() default true;
