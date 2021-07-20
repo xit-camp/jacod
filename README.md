@@ -1,12 +1,13 @@
+
 # JACOD - Java Codelist API
 
-Single purpose java library to provide first class support for business domain of codelists. Almost every business oriented project needs codelists. Mostly read only data provided across every application component. JACOD provides these features:
+Single purpose java library to provide first class support for business domain of codelists. JACOD provides these features:
 * Easy map flat data to java objects
 * Easy access to codelist (CodelistClient API)
 * Caching for instant access to data
 * Easy Spring Boot integration (example soon)
 
-JACOD provides API to handle any datasource. It works primary with flat data, so you can map from e.g. CSV, Excel, Google Sheet, JDBC etc. Of course you can also write your own DataProvider or merge data from multiple providers.
+It works primary with flat data, so you can map from e.g. CSV, Excel, Google Sheet, JDBC etc. Of course you can also easily write your own DataProvider or merge data from multiple providers.
 
 ## Tutorial
 
@@ -30,7 +31,7 @@ import camp.xit.jacod.provider.xlsx.CSVDataProvider;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        CodelistClient client = new CodelistClient.Builder()
+        CodelistClient client = new Cache2kCodelistClient.Builder()
                 .withExpiryTime(1, TimeUnit.HOURS)
                 .withDataProvider(new CSVDataProvider("src/csv")).build();
 
@@ -71,20 +72,7 @@ public class LoanType extends CodelistEntry {
 }
 ```
 now Main class looks like:
-```java
-package camp.xit.jacod.example;
 
-import camp.xit.jacod.model.CodelistEntry;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class LoanType extends CodelistEntry {
-
-    private Double rate;
-}
-````
 ```java
 package camp.xit.jacod.example;
 
@@ -130,9 +118,20 @@ CHASE_BANK, Chase Bank, 2019-01-01, "STUDENT, CREDIT"
 public class Bank extends CodelistEntry {
 
     @EntryRef("LoanType")
-    private List<CodelistEntry> loanTypes;
+    private List<? extends CodelistEntry> loanTypes;
 }
 ```
+or
+
+```java
+@Getter
+@Setter
+public class Bank extends CodelistEntry {
+
+    private List<LoanType> loanTypes;
+}
+```
+
 Then we can access Banks:
 ```java
 package camp.xit.jacod.example;
