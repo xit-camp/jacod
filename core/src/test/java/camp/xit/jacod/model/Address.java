@@ -1,18 +1,8 @@
 package camp.xit.jacod.model;
 
 import camp.xit.jacod.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Embeddable
-@Getter
-@Setter
-@ToString(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
 public class Address {
 
     private String street;
@@ -20,6 +10,19 @@ public class Address {
     private String registerNumber;
     private String zipCode;
     private String city;
+
+
+    public Address() {
+    }
+
+
+    public Address(String street, String referenceNumber, String registerNumber, String zipCode, String city) {
+        this.street = street;
+        this.referenceNumber = referenceNumber;
+        this.registerNumber = registerNumber;
+        this.zipCode = zipCode;
+        this.city = city;
+    }
 
 
     public String getDisplayValue() {
@@ -30,4 +33,12 @@ public class Address {
     public String getPostalValue() {
         return AddressUtil.address(street, registerNumber, referenceNumber, city, zipCode);
     }
+
+
+    @Override
+    public String toString() {
+        return "Address{" + "street=" + street + ", referenceNumber=" + referenceNumber
+                + ", registerNumber=" + registerNumber + ", zipCode=" + zipCode + ", city=" + city + '}';
+    }
+
 }

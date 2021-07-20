@@ -27,16 +27,15 @@ public class JCacheCodelistClientImpl extends CodelistClientImpl {
     private final Cache<String, Codelist<CodelistEntry>> cache;
     private final Set<String> prefetchedCodelists;
     private final boolean reloadDependencies;
-    private final Duration expiryTimeout;
 
 
     public JCacheCodelistClientImpl(DataProvider provider, Cache cache, Duration expiryTimeout,
-            Set<String> prefetchedCodelists, Set<String> whitelistPackages, boolean shallowReferences, boolean reloadDependencies) {
+            Set<String> prefetchedCodelists, Set<String> whitelistPackages, boolean shallowReferences,
+            boolean reloadDependencies) {
 
         super(provider, whitelistPackages, shallowReferences);
 
         this.cache = cache;
-        this.expiryTimeout = expiryTimeout;
         this.prefetchedCodelists = prefetchedCodelists;
         this.reloadDependencies = reloadDependencies;
 

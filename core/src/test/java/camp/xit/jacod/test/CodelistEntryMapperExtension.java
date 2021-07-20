@@ -1,6 +1,5 @@
 package camp.xit.jacod.test;
 
-import static camp.xit.jacod.CodelistClient.Builder.BASE_PACKAGES;
 import camp.xit.jacod.impl.CodelistEntryMapper;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,19 +16,13 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)
-    public @interface FullMapper {
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.PARAMETER)
-    public @interface BaseMapper {
+    public @interface EntryMapper {
     }
 
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        return parameterContext.isAnnotated(FullMapper.class)
-                | parameterContext.isAnnotated(BaseMapper.class);
+        return parameterContext.isAnnotated(EntryMapper.class);
     }
 
 
@@ -43,12 +36,9 @@ public class CodelistEntryMapperExtension implements ParameterResolver {
         Class<?> type = parameter.getType();
         CodelistEntryMapper mapper = null;
 
-        if (parameter.isAnnotationPresent(FullMapper.class)) {
+        if (parameter.isAnnotationPresent(EntryMapper.class)) {
             mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("FullMapper", key -> new CodelistEntryMapper(), CodelistEntryMapper.class);
-        } else if (parameter.isAnnotationPresent(BaseMapper.class)) {
-            mapper = extensionContext.getRoot().getStore(Namespace.GLOBAL)//
-                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(BASE_PACKAGES), CodelistEntryMapper.class);
+                    .getOrComputeIfAbsent("BaseMapper", key -> new CodelistEntryMapper(), CodelistEntryMapper.class);
         }
         if (mapper == null) {
             throw new ParameterResolutionException("Parameter without annotation! Use @DefaultMapper or @BaseMapper annotation");

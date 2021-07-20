@@ -22,13 +22,16 @@ public class QueryEntryGroupTest {
         assertThat(filtered.keySet(), containsInAnyOrder("A_02", "B_02"));
     }
 
+
     @Test
     public void parseDigit(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "(rate < 1 & selected = true)");
-        Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
+        Codelist<InsuranceProduct> products = client.getCodelist(InsuranceProduct.class);
+        Codelist<InsuranceProduct> filtered = group.getEntries(products);
         assertThat(filtered.size(), is(2));
         assertThat(filtered.keySet(), containsInAnyOrder("A_01", "B_02"));
     }
+
 
     @Test
     public void nullValues(@CsvClient CodelistClient client) throws Exception {
@@ -37,6 +40,7 @@ public class QueryEntryGroupTest {
         assertThat(filtered.size(), is(4));
     }
 
+
     @Test
     public void nullExpression(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order is empty");
@@ -44,12 +48,14 @@ public class QueryEntryGroupTest {
         assertThat(filtered.size(), is(1));
     }
 
+
     @Test
     public void notNullExpression(@CsvClient CodelistClient client) throws Exception {
         EntryGroup group = new QueryEntryGroup(InsuranceProduct.class, "order is not empty");
         Codelist<InsuranceProduct> filtered = group.getEntries(client.getCodelist(InsuranceProduct.class));
         assertThat(filtered.size(), is(5));
     }
+
 
     @Test
     public void notNullExpressionAndExpression(@CsvClient CodelistClient client) throws Exception {

@@ -1,10 +1,10 @@
 package camp.xit.jacod.provider.xlsx;
 
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.Title;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.EntryData;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +31,7 @@ public class XLSXDataProviderTest {
 
     @Test
     public void title() throws Exception {
-        XLSXDataProvider dp = getProvider();
-        CodelistClient cl = new CodelistClient.Builder().withDataProvider(dp).build();
+        CodelistClient cl = getCodelistClient();
         Codelist<Title> sc = cl.getCodelist(Title.class);
         assertThat(sc.size(), is(52));
         assertTrue(Title.class.isAssignableFrom(sc.getEntry("PHD").getClass()));
@@ -47,8 +46,7 @@ public class XLSXDataProviderTest {
 
     @Test
     public void insuranceProduct() throws Exception {
-        XLSXDataProvider dp = getProvider();
-        CodelistClient cl = new CodelistClient.Builder().withDataProvider(dp).build();
+        CodelistClient cl = getCodelistClient();
         Codelist<InsuranceProduct> sc = cl.getCodelist(InsuranceProduct.class);
         assertThat(sc.size(), is(6));
         assertTrue(InsuranceProduct.class.isAssignableFrom(sc.getEntry("01_A").getClass()));
@@ -58,7 +56,13 @@ public class XLSXDataProviderTest {
     }
 
 
+    private CodelistClient getCodelistClient() {
+        return new CodelistClient.Builder()
+                .withDataProvider(getProvider()).build();
+    }
+
+
     private XLSXDataProvider getProvider() {
         return new XLSXDataProvider("/codelists.xlsx");
-        }
     }
+}

@@ -5,7 +5,7 @@ import camp.xit.jacod.provider.EntryData;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvDP;
 import camp.xit.jacod.test.CodelistEntryMapperExtension;
-import camp.xit.jacod.test.CodelistEntryMapperExtension.BaseMapper;
+import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class FlatEntryMapperTest {
 
     @Test
-    void basic(@BaseMapper CodelistEntryMapper mapper, @CsvDP DataProvider crafterDataProvider) throws Exception {
+    void basic(@EntryMapper CodelistEntryMapper mapper, @CsvDP DataProvider crafterDataProvider) throws Exception {
         FlatEntryMapper flatMapper = mapper.getFlatEntryMapper();
         Optional<List<EntryData>> data = crafterDataProvider.readEntries("BusinessPlace", -1);
         Class<? extends DataProvider> providerCl = crafterDataProvider.getClass();

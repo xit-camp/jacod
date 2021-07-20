@@ -1,4 +1,5 @@
-# JACOD - Java Codelist API
+
+# JACOD - Java Codelist API Tutorial
 
 ## Installation
 
@@ -6,7 +7,7 @@
 
 ```xml
 <dependency>
-    <groupId>camp.xit.jaoca</groupId>
+    <groupId>camp.xit.jacod</groupId>
     <artifactId>jacod-bom</artifactId>
     <version>${jacod.version}</version>
 </dependency>
@@ -18,13 +19,14 @@
 
 ```java
 CodelistClient cl = new CodelistClient.Builder()
-        .addScanPackages("com.example.model").
         .withDataProvider(new CSVDataProvider())
         .build();
 
 Codelist title = cl.getCodelist("Title");
 title.getEntry("DrSC.");
-title.stream().filter(e -> e.getCode().contains("Dr")).forEach(System.out::println);
+title.stream()
+    .filter(e -> e.getCode().contains("Dr"))
+    .forEach(System.out::println);
 ```
 
 ### Extended codelist
@@ -79,7 +81,7 @@ public class PresentedPaperSection extends CodelistEntry {
 
 If codelist reference is base codelist without entry class, you have to use @EntryRef annotation to define codelist name.
 
-Napr.
+Example:
 
 ```java
 public class InsuranceProduct extends CodelistEntry {
@@ -140,14 +142,15 @@ public class Address {
 }
 ```
 
-Systém podporuje viacero zdrojov dát. Ak daný čiselník používa iný zdrojový systém, ktorý má ine názvy polí,
-je možné prepísať východzie mapovanie z triedy [CodelistEntry](src/main/java/camp/xit/kiwi/codelist/client/model/CodelistEntry.java)
-pomocou anotácie [EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java).
+## Data Mapping
 
-Príklad:
+The library supports multiple data sources. You can use custom field mapping if provided codelist contains different field names than your class representation.
+In that case you can use [@EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java) annotation.
+
+Example:
 
 ```java
-@EntryMapping(provider = CrafterDataProvider.class, value = {
+@EntryMapping(provider = CSVDataProvider.class, value = {
     @EntryFieldMapping(field = "code", mappedField = "ID"),
     @EntryFieldMapping(field = "name", mappedField = "DESCRIPTION"),
     @EntryFieldMapping(field = "days", mappedField = "DAYS")
@@ -157,8 +160,7 @@ public class PaymentDeferment extends CodelistEntry {
     private Integer days;
 }
 ```
-
-Anotáciu `@EntryMapping` je možné vložiť aj mimo samotnej tredy definujúcej číselník napr:
+[@EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java) annotation can be also used outside of class that defines codelist entry class:
 
 ```java
 @EntryMapping(provider = CrafterDataProvider.class, entryClass=PaymentDeferment.class, value = {
@@ -169,68 +171,41 @@ Anotáciu `@EntryMapping` je možné vložiť aj mimo samotnej tredy definujúce
 class PaymentDefermentMapping {}
 ```
 
-### Zdrojový systém
+To overwrite mapping of codelist without custom class definition use [@BaseEntryMapping](src/main/java/camp/xit/kiwi/codelist/client/BaseEntryMapping.java) annotation:
 
-Každý zdrojový systém musí implementovať interface [DataProvider](src/main/java/camp/xit/kiwi/codelist/provider/DataProvider.java).
-Momentálne je možné definovať maximálne jednu implementáciu zdrojového systému.
+```java
+import camp.xit.jacod.BaseEntryMapping;
+import camp.xit.jacod.EntryFieldMapping;
+import camp.xit.kiwi.jacod.provider.spin.SpinDataProvider;
 
-### Enumerácie
+@BaseEntryMapping(codelist = "LoanType", provider = CSVDataProvider.class, resourceName = "LOANTYPE", fields = {
+    @EntryFieldMapping(field = "name", mappedField = "TITLE")
+})
+public interface LoanType {
+}
+```
 
-Je možné definovať enumeráciu pre daný číselník a to tak, že projekt, ktorý konzumuje toto API, si vytvorí enumeračnú triedu zodpovedajúcu požiadavkam. Najlepší zdroj príkladov sú [junit testy](src/test/java/camp/xit/kiwi/codelist/client/CodelistEnumTest.java). Pre každú enumeračnú triedu musí existovať odvodený číselník. Pre implicitne odvodené číselníky nie je potrebné definovať custom triedy.
+### Data Provider
 
-#### Príklad použitia
+To write custom data provider you have to implement [DataProvider](src/main/java/camp/xit/kiwi/codelist/provider/DataProvider.java) interface. Example of simple data provider is [CSVDataProvider](-   /data/home/hlavki/develop/xit/projects/jacod/providers/csv/src/main/java/camp/xit/jacod/provider/csv/CSVDataProvider.java)
+
+### Enumerations
+
+You can use enumeration in JACOD in 2 ways:
+1. Define fields with enumeration types
+1. Define enumerated codelists
+
+#### Enumerated Codelists
+
+You must define custom entry class to use enumerated codelists. For more information look in [tests](src/test/java/camp/xit/kiwi/codelist/client/CodelistEnumTest.java).
+
+Example:
 
 ```java
 public class ContractState extends CodelistEntry {
 
     public enum States implements CodelistEnum<ContractState> {
-        ACTIVE, INACTIV, INPROGRESS, XNA
+        ACTIVE, INACTIV, IN_PROGRESS, XNA
     }
 }
 ```
-
-```java
-public enum InsuranceProducts implements CodelistEnum<InsuranceProduct> {
-    XSELL_A, XSELL_B, XNA, NONE
-}
-```
-
-#### Použitie API
-
-Použitie API je v oboch prípadoch rovnaké:
-
-Potom môžeš použiť priamo [CodelistClient](src/main/java/camp/xit/kiwi/codelist/client/CodelistClient.java):
-
-```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-ContactState activeState = cl.getEntry(ContactState.States.ACTIVE);
-```
-
-alebo metôdu triedy [Codelist](src/main/java/camp/xit/kiwi/codelist/client/model/Codelist.java)
-
-```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-Codelist<ContractState> csc = cl.getCodelist(ContractState.class);
-scs.getEntry(ContractState.States.INACTIV);
-```
-
-resp.
-
-Potom môžeš použiť priamo [CodelistClient](src/main/java/camp/xit/kiwi/codelist/client/CodelistClient.java):
-
-```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-InsuranceProduct xsellA = cl.getEntry(InsuranceProducts.XSELL_A);
-```
-
-alebo metôdu triedy [Codelist](src/main/java/camp/xit/kiwi/codelist/client/model/Codelist.java)
-
-```java
-CodelistClient cl = new CodelistClient.Builder().getClient();
-Codelist<InsuranceProduct> ipc = cl.getCodelist(InsuranceProduct.class);
-InsuranceProduct xsellA = ipc.getEntry(InsuranceProducts.XSELL_A);
-```
-
-## Create Release
-
-mvn clean release:prepare release:perform -DpushChanges=false -DlocalCheckout=true -Darguments='-Dmaven.javadoc.failOnError=false -Dmaven.deploy.skip=true -Dmaven.site.skip=true'

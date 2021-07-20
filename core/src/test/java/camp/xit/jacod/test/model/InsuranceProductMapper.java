@@ -1,4 +1,3 @@
-
 package camp.xit.jacod.test.model;
 
 import camp.xit.jacod.EntryFieldMapping;

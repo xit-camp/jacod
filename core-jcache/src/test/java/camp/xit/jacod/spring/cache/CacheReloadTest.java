@@ -1,11 +1,11 @@
 package camp.xit.jacod.spring.cache;
 
-import camp.xit.jacod.jcache.JCacheCodelistClient;
 import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.spring.cache.model.Title;
-import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
+import camp.xit.jacod.jcache.JCacheCodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.spring.cache.model.Title;
+import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
 import java.time.Duration;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -37,7 +37,7 @@ public class CacheReloadTest {
 
         CodelistClient client = new JCacheCodelistClient.Builder(cache)
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .addScanPackages(Title.class.getPackage())
                 .withExpiryTime(Duration.ofSeconds(CACHE_EXPIRY_TIME))
                 .withPrefetched("Title").build();
 
@@ -53,7 +53,7 @@ public class CacheReloadTest {
     void equalEntries() throws Exception {
         CodelistClient client = new CodelistClient.Builder()
                 .withDataProvider(new SimpleCsvDataProvider())
-                .addScanPackages(Title.class.getPackageName())
+                .addScanPackages(Title.class.getPackage())
                 .withPrefetched("Title").build();
         Title dr1 = client.getCodelist(Title.class).getEntry("ThDr.");
         client.clearCache();

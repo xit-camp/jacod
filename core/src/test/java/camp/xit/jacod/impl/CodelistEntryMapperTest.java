@@ -5,8 +5,7 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import camp.xit.jacod.test.CodelistEntryMapperExtension;
-import camp.xit.jacod.test.CodelistEntryMapperExtension.BaseMapper;
-import camp.xit.jacod.test.CodelistEntryMapperExtension.FullMapper;
+import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class CodelistEntryMapperTest {
 
     @Test
-    void basic(@BaseMapper CodelistEntryMapper mapper) {
+    void basic(@EntryMapper CodelistEntryMapper mapper) {
         assertFalse(mapper.isAdvancedCodelist("InsuranceCompany"));
         assertTrue(mapper.isAdvancedCodelist("InsuranceProduct"));
         assertTrue(mapper.isAdvancedCodelist("Title"));
@@ -30,7 +29,7 @@ class CodelistEntryMapperTest {
 
 
     @Test
-    void advanced(@BaseMapper CodelistEntryMapper mapper) {
+    void advanced(@EntryMapper CodelistEntryMapper mapper) {
         assertTrue(mapper.isAdvancedCodelist("BusinessPlace"));
         EntryMetadata metadata = mapper.getEntryMetadata(BusinessPlace.class);
         assertThat(metadata.getEmbedded().size(), is(2));
@@ -38,7 +37,7 @@ class CodelistEntryMapperTest {
 
 
     @Test
-    void references(@BaseMapper CodelistEntryMapper mapper) {
+    void references(@EntryMapper CodelistEntryMapper mapper) {
         assertThat(mapper.getAllDependencies(CodelistEntry.class).size(), is(0));
         assertThat(mapper.getAllDependencies(InsuranceProduct.class).size(), is(4));
         assertThat(mapper.getCodelistDependencies(InsuranceProduct.class).size(), is(3));
@@ -46,7 +45,7 @@ class CodelistEntryMapperTest {
 
 
     @Test
-    void dependencyGraph(@BaseMapper CodelistEntryMapper mapper) {
+    void dependencyGraph(@EntryMapper CodelistEntryMapper mapper) {
         assertThat(mapper.getSortedDependencies(List.of("BonusType")), contains("BonusType"));
         assertThat(mapper.getSortedDependencies(List.of("InsuranceProduct")),
                 contains("InsuranceCompany", "InsuranceCalculationType", "IncomeSource", "InsuranceProduct"));
@@ -54,7 +53,7 @@ class CodelistEntryMapperTest {
 
 
     @Test
-    void nameFromProvider(@FullMapper CodelistEntryMapper mapper) {
+    void nameFromProvider(@EntryMapper CodelistEntryMapper mapper) {
         Map<String, String> mapping = mapper.getReverseProviderNames(SimpleCsvDataProvider.class);
         assertNotNull(mapping);
         assertTrue(mapping.containsKey("CSV_CUSTOM_NAME"));
@@ -63,11 +62,10 @@ class CodelistEntryMapperTest {
 
 
     @Test
-    void usagesOf(@BaseMapper CodelistEntryMapper mapper) {
+    void usagesOf(@EntryMapper CodelistEntryMapper mapper) {
         Collection<String> usagesOfBPC = mapper.getUsagesOf("InsuranceCompany");
         assertFalse(usagesOfBPC.isEmpty());
         assertThat(usagesOfBPC, containsInAnyOrder("InsuranceProduct"));
-
 
         Collection<String> usagesOfIS = mapper.getUsagesOf("IncomeSource");
         assertFalse(usagesOfIS.isEmpty());

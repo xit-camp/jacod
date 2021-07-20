@@ -1,22 +1,20 @@
 package camp.xit.jacod.model;
 
+import camp.xit.jacod.BaseEntry;
 import camp.xit.jacod.DateUtil;
 import camp.xit.jacod.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Základná trieda číselníkovej hodnoty. Číselník je definovaný množinou týchto hodnôt.
  *
  */
-@Getter
-@Setter
-@ToString
+@BaseEntry
 public class CodelistEntry implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Jednoznačný identifikátor číselníkovej hodnoty. Je zároveň aj primárny kľúč.
@@ -82,6 +80,66 @@ public class CodelistEntry implements Serializable {
     }
 
 
+    public String getCode() {
+        return code;
+    }
+
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public Integer getOrder() {
+        return order;
+    }
+
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+
+    public LocalDate getValidFrom() {
+        return validFrom;
+    }
+
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+
+
+    public LocalDate getValidTo() {
+        return validTo;
+    }
+
+
+    public void setValidTo(LocalDate validTo) {
+        this.validTo = validTo;
+    }
+
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
+    }
+
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -116,5 +174,17 @@ public class CodelistEntry implements Serializable {
 
     public boolean isValid() {
         return DateUtil.isValid(validFrom, validTo);
+    }
+
+
+    @Override
+    public String toString() {
+        return "CodelistEntry{" + toStringAttrs() + '}';
+    }
+
+
+    public String toStringAttrs() {
+        return "code=" + code + ", name=" + name + ", order=" + order + ", validFrom="
+                + validFrom + ", validTo=" + validTo + ", selected=" + selected;
     }
 }

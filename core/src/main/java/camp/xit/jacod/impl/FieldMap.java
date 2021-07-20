@@ -5,8 +5,6 @@ import camp.xit.jacod.EntryMapping;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import lombok.Getter;
-import lombok.ToString;
 
 final class FieldMap<T> {
 
@@ -54,8 +52,6 @@ final class FieldMap<T> {
         return String.valueOf(fields);
     }
 
-    @Getter
-    @ToString
     static class FieldMapping {
 
         private final String mappedField;
@@ -85,6 +81,22 @@ final class FieldMap<T> {
 
         private String addPrefix(String prefix, String value) {
             return prefix + value.substring(0, 1).toUpperCase() + value.substring(1);
+        }
+
+
+        public String getMappedField() {
+            return mappedField;
+        }
+
+
+        public boolean isLookupRef() {
+            return lookupRef;
+        }
+
+
+        @Override
+        public String toString() {
+            return "FieldMapping{" + "mappedField=" + mappedField + ", lookupRef=" + lookupRef + '}';
         }
     }
 }

@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 public interface CodelistClient {
 
@@ -20,7 +22,6 @@ public interface CodelistClient {
      * Return codelist instance which contains all codelist entries. If codelist does not exist
      * {@link CodelistNotFoundException}.
      *
-     * @param <T> codelist type
      * @param codelist codelist name
      * @throws CodelistNotFoundException if codelist does not exist
      * @return codelist
@@ -74,7 +75,7 @@ public interface CodelistClient {
      * @param codelists codelist names
      * @return map of codelists
      */
-    Map<String, Codelist<?>> getCodelists(String... codelists);
+    Map<String, Codelist<? extends CodelistEntry>> getCodelists(String... codelists);
 
 
     /**
@@ -88,7 +89,7 @@ public interface CodelistClient {
      * @throws EntryNotFoundException if entry does not exist
      * @return codelist entry value
      */
-    CodelistEntry getEntry(String codelist, String code);
+    <T extends CodelistEntry> T getEntry(String codelist, String code);
 
 
     /**
@@ -196,18 +197,6 @@ public interface CodelistClient {
 
 
         /**
-         * Žiadne číselníky nebudú nahraté do cache po vytvorení inštancie codelist client.
-         * Číselníky sa dotiahnú pri prvoj zavolani. Vo východzom stave sa loadujú všetky číselníky.
-         *
-         * @return builder
-         */
-        public T noPrefetched() {
-            this.prefetchedCodelists = Collections.emptySet();
-            return (T) this;
-        }
-
-
-        /**
          * In the default setting, only the default classpath (camp.xit.jacod.model) is scanned, which may
          * result in not finding all application classes. This setting tells that the entire classpath will be
          * scanned.
@@ -225,11 +214,37 @@ public interface CodelistClient {
          * result in not finding all application classes. This method adds defined packages, that will be
          * scanned.
          *
-         * @param whitelistPackages list of packages, that will be scanned
+         * @param packages list of packages, that will be scanned
          * @return builder
          */
-        public T addScanPackages(String... whitelistPackages) {
-            this.whitelistPackages.addAll(Arrays.asList(whitelistPackages));
+        public T addScanPackages(String... packages) {
+            this.whitelistPackages.addAll(Arrays.asList(packages));
+            return (T) this;
+        }
+
+
+        /**
+         * In the default setting, only the default classpath (camp.xit.jacod.model) is scanned, which may
+         * result in not finding all application classes. This method adds defined packages, that will be
+         * scanned.
+         *
+         * @param packages list of packages, that will be scanned
+         * @return builder
+         */
+        public T addScanPackages(Package... packages) {
+            whitelistPackages.addAll(Stream.of(packages).map(Package::getName).collect(toList()));
+            return (T) this;
+        }
+
+
+        /**
+         * Žiadne číselníky nebudú nahraté do cache po vytvorení inštancie codelist client.
+         * Číselníky sa dotiahnú pri prvoj zavolani. Vo východzom stave sa loadujú všetky číselníky.
+         *
+         * @return builder
+         */
+        public T noPrefetched() {
+            this.prefetchedCodelists = Collections.emptySet();
             return (T) this;
         }
 
