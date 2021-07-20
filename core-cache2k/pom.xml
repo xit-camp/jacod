@@ -8,7 +8,6 @@
     </parent>
 
     <artifactId>jacod-core-cache2k</artifactId>
-    <packaging>bundle</packaging>
 
     <properties>
         <cache2k.version>2.0.0.Final</cache2k.version>
@@ -45,6 +44,12 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
