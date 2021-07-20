@@ -90,7 +90,7 @@ public class XLSXDataProvider implements DataProvider, Closeable {
         return sheets;
     }
 
-    protected XSSFWorkbook getWorkbook(InputStream in) {
+    protected final XSSFWorkbook getWorkbook(InputStream in) {
         try {
             return new XSSFWorkbook(in);
         } catch (IOException e) {
