@@ -125,9 +125,11 @@ public interface CodelistClient {
     /**
      * Returns codelist entries as list of flat map implemented by {@link HashMap}, where every map in the
      * list is one codelist entry. It's useful to serialize data into another format e.g. JSON.
+     * {@link CodelistNotFoundException} is thrown, if codelist does not exists.
      *
      * @param codelist codelist name
      * @return codelist entries as list of flat maps.
+     * @throws CodelistNotFoundException if codelist does not exist
      */
     List<Map<String, Object>> getFlatEntries(String codelist);
 
