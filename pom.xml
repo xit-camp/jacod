@@ -22,26 +22,11 @@
 
     <distributionManagement>
         <repository>
-            <id>xit-releases</id>
-            <url>https://repository.xit.camp/repository/maven-releases/</url>
+            <id>github</id>
+            <name>GitHub Maven Packages</name>
+            <url>https://maven.pkg.github.com/hlavki/jacod</url>
         </repository>
-        <snapshotRepository>
-            <id>xit-snapshots</id>
-            <url>https://repository.xit.camp/repository/maven-snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>xit-hosted</id>
-            <name>all xIT hosted repositories group</name>
-            <url>https://repository.xit.camp/repository/maven-hosted/</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <modules>
         <module>core</module>
