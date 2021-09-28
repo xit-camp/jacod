@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:git:ssh://git@code.xit.camp:xit/common/jacod.git</connection>
+        <connection>scm:git:ssh://git@github.com:hlavki/jacod.git</connection>
         <tag>HEAD</tag>
     </scm>
 
@@ -15,9 +15,9 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>1.7.30</slf4j.version>
-        <jupiter.version>5.7.2</jupiter.version>
-        <mockito.version>3.11.2</mockito.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <jupiter.version>5.8.0</jupiter.version>
+        <mockito.version>3.12.4</mockito.version>
     </properties>
 
     <distributionManagement>
@@ -130,7 +130,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.3.1</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
