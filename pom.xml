@@ -24,14 +24,14 @@
         <repository>
             <id>github</id>
             <name>GitHub Maven Packages</name>
-            <url>https://maven.pkg.github.com/hlavki/jacod</url>
+            <url>https://maven.pkg.github.com/xit-camp/jacod</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/hlavki/google-api-credentials</url>
+            <url>https://maven.pkg.github.com/xit-camp/*</url>
         </repository>
     </repositories>
 
