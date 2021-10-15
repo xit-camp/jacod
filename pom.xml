@@ -3,7 +3,7 @@
 
     <groupId>camp.xit.jacod</groupId>
     <artifactId>jacod</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>JACOD</name>
@@ -13,7 +13,7 @@
     <scm>
         <connection>scm:git:https://github.com/xit-camp/jacod.git</connection>
         <url>https://github.com/xit-camp/jacod</url>
-        <tag>v1.3.5</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
