@@ -18,7 +18,6 @@ final class MappersRef {
 
     private final Map<String, Class<? extends CodelistEntry>> codelistMapping;
     private final Set<Class<?>> mapperClasses;
-    private final Set<String> whitelistPackages;
 
 
     public MappersRef() {
@@ -26,11 +25,10 @@ final class MappersRef {
     }
 
 
-    public MappersRef(Set<String> whitelistMapperPackages) {
+    public MappersRef(Set<String> whitelistPackages) {
         long start = System.currentTimeMillis();
-        this.codelistMapping = loadCodelistClasses();
-        this.mapperClasses = loadMapperClasses();
-        this.whitelistPackages = whitelistMapperPackages;
+        this.codelistMapping = loadCodelistClasses(whitelistPackages);
+        this.mapperClasses = loadMapperClasses(whitelistPackages);
         long duration = System.currentTimeMillis() - start;
         LOG.info("Loaded {} codelists and {} mapper classes in {} ms", codelistMapping.size(), mapperClasses.size(), duration);
     }
@@ -46,28 +44,25 @@ final class MappersRef {
     }
 
 
-    public Set<String> getWhitelistPackages() {
-        return whitelistPackages;
-    }
-
-
-    public boolean isAllowedClass(Class<?> mapperClass) {
+    private boolean isAllowedClass(Set<String> whitelistPackages, Class<?> mapperClass) {
         return whitelistPackages.isEmpty() || whitelistPackages.contains(mapperClass.getPackageName());
     }
 
 
-    private Map<String, Class<? extends CodelistEntry>> loadCodelistClasses() {
+    private Map<String, Class<? extends CodelistEntry>> loadCodelistClasses(Set<String> whitelistPackages) {
         return ServiceLoader.load(AdvancedCodelistProvider.class).stream()
                 .map(ServiceLoader.Provider::get)
                 .flatMap(t -> t.getAdvancedCodelists().stream())
+                .filter(c -> isAllowedClass(whitelistPackages, c))
                 .collect(toMap(c -> c.getSimpleName(), c -> c));
     }
 
 
-    private Set<Class<?>> loadMapperClasses() {
+    private Set<Class<?>> loadMapperClasses(Set<String> whitelistPackages) {
         return ServiceLoader.load(CodelistMappingProvider.class).stream()
                 .map(ServiceLoader.Provider::get)
                 .flatMap(t -> t.getMapperClasses().stream())
+                .filter(c -> isAllowedClass(whitelistPackages, c))
                 .collect(toSet());
     }
 }

@@ -73,19 +73,15 @@ public final class CodelistEntryMapper implements EntryMapper {
                 throw new RuntimeException("Duplicate codelist class declaration for name " + codelistName
                         + ". Conflicting classes: [" + existing.getName() + ", " + entryClass.getName() + "]");
             }
-            if (mappersReg.isAllowedClass(entryClass)) {
-                advancedCodelists.put(codelistName, entryClass);
-            }
+            advancedCodelists.put(codelistName, entryClass);
         }
 
         mappersReg.getMapperClasses()
                 .stream()
-                .filter(mappersReg::isAllowedClass)
                 .forEach(mapperClass -> setBaseEntryMappings(baseEntryMappings, mapperClass));
 
         mappersReg.getMapperClasses()
                 .stream()
-                .filter(mappersReg::isAllowedClass)
                 .forEach(mapperClass -> setEntryMappings(entryMappings, mapperClass));
     }
 
