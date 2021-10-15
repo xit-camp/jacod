@@ -4,23 +4,24 @@ import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.EntryNotFoundException;
 import java.sql.Timestamp;
 import org.cache2k.expiry.ExpiryTimeValues;
-import org.cache2k.integration.CacheLoaderException;
-import org.cache2k.integration.ExceptionInformation;
-import org.cache2k.integration.ExceptionPropagator;
+import org.cache2k.io.CacheLoaderException;
+import org.cache2k.io.ExceptionPropagator;
+
+import org.cache2k.io.LoadExceptionInfo;
 
 public class CodelistExceptionPropagator implements ExceptionPropagator {
 
     @Override
-    public RuntimeException propagateException(Object key, final ExceptionInformation exceptionInformation) {
+    public RuntimeException propagateException(final LoadExceptionInfo exceptionInformation) {
         Throwable origException = exceptionInformation.getException();
         return (origException instanceof CodelistNotFoundException
                 || origException instanceof EntryNotFoundException)
                         ? (RuntimeException) origException
-                        : origPropagateException(key, exceptionInformation);
+                        : origPropagateException(exceptionInformation);
     }
 
 
-    private RuntimeException origPropagateException(Object key, final ExceptionInformation exceptionInformation) {
+    private RuntimeException origPropagateException(final LoadExceptionInfo exceptionInformation) {
         long _expiry = exceptionInformation.getUntil();
         String txt = "";
         if (_expiry > 0) {
@@ -40,5 +41,4 @@ public class CodelistExceptionPropagator implements ExceptionPropagator {
     private String formatMillis(long t) {
         return new Timestamp(t).toString();
     }
-
 }

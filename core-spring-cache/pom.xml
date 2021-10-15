@@ -10,7 +10,7 @@
     <artifactId>jacod-core-spring-cache</artifactId>
 
     <properties>
-        <spring.version>5.3.8</spring.version>
+        <spring.version>5.3.10</spring.version>
     </properties>
 
     <dependencies>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>3.0.3</version>
+            <version>3.0.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -13,7 +13,7 @@ import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.cache2k.CacheEntry;
 import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
-import org.cache2k.integration.AdvancedCacheLoader;
+import org.cache2k.io.AdvancedCacheLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

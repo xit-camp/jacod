@@ -8,7 +8,6 @@
     </parent>
 
     <artifactId>jacod-core</artifactId>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -25,10 +24,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>com.helger.maven</groupId>
                 <artifactId>ph-javacc-maven-plugin</artifactId>
