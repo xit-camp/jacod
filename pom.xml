@@ -48,16 +48,9 @@
         </repository>
         <snapshotRepository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/xit-camp/google-api-credentials</url>
+            <url>https://maven.pkg.github.com/xit-camp/jacod</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/xit-camp/*</url>
-        </repository>
-    </repositories>
 
     <modules>
         <module>core</module>
