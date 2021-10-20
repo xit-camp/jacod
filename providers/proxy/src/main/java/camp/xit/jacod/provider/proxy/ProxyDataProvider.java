@@ -36,12 +36,19 @@ public class ProxyDataProvider implements DataProvider {
     private final String baseUrl;
     private final HttpClient httpClient;
     private final JsonMapper jsonMapper;
+    private final String providerName;
 
 
     public ProxyDataProvider(String baseUrl) {
+        this(baseUrl, null);
+    }
+
+
+    public ProxyDataProvider(String baseUrl, String providerName) {
         this.baseUrl = baseUrl;
         this.httpClient = HttpClient.newHttpClient();
         this.jsonMapper = new JsonMapper();
+        this.providerName = getClass().getSimpleName() + (providerName != null ? "[" + providerName + "]" : "");
     }
 
 
@@ -115,7 +122,7 @@ public class ProxyDataProvider implements DataProvider {
             HttpResponse<InputStream> response = httpClient.send(req, BodyHandlers.ofInputStream());
             switch (response.statusCode()) {
                 case 200:
-                    try (InputStream in = response.body()) {
+                    try ( InputStream in = response.body()) {
                     return jsonMapper.readTree(in);
                 }
                 case 404:
@@ -126,5 +133,11 @@ public class ProxyDataProvider implements DataProvider {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Override
+    public String getName() {
+        return providerName;
     }
 }
