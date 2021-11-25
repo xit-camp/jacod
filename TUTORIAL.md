@@ -145,7 +145,7 @@ public class Address {
 ## Data Mapping
 
 The library supports multiple data sources. You can use custom field mapping if provided codelist contains different field names than your class representation.
-In that case you can use [@EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java) annotation.
+In that case you can use [@EntryMapping](src/main/java/camp/xit/codelist/client/EntryMapping.java) annotation.
 
 Example:
 
@@ -160,7 +160,7 @@ public class PaymentDeferment extends CodelistEntry {
     private Integer days;
 }
 ```
-[@EntryMapping](src/main/java/camp/xit/kiwi/codelist/client/EntryMapping.java) annotation can be also used outside of class that defines codelist entry class:
+[@EntryMapping](src/main/java/camp/xit/codelist/client/EntryMapping.java) annotation can be also used outside of class that defines codelist entry class:
 
 ```java
 @EntryMapping(provider = CrafterDataProvider.class, entryClass=PaymentDeferment.class, value = {
@@ -171,12 +171,12 @@ public class PaymentDeferment extends CodelistEntry {
 class PaymentDefermentMapping {}
 ```
 
-To overwrite mapping of codelist without custom class definition use [@BaseEntryMapping](src/main/java/camp/xit/kiwi/codelist/client/BaseEntryMapping.java) annotation:
+To overwrite mapping of codelist without custom class definition use [@BaseEntryMapping](src/main/java/camp/xit/codelist/client/BaseEntryMapping.java) annotation:
 
 ```java
 import camp.xit.jacod.BaseEntryMapping;
 import camp.xit.jacod.EntryFieldMapping;
-import camp.xit.kiwi.jacod.provider.spin.SpinDataProvider;
+import camp.xit.jacod.provider.spin.SpinDataProvider;
 
 @BaseEntryMapping(codelist = "LoanType", provider = CSVDataProvider.class, resourceName = "LOANTYPE", fields = {
     @EntryFieldMapping(field = "name", mappedField = "TITLE")
@@ -187,7 +187,7 @@ public interface LoanType {
 
 ### Data Provider
 
-To write custom data provider you have to implement [DataProvider](src/main/java/camp/xit/kiwi/codelist/provider/DataProvider.java) interface. Example of simple data provider is [CSVDataProvider](-   /data/home/hlavki/develop/xit/projects/jacod/providers/csv/src/main/java/camp/xit/jacod/provider/csv/CSVDataProvider.java)
+To write custom data provider you have to implement [DataProvider](src/main/java/camp/xit/codelist/provider/DataProvider.java) interface. Example of simple data provider is [CSVDataProvider](-   /data/home/hlavki/develop/xit/projects/jacod/providers/csv/src/main/java/camp/xit/jacod/provider/csv/CSVDataProvider.java)
 
 ### Enumerations
 
@@ -197,7 +197,7 @@ You can use enumeration in JACOD in 2 ways:
 
 #### Enumerated Codelists
 
-You must define custom entry class to use enumerated codelists. For more information look in [tests](src/test/java/camp/xit/kiwi/codelist/client/CodelistEnumTest.java).
+You must define custom entry class to use enumerated codelists. For more information look in [tests](src/test/java/camp/xit/codelist/client/CodelistEnumTest.java).
 
 Example:
 

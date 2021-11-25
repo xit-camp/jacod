@@ -37,7 +37,6 @@
                         </goals>
                         <configuration>
                             <javadocFriendlyComments>true</javadocFriendlyComments>
-                            <packageName>camp.xit.kiwi.config.product.client.expression</packageName>
                             <outputDirectory>${project.build.directory}/generated-sources/javacc</outputDirectory>
                         </configuration>
                     </execution>
