@@ -1,4 +1,4 @@
-package camp.xit.kiwi.jacod.provider.gsheet;
+package camp.xit.jacod.provider.gsheet;
 
 import camp.xit.jacod.provider.EntryData;
 import java.io.File;

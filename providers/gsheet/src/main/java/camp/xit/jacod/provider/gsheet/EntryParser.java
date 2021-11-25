@@ -1,7 +1,7 @@
-package camp.xit.kiwi.jacod.provider.gsheet;
+package camp.xit.jacod.provider.gsheet;
 
 import camp.xit.jacod.provider.EntryData;
-import camp.xit.kiwi.jacod.provider.gsheet.service.RangeValue;
+import camp.xit.jacod.provider.gsheet.service.RangeValue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.util.ArrayList;

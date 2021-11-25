@@ -1,12 +1,12 @@
-package camp.xit.kiwi.jacod.provider.gsheet;
+package camp.xit.jacod.provider.gsheet;
 
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.EntryData;
-import static camp.xit.kiwi.jacod.provider.gsheet.JsonDataReader.readResourceAs;
-import camp.xit.kiwi.jacod.provider.gsheet.service.GSheetService;
-import camp.xit.kiwi.jacod.provider.gsheet.service.RangeValue;
+import static camp.xit.jacod.provider.gsheet.JsonDataReader.readResourceAs;
+import camp.xit.jacod.provider.gsheet.service.GSheetService;
+import camp.xit.jacod.provider.gsheet.service.RangeValue;
 import java.util.List;
 import java.util.Optional;
 import static java.util.Optional.empty;

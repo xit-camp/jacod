@@ -1,4 +1,4 @@
-package camp.xit.kiwi.jacod.provider.gsheet;
+package camp.xit.jacod.provider.gsheet;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;

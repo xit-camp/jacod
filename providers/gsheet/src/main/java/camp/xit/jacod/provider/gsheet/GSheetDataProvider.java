@@ -1,12 +1,12 @@
-package camp.xit.kiwi.jacod.provider.gsheet;
+package camp.xit.jacod.provider.gsheet;
 
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
-import camp.xit.kiwi.jacod.provider.gsheet.service.GSheetService;
-import camp.xit.kiwi.jacod.provider.gsheet.service.GoogleApiException;
-import camp.xit.kiwi.jacod.provider.gsheet.service.NotFoundException;
-import camp.xit.kiwi.jacod.provider.gsheet.service.RangeValue;
-import camp.xit.kiwi.jacod.provider.gsheet.service.SpreadSheet;
+import camp.xit.jacod.provider.gsheet.service.GSheetService;
+import camp.xit.jacod.provider.gsheet.service.GoogleApiException;
+import camp.xit.jacod.provider.gsheet.service.NotFoundException;
+import camp.xit.jacod.provider.gsheet.service.RangeValue;
+import camp.xit.jacod.provider.gsheet.service.SpreadSheet;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;

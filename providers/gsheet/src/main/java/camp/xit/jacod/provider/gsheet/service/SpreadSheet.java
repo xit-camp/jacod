@@ -1,4 +1,4 @@
-package camp.xit.kiwi.jacod.provider.gsheet.service;
+package camp.xit.jacod.provider.gsheet.service;
 
 import java.util.List;
 
