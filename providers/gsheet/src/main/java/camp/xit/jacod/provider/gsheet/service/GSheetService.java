@@ -60,29 +60,24 @@ public class GSheetService {
     public ValueRanges getValuesBatch(String spreadSheetId, Collection<String> ranges,
             MajorDimension dimension, ValueRenderOption valueRenderOption, DateTimeRenderOption dateTimeRenderOption)
             throws NotFoundException, GoogleApiException {
-        try {
-            Charset charset = Charset.defaultCharset();
-            List<String> encodedRanges = ranges.stream().map(r -> "ranges=" + encode(r, charset)).collect(toList());
-            String uriStr = MessageFormat.format(API_URI_PREFIX + "{0}/values:batchGet", spreadSheetId);
-            List<String> params = new ArrayList<>();
-            if (dimension != null) {
-                params.add("majorDimension=" + dimension.toString());
-            }
-            if (valueRenderOption != null) {
-                params.add("valueRenderOption=" + valueRenderOption.toString());
-            }
-            if (dateTimeRenderOption != null) {
-                params.add("dateTimeRenderOption=" + dateTimeRenderOption.toString());
-            }
-            if (encodedRanges != null && !encodedRanges.isEmpty()) params.addAll(encodedRanges);
-            if (!params.isEmpty()) uriStr += "?" + join("&", params);
-            URI sheetUri = URI.create(uriStr);
-            return readAs(sheetUri, ValueRanges.class);
-        } catch (GoogleApiException e) {
-            if (e.getStatus() == 400) {
-                throw new NotFoundException("Invalid request");
-            } else throw e;
+
+        Charset charset = Charset.defaultCharset();
+        List<String> encodedRanges = ranges.stream().map(r -> "ranges=" + encode(r, charset)).collect(toList());
+        String uriStr = MessageFormat.format(API_URI_PREFIX + "{0}/values:batchGet", spreadSheetId);
+        List<String> params = new ArrayList<>();
+        if (dimension != null) {
+            params.add("majorDimension=" + dimension.toString());
         }
+        if (valueRenderOption != null) {
+            params.add("valueRenderOption=" + valueRenderOption.toString());
+        }
+        if (dateTimeRenderOption != null) {
+            params.add("dateTimeRenderOption=" + dateTimeRenderOption.toString());
+        }
+        if (encodedRanges != null && !encodedRanges.isEmpty()) params.addAll(encodedRanges);
+        if (!params.isEmpty()) uriStr += "?" + join("&", params);
+        URI sheetUri = URI.create(uriStr);
+        return readAs(sheetUri, ValueRanges.class);
     }
 
 
@@ -90,27 +85,21 @@ public class GSheetService {
             ValueRenderOption valueRenderOption, DateTimeRenderOption dateTimeRenderOption)
             throws NotFoundException, GoogleApiException {
 
-        try {
-            String encodedRange = URLEncoder.encode(range, Charset.defaultCharset());
-            String uriStr = MessageFormat.format(API_URI_PREFIX + "{0}/values/{1}", spreadSheetId, encodedRange);
-            List<String> params = new ArrayList<>();
-            if (dimension != null) {
-                params.add("majorDimension=" + dimension.toString());
-            }
-            if (valueRenderOption != null) {
-                params.add("valueRenderOption=" + valueRenderOption.toString());
-            }
-            if (dateTimeRenderOption != null) {
-                params.add("dateTimeRenderOption=" + dateTimeRenderOption.toString());
-            }
-            if (!params.isEmpty()) uriStr += "?" + join("&", params);
-            URI sheetUri = URI.create(uriStr);
-            return readAs(sheetUri, RangeValue.class);
-        } catch (GoogleApiException e) {
-            if (e.getStatus() == 400) {
-                throw new NotFoundException("Invalid range " + range);
-            } else throw e;
+        String encodedRange = URLEncoder.encode(range, Charset.defaultCharset());
+        String uriStr = MessageFormat.format(API_URI_PREFIX + "{0}/values/{1}", spreadSheetId, encodedRange);
+        List<String> params = new ArrayList<>();
+        if (dimension != null) {
+            params.add("majorDimension=" + dimension.toString());
         }
+        if (valueRenderOption != null) {
+            params.add("valueRenderOption=" + valueRenderOption.toString());
+        }
+        if (dateTimeRenderOption != null) {
+            params.add("dateTimeRenderOption=" + dateTimeRenderOption.toString());
+        }
+        if (!params.isEmpty()) uriStr += "?" + join("&", params);
+        URI sheetUri = URI.create(uriStr);
+        return readAs(sheetUri, RangeValue.class);
     }
 
 
