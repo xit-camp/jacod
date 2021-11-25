@@ -26,7 +26,7 @@ Then we can write simple client:
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
+import camp.xit.jacod.provider.csv.CSVDataProvider;
 
 public class Main {
 
@@ -77,7 +77,7 @@ now Main class looks like:
 package camp.xit.jacod.example;
 
 import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
+import camp.xit.jacod.provider.csv.CSVDataProvider;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -137,7 +137,7 @@ Then we can access Banks:
 package camp.xit.jacod.example;
 
 import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.provider.xlsx.CSVDataProvider;
+import camp.xit.jacod.provider.csv.CSVDataProvider;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
