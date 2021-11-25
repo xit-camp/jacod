@@ -60,7 +60,7 @@ public final class MetaGSheetDataProvider extends GSheetDataProvider {
 
 
     protected List<EntryData> readMetadata() {
-        return EntryParser.parse(gsheetService.getSheetValues(spreadSheetId, metaSheet));
+        return GSheetEntryParser.parse(gsheetService.getSheetValues(spreadSheetId, metaSheet));
     }
 
 

@@ -60,7 +60,7 @@ public class MetaGSheetBatchDataProvider extends GSheetBatchDataProvider {
 
 
     protected List<EntryData> readMetadata() {
-        return EntryParser.parse(gsheetService.getSheetValues(spreadSheetId, metaSheet));
+        return GSheetEntryParser.parse(gsheetService.getSheetValues(spreadSheetId, metaSheet));
     }
 
 

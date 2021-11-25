@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import static java.util.Optional.ofNullable;
 
-class EntryParser {
+public class GSheetEntryParser {
 
-    private EntryParser() {
+    private GSheetEntryParser() {
     }
 
 
-    static final List<EntryData> parse(RangeValue sheetValues) {
+    public static final List<EntryData> parse(RangeValue sheetValues) {
         JsonNode valuesNode = sheetValues.getValues();
         ArrayNode fieldNamesNode = null;
         List<EntryData> result = new ArrayList<>();

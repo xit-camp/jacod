@@ -76,7 +76,7 @@ public class GSheetDataProvider implements DataProvider {
         Optional<List<EntryData>> result = empty();
         try {
             RangeValue value = gsheetService.getSheetValues(spreadSheetId, codelist);
-            return ofNullable(EntryParser.parse(value));
+            return ofNullable(GSheetEntryParser.parse(value));
         } catch (NotFoundException e) {
             log.warn("Codelist {} not found!", codelist);
         } catch (GoogleApiException e) {
