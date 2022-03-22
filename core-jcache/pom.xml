@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>jcache</artifactId>
-            <version>3.0.3</version>
+            <version>3.0.5</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

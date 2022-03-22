@@ -10,7 +10,7 @@
     <artifactId>jacod-core-cache2k</artifactId>
 
     <properties>
-        <cache2k.version>2.2.1.Final</cache2k.version>
+        <cache2k.version>2.6.1.Final</cache2k.version>
     </properties>
 
     <dependencies>
