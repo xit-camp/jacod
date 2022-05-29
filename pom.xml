@@ -38,7 +38,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.36</slf4j.version>
         <jupiter.version>5.8.2</jupiter.version>
-        <mockito.version>4.3.1</mockito.version>
+        <mockito.version>4.5.1</mockito.version>
     </properties>
 
     <distributionManagement>
@@ -120,7 +120,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>3.0.0-M6</version>
                     <configuration>
                         <trimStackTrace>false</trimStackTrace>
                     </configuration>
@@ -139,7 +139,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.2</version>
+                    <version>3.4.0</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -194,7 +194,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.12</version>
+                <version>1.6.13</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
