@@ -40,6 +40,15 @@ public class GSheetService {
     }
 
 
+    public GSheetService(InputStream serviceAccount) {
+        this.httpClient = HttpClient.newHttpClient();
+        this.jsonMapper = new JsonMapper();
+        this.jsonMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+        this.jsonMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.credentials = new GoogleCredentials(serviceAccount, GSHEET_SCOPE);
+    }
+
+
     public SpreadSheet getSpreadSheet(String spreadSheetId) throws NotFoundException, GoogleApiException {
         URI sheetUri = URI.create(API_URI_PREFIX + spreadSheetId
                 + "?fields=properties(title%2Clocale%2CtimeZone)%2Csheets(properties(sheetId%2Ctitle))");

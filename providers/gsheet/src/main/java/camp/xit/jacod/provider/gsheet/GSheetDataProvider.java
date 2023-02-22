@@ -8,6 +8,7 @@ import camp.xit.jacod.provider.gsheet.service.NotFoundException;
 import camp.xit.jacod.provider.gsheet.service.RangeValue;
 import camp.xit.jacod.provider.gsheet.service.SpreadSheet;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,8 @@ public class GSheetDataProvider implements DataProvider {
     protected final String spreadSheetId;
 
 
-    public GSheetDataProvider(String serviceAccountFile, String spreadSheetId) {
-        this(null, serviceAccountFile, spreadSheetId);
+    public GSheetDataProvider(InputStream serviceAccount, String spreadSheetId) {
+        this(null, serviceAccount, spreadSheetId);
     }
 
 
@@ -42,8 +43,8 @@ public class GSheetDataProvider implements DataProvider {
     }
 
 
-    public GSheetDataProvider(String name, String serviceAccountFile, String spreadSheetId) {
-        this(name, new File(serviceAccountFile), spreadSheetId);
+    public GSheetDataProvider(String name, InputStream serviceAccount, String spreadSheetId) {
+        this(name, new GSheetService(serviceAccount), spreadSheetId);
     }
 
 
