@@ -7,6 +7,7 @@ import camp.xit.jacod.provider.gsheet.service.RangeValue;
 import camp.xit.jacod.provider.gsheet.service.SpreadSheet;
 import camp.xit.jacod.provider.gsheet.service.ValueRanges;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.HashMap;
@@ -22,12 +23,17 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
 
 
     public GSheetBatchDataProvider(File serviceAccountFile, String spreadSheetId, Duration holdValuesTimeout) {
-        this(null, serviceAccountFile, spreadSheetId, holdValuesTimeout);
+        this(null, new GSheetService(serviceAccountFile), spreadSheetId, holdValuesTimeout);
     }
 
 
     public GSheetBatchDataProvider(File serviceAccountFile, String spreadSheetId) {
         this(null, serviceAccountFile, spreadSheetId);
+    }
+
+
+    public GSheetBatchDataProvider(InputStream serviceAccount, String spreadSheetId) {
+        this(null, serviceAccount, spreadSheetId);
     }
 
 
@@ -41,8 +47,13 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
     }
 
 
-    public GSheetBatchDataProvider(String name, String serviceAccountFile, String spreadSheetId) {
-        this(name, new File(serviceAccountFile), spreadSheetId);
+    public GSheetBatchDataProvider(String name, InputStream serviceAccount, String spreadSheetId) {
+        this(name, serviceAccount, spreadSheetId, DEFAULT_HOLD_VALUES_TIMEOUT);
+    }
+
+
+    public GSheetBatchDataProvider(String name, InputStream serviceAccount, String spreadSheetId, Duration holdValuesTimeout) {
+        this(name, new GSheetService(serviceAccount), spreadSheetId, holdValuesTimeout);
     }
 
 
@@ -57,13 +68,18 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
 
 
     public GSheetBatchDataProvider(String name, File serviceAccountFile, String spreadSheetId) {
-        this(name, serviceAccountFile, spreadSheetId, DEFAULT_HOLD_VALUES_TIMEOUT);
+        this(name, new GSheetService(serviceAccountFile), spreadSheetId, DEFAULT_HOLD_VALUES_TIMEOUT);
     }
 
 
     public GSheetBatchDataProvider(String name, File serviceAccountFile, String spreadSheetId, Duration holdValuesTimeout) {
+        this(name, new GSheetService(serviceAccountFile), spreadSheetId, holdValuesTimeout);
+    }
+
+
+    public GSheetBatchDataProvider(String name, GSheetService gsheetService, String spreadSheetId, Duration holdValuesTimeout) {
         super(holdValuesTimeout);
-        this.gsheetService = new GSheetService(serviceAccountFile);
+        this.gsheetService = gsheetService;
         this.spreadSheetId = spreadSheetId;
     }
 
