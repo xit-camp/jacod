@@ -36,7 +36,8 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
 
 
     public Cache2kCodelistClientImpl(DataProvider provider, Set<String> prefetchedCodelists, Duration expiryTime,
-            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences, boolean reloadDependencies) {
+            Set<String> whitelistPackages, boolean shallowReferences, boolean reloadReferences,
+            boolean reloadDependencies, int loaderThreadCounts) {
 
         super(provider, whitelistPackages, shallowReferences);
 
@@ -50,6 +51,7 @@ public class Cache2kCodelistClientImpl extends CodelistClientImpl {
                 // .resilienceDuration(1, TimeUnit.MINUTES)
                 .setup(UniversalResiliencePolicy::enable)
                 .refreshAhead(true)
+                .loaderThreadCount(loaderThreadCounts)
                 .keepDataAfterExpired(true)
                 .loader(getLoader())
                 .exceptionPropagator(new CodelistExceptionPropagator());

@@ -11,6 +11,7 @@ public class Cache2kCodelistClient {
         protected Duration expiryTime = Duration.ofMinutes(10);
         protected boolean reloadReferences = false;
         protected boolean reloadDependencies = true;
+        protected int loaderThreadCount = 0;
 
 
         @Override
@@ -22,7 +23,8 @@ public class Cache2kCodelistClient {
                 prefetchedCodelists = dataProvider.getCodelistNames();
             }
             return new Cache2kCodelistClientImpl(dataProvider, prefetchedCodelists, expiryTime,
-                    whitelistPackages, shallowReferences, reloadReferences, reloadDependencies);
+                    whitelistPackages, shallowReferences, reloadReferences, reloadDependencies,
+                    loaderThreadCount);
         }
 
 
@@ -87,6 +89,12 @@ public class Cache2kCodelistClient {
          */
         public Builder withoutReloadDependecies() {
             this.reloadDependencies = false;
+            return this;
+        }
+
+
+        public Builder withLoaderThreadCount(int loaderThreadCount) {
+            this.loaderThreadCount = loaderThreadCount;
             return this;
         }
     }
