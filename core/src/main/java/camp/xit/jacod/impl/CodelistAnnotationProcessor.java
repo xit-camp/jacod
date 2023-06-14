@@ -22,7 +22,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -41,7 +40,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 @SupportedAnnotationTypes("camp.xit.jacod.BaseEntry")
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
 // https://hannesdorfmann.com/annotation-processing/annotationprocessing101/
 public final class CodelistAnnotationProcessor extends AbstractProcessor {
@@ -248,5 +246,11 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             this.codelistElement = codelistElement;
             this.annotationElement = annotationElement;
         }
+    }
+
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 }
