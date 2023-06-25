@@ -37,7 +37,8 @@ public class Cache2kCodelistClient {
          * @param dataProvider data provider
          * @return builder
          */
-        public Builder withCachedDataProvider(DataProvider dataProvider) {
+        @Override
+        public Builder withDataProvider(DataProvider dataProvider) {
             this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
             return this;
         }
@@ -51,7 +52,7 @@ public class Cache2kCodelistClient {
          * @param dataProvider data provider
          * @return builder
          */
-        public Builder withCachedDataProvider(DataProvider dataProvider, Duration expiryTime) {
+        public Builder withDataProvider(DataProvider dataProvider, Duration expiryTime) {
             this.dataProvider = new CachedDataProvider(dataProvider, expiryTime);
             return this;
         }
