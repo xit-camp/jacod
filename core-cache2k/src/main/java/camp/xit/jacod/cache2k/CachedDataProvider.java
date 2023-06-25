@@ -66,32 +66,29 @@ public class CachedDataProvider implements DataProvider {
 
 
     private AdvancedCacheLoader<String, Tuple<Optional<List<EntryData>>>> getLoader() {
-        return new AdvancedCacheLoader<String, Tuple<Optional<List<EntryData>>>>() {
-            @Override
-            public Tuple<Optional<List<EntryData>>> load(String key, long currentTime, CacheEntry<String, Tuple<Optional<List<EntryData>>>> currentEntry) throws Exception {
-                boolean alreadyLoaded = currentEntry != null;
-                boolean previousException = alreadyLoaded && currentEntry.getException() != null;
-                long lastReadTime = alreadyLoaded && !previousException ? currentEntry.getValue().lastModified : NEUTRAL;
-                String providerName = provider.getName();
-                Tuple<Optional<List<EntryData>>> result;
-                try {
-                    Optional<List<EntryData>> value = provider.readEntries(key, lastReadTime);
-                    result = new Tuple<>(value, currentTime, true);
-                } catch (CodelistNotChangedException e) {
-                    LOG.debug("[{}] Reload successful, but codelist {} did not change.", providerName, key);
-                    result = currentEntry.getValue().updateLastModified(currentTime).setChangedByReload(false);
-                } catch (CodelistNotFoundException e) {
-                    if (alreadyLoaded) {
-                        LOG.warn("[{}] Source system is probably down or codelist was removed. "
-                                + "Returning old cached value for {}", providerName, key);
-                        result = currentEntry.getValue().setChangedByReload(false);
-                    } else {
-                        LOG.error("[{}] Codelist {} not found or source system is down!", providerName, key);
-                        throw e;
-                    }
+        return (String key, long currentTime, CacheEntry<String, Tuple<Optional<List<EntryData>>>> currentEntry) -> {
+            boolean alreadyLoaded = currentEntry != null;
+            boolean previousException = alreadyLoaded && currentEntry.getException() != null;
+            long lastReadTime = alreadyLoaded && !previousException ? currentEntry.getValue().lastModified : NEUTRAL;
+            String providerName = provider.getName();
+            Tuple<Optional<List<EntryData>>> result;
+            try {
+                Optional<List<EntryData>> value = provider.readEntries(key, lastReadTime);
+                result = new Tuple<>(value, currentTime, true);
+            } catch (CodelistNotChangedException e) {
+                LOG.debug("[{}] Reload successful, but codelist {} did not change.", providerName, key);
+                result = currentEntry.getValue().updateLastModified(currentTime).setChangedByReload(false);
+            } catch (CodelistNotFoundException e) {
+                if (alreadyLoaded) {
+                    LOG.warn("[{}] Source system is probably down or codelist was removed. "
+                            + "Returning old cached value for {}", providerName, key);
+                    result = currentEntry.getValue().setChangedByReload(false);
+                } else {
+                    LOG.error("[{}] Codelist {} not found or source system is down!", providerName, key);
+                    throw e;
                 }
-                return result;
             }
+            return result;
         };
     }
 
