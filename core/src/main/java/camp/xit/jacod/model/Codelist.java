@@ -1,18 +1,20 @@
 package camp.xit.jacod.model;
 
 import camp.xit.jacod.EntryNotFoundException;
+
 import java.util.Collection;
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsLast;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import static java.util.Optional.ofNullable;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsLast;
+import static java.util.Optional.ofNullable;
 
 public class Codelist<V extends CodelistEntry> extends HashMap<String, V> implements Iterable<V> {
 
@@ -29,6 +31,11 @@ public class Codelist<V extends CodelistEntry> extends HashMap<String, V> implem
     public Codelist(String name, Collection<V> entries) {
         super(entries.stream().collect(Collectors.toMap(V::getCode, e -> e)));
         this.name = name;
+    }
+
+
+    public Codelist(Class<V> entryClass, Collection<V> entries) {
+        this(entryClass.getSimpleName(), entries);
     }
 
 

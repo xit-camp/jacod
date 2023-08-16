@@ -3,15 +3,25 @@ package camp.xit.jacod.model;
 import camp.xit.jacod.BaseEntry;
 import camp.xit.jacod.DateUtil;
 import camp.xit.jacod.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Základná trieda číselníkovej hodnoty. Číselník je definovaný množinou týchto hodnôt.
- *
  */
+@Getter
+@Setter
 @BaseEntry
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodelistEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,10 +66,6 @@ public class CodelistEntry implements Serializable {
     private Boolean selected;
 
 
-    public CodelistEntry() {
-    }
-
-
     public CodelistEntry(String code) {
         this.code = code;
     }
@@ -67,76 +73,6 @@ public class CodelistEntry implements Serializable {
 
     public CodelistEntry(CodelistEnum<? extends CodelistEntry> codeEnum) {
         this(codeEnum.toString());
-    }
-
-
-    public CodelistEntry(String code, String name, Integer order, LocalDate validFrom, LocalDate validTo, Boolean selected) {
-        this.code = code;
-        this.name = name;
-        this.order = order;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
-        this.selected = selected;
-    }
-
-
-    public String getCode() {
-        return code;
-    }
-
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public Integer getOrder() {
-        return order;
-    }
-
-
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
-
-
-    public LocalDate getValidFrom() {
-        return validFrom;
-    }
-
-
-    public void setValidFrom(LocalDate validFrom) {
-        this.validFrom = validFrom;
-    }
-
-
-    public LocalDate getValidTo() {
-        return validTo;
-    }
-
-
-    public void setValidTo(LocalDate validTo) {
-        this.validTo = validTo;
-    }
-
-
-    public Boolean getSelected() {
-        return selected;
-    }
-
-
-    public void setSelected(Boolean selected) {
-        this.selected = selected;
     }
 
 
