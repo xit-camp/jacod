@@ -16,4 +16,6 @@ nb-configuration.xml
 # Eclipse
 .project
 .classpath
-
+.project
+.settings/
+.factory*

@@ -1,15 +1,14 @@
 package camp.xit.jacod.provider.gsheet.service;
 
-import camp.xit.google.api.credentials.GoogleCredentials;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import static java.lang.String.join;
+import static java.net.URLEncoder.encode;
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import static java.lang.String.join;
 import java.net.URI;
 import java.net.URLEncoder;
-import static java.net.URLEncoder.encode;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -19,7 +18,14 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import static java.util.stream.Collectors.toList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
+import camp.xit.google.api.credentials.GoogleCredentials;
 
 public class GSheetService {
 
@@ -28,23 +34,27 @@ public class GSheetService {
 
     protected final HttpClient httpClient;
     protected final JsonMapper jsonMapper;
-    protected final GoogleCredentials credentials;
+    protected GoogleCredentials credentials;
 
 
-    public GSheetService(File serviceAccountFile) {
-        this.httpClient = HttpClient.newHttpClient();
+    protected GSheetService() {
+        this.httpClient = HttpClient.newBuilder()
+            .executor(new ThreadPoolExecutor(0, 20, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(100)))
+            .build();
         this.jsonMapper = new JsonMapper();
         this.jsonMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
         this.jsonMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
+
+
+    public GSheetService(File serviceAccountFile) {
+        this();
         this.credentials = new GoogleCredentials(serviceAccountFile, GSHEET_SCOPE);
     }
 
 
     public GSheetService(InputStream serviceAccount) {
-        this.httpClient = HttpClient.newHttpClient();
-        this.jsonMapper = new JsonMapper();
-        this.jsonMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
-        this.jsonMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this();
         this.credentials = new GoogleCredentials(serviceAccount, GSHEET_SCOPE);
     }
 
@@ -143,19 +153,16 @@ public class GSheetService {
                 .header("Accept", "application/json")
                 .header("Authorization", credentials.getAccessToken().toString())
                 .build();
-
         try {
             HttpResponse<InputStream> response = httpClient.send(request, BodyHandlers.ofInputStream());
-            int status = response.statusCode();
-            switch (status) {
+            try (InputStream in = response.body()) {
+                int status = response.statusCode();
+                switch (status) {
                 case 200:
-                    try (InputStream in = response.body()) {
                     return jsonMapper.readValue(in, objClass);
-                }
                 case 404:
                     throw new NotFoundException("Requested data not found! URI: " + request.uri());
                 default:
-                    try (InputStream in = response.body()) {
                     String content = consumeContent(in);
                     throw new GoogleApiException(content, response.statusCode());
                 }
@@ -167,7 +174,8 @@ public class GSheetService {
 
 
     static String consumeContent(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
+        try (java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A")) {
+            return s.hasNext() ? s.next() : "";
+        }
     }
 }
