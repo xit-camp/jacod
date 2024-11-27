@@ -168,7 +168,7 @@ public class GSheetService {
                 }
             }
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Unexpected error!", e);
+            throw new IllegalStateException("unable to read from gsheet", e);
         }
     }
 

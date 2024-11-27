@@ -94,7 +94,7 @@ public class GSheetBatchDataProvider extends BatchDataProvider {
     @Override
     protected Map<String, List<EntryData>> readEntriesBatch() {
         ValueRanges ranges = gsheetService.getValuesBatch(spreadSheetId, getCodelistNames());
-        Map<String, List<EntryData>> result = new HashMap();
+        Map<String, List<EntryData>> result = new HashMap<>();
         for (RangeValue range : ranges.getValueRanges()) {
             result.put(getNameFromRange(range.getRange()), GSheetEntryParser.parse(range));
         }
