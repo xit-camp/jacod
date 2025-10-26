@@ -30,7 +30,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OSSRH_USER: ${{ secrets.OSSRH_USER }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       run: |
         AAA="$(echo $MAVEN_GPG_KEY | base64 -w20)"
@@ -42,6 +41,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OSSRH_USER: ${{ secrets.OSSRH_USER }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       run: mvn --batch-mode -s .github/settings.xml deploy -Dmaven.javadoc.failOnError=false -DskipITs -Dmaven.test.skip
