@@ -31,7 +31,9 @@ jobs:
         OSSRH_USER: ${{ secrets.OSSRH_USER }}
         OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      run: mvn --batch-mode -s .github/settings.xml --update-snapshots install
+      run: |
+        echo "aaa $MAVEN_GPG_KEY"
+        mvn --batch-mode -s .github/settings.xml --update-snapshots install
 
     - name: Deploy Maven
       env:
