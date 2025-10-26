@@ -1,20 +1,7 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.AdvancedCodelistProvider;
-import camp.xit.jacod.model.CodelistEntry;
 import com.google.auto.service.AutoService;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -38,6 +25,22 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import camp.xit.jacod.AdvancedCodelistProvider;
+import camp.xit.jacod.model.CodelistEntry;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 @SupportedAnnotationTypes("camp.xit.jacod.BaseEntry")
 @AutoService(Processor.class)
@@ -55,7 +58,6 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
 
     private List<CodelistElement> codelists;
 
-
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -65,7 +67,6 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         this.typeUtils = processingEnv.getTypeUtils();
         this.codelists = new ArrayList<>();
     }
-
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -110,13 +111,12 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             }
 
             List<String> providers = result.entrySet().stream()
-                    .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
-                    .collect(toList());
+                .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
+                .collect(toList());
             writeServices(filer, providers);
         }
         return true;
     }
-
 
     private void writeServices(Filer filer, List<String> providers) {
         try {
@@ -130,7 +130,6 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             printError(null, e.getMessage());
         }
     }
-
 
     private String generateProvider(Filer filer, String pkgName, Set<TypeElement> codelists) {
         String providerClassName = pkgName + "." + PROVIDER_CLASS;
@@ -157,7 +156,6 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         return providerClassName;
     }
 
-
     /**
      * Checks if the annotated element observes our rules
      */
@@ -165,14 +163,14 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
 
         if (!codelistType.getModifiers().contains(Modifier.PUBLIC)) {
             throw new ProcessingException(codelistType, "The class %s is not public.",
-                    codelistType.getQualifiedName().toString());
+                codelistType.getQualifiedName().toString());
         }
 
         // Check if it's an abstract class
         if (codelistType.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new ProcessingException(codelistType,
-                    "The class %s is abstract. You can't annotate abstract classes with @%s",
-                    codelistType.getQualifiedName().toString(), annotation.getSimpleName());
+                "The class %s is abstract. You can't annotate abstract classes with @%s",
+                codelistType.getQualifiedName().toString(), annotation.getSimpleName());
         }
 
         // Check subclassing
@@ -183,9 +181,9 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             if (superClassType.getKind() == TypeKind.NONE) {
                 // Basis class (java.lang.Object) reached, so exit
                 throw new ProcessingException(codelistType,
-                        "The class %s annotated with @%s must inherit from %s",
-                        codelistType.getQualifiedName().toString(), annotation,
-                        codelistType.getSimpleName());
+                    "The class %s annotated with @%s must inherit from %s",
+                    codelistType.getQualifiedName().toString(), annotation,
+                    codelistType.getSimpleName());
             }
 
             if (superClassType.toString().equals(CodelistEntry.class.getName())) {
@@ -202,12 +200,12 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
             if (enclosed.getKind() == ElementKind.CONSTRUCTOR) {
                 ExecutableElement constructorElement = (ExecutableElement) enclosed;
                 List<? extends VariableElement> parameters = constructorElement.getParameters();
-                if (parameters.size() == 0/* && constructorElement.getModifiers()
+                if (parameters.isEmpty()/* && constructorElement.getModifiers()
                           .contains(Modifier.PUBLIC)*/) {
                     // Found an empty constructor
                     return;
                 } else if (parameters.size() == 1
-                        && parameters.get(0).asType().toString().equals(String.class.getName())) {
+                           && parameters.getFirst().asType().toString().equals(String.class.getName())) {
                     return;
                 }
 
@@ -216,38 +214,29 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
 
         // No empty constructor found
         throw new ProcessingException(codelistType,
-                "The class %s must provide an empty default constructor or constructor with 1 string code parameter",
-                codelistType.getQualifiedName().toString());
+            "The class %s must provide an empty default constructor or constructor with 1 string code parameter",
+            codelistType.getQualifiedName().toString());
     }
-
 
     private void printMsg(String message) {
         messager.printMessage(Diagnostic.Kind.NOTE, message);
     }
 
-
     /**
      * Prints an printError message
      *
-     * @param e The element which has caused the printError. Can be null
+     * @param e   The element which has caused the printError. Can be null
      * @param msg The printError message
      */
     public void printError(Element e, String msg) {
         messager.printMessage(Diagnostic.Kind.ERROR, msg, e);
     }
 
-    private static class CodelistElement {
-
-        private final TypeElement codelistElement;
-        private final TypeElement annotationElement;
-
-
-        public CodelistElement(TypeElement codelistElement, TypeElement annotationElement) {
-            this.codelistElement = codelistElement;
-            this.annotationElement = annotationElement;
-        }
+    private record CodelistElement(
+        TypeElement codelistElement,
+        TypeElement annotationElement
+    ) {
     }
-
 
     @Override
     public SourceVersion getSupportedSourceVersion() {

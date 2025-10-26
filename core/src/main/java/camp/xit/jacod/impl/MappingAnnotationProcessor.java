@@ -1,18 +1,7 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.CodelistMappingProvider;
 import com.google.auto.service.AutoService;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -20,8 +9,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -31,9 +18,22 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import camp.xit.jacod.CodelistMappingProvider;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 @SupportedAnnotationTypes({"camp.xit.jacod.BaseEntryMapping", "camp.xit.jacod.EntryMapping", "camp.xit.jacod.EntryMappings"})
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
 public class MappingAnnotationProcessor extends AbstractProcessor {
 
@@ -43,7 +43,6 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
 
     private Messager messager;
     private Filer filer;
-
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -56,7 +55,7 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
                     for (Element el : annotatedElements) {
                         if (el.getKind() != ElementKind.CLASS && el.getKind() != ElementKind.INTERFACE) {
                             throw new ProcessingException(el, "%s: Only classes or interfaces can be annotated with @%s",
-                                    el, annotation.getSimpleName());
+                                el, annotation.getSimpleName());
                         }
                         TypeElement typeEl = (TypeElement) el;
 
@@ -74,8 +73,8 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
                 printMsg("Found " + count + " classes with codelist mapper annotation.");
 
                 List<String> providers = mapperClasses.entrySet().stream()
-                        .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
-                        .collect(toList());
+                    .map(e -> generateProvider(filer, e.getKey(), e.getValue()))
+                    .collect(toList());
                 writeServices(filer, providers);
             } catch (ProcessingException e) {
                 printError(null, e.getMessage());
@@ -84,20 +83,19 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
-
     private void writeServices(Filer filer, List<String> providers) {
         try {
             final FileObject fo = filer.createResource(StandardLocation.CLASS_OUTPUT, "", SERVICES_PATH);
             try (Writer writer = fo.openWriter()) {
                 for (String provider : providers) {
                     writer.append(provider).append("\n");
-                };
+                }
+                ;
             }
         } catch (IOException e) {
             printError(null, e.getMessage());
         }
     }
-
 
     private String generateProvider(Filer filer, String pkgName, Set<TypeElement> codelists) {
         String providerClassName = pkgName + "." + PROVIDER_CLASS;
@@ -124,11 +122,9 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
         return providerClassName;
     }
 
-
     private void printMsg(String message) {
         messager.printMessage(Diagnostic.Kind.NOTE, message);
     }
-
 
     @Override
     public void init(ProcessingEnvironment processingEnvironment) {
@@ -138,11 +134,10 @@ public class MappingAnnotationProcessor extends AbstractProcessor {
         this.messager = processingEnvironment.getMessager();
     }
 
-
     /**
      * Prints an printError message
      *
-     * @param e The element which has caused the printError. Can be null
+     * @param e   The element which has caused the printError. Can be null
      * @param msg The printError message
      */
     public void printError(Element e, String msg) {
