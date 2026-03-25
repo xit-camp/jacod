@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
+import camp.xit.jcd.model.Address;
+import camp.xit.jcd.model.ext.Brand;
 
 public class CodelistClientExtension implements ParameterResolver {
 
@@ -86,6 +88,10 @@ public class CodelistClientExtension implements ParameterResolver {
 
     private CodelistClient getCsvClient() {
         return getCodelistClientBuilder()
+            .addScanPackages("camp.xit.jacod")
+            .addScanPackages("camp.xit.jacod.model")
+            .addScanPackages(Address.class.getPackage())
+            .addScanPackages(Brand.class.getPackage())
             .build();
     }
 
@@ -99,15 +105,14 @@ public class CodelistClientExtension implements ParameterResolver {
 
     private CodelistClient getShallowCsvClient() {
         return getCodelistClientBuilder()
-            .scanFullClasspath().shallowReferences()
+            .scanFullClasspath()
+            .shallowReferences()
             .build();
     }
 
 
     private CodelistClient.Builder getCodelistClientBuilder() {
         return new CodelistClient.Builder()
-//            .addScanPackages(Address.class.getPackage())
-//            .addScanPackages(Brand.class.getPackage())
             .withDataProvider(new SimpleCsvDataProvider());
     }
 }

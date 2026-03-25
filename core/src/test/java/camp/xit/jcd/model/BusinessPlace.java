@@ -1,6 +1,8 @@
-package camp.xit.jacod.model;
+package camp.xit.jcd.model;
 
 import java.util.List;
+
+import camp.xit.jacod.model.CodelistEntry;
 
 public class BusinessPlace extends CodelistEntry {
 

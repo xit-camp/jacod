@@ -1,4 +1,4 @@
-package camp.xit.jacod.model;
+package camp.xit.jcd.model;
 
 import camp.xit.jacod.annotation.Embeddable;
 

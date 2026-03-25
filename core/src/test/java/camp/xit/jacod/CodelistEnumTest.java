@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.ContractState;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.InsuranceProducts;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
-import camp.xit.jacod.test.model.ContractStates;
+import camp.xit.jcd.model.ContractState;
+import camp.xit.jcd.model.InsuranceProduct;
+import camp.xit.jcd.model.InsuranceProducts;
+import camp.xit.jcd.model.ext.ContractStates;
 
 @ExtendWith(CodelistClientExtension.class)
 public class CodelistEnumTest {

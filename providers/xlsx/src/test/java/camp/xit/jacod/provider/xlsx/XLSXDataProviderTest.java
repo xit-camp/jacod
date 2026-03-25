@@ -13,9 +13,10 @@ import org.junit.jupiter.api.Test;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.EntryData;
+import camp.xit.jcd.model.Address;
+import camp.xit.jcd.model.InsuranceProduct;
+import camp.xit.jcd.model.Title;
 
 /**
  *
@@ -61,7 +62,9 @@ public class XLSXDataProviderTest {
 
     private CodelistClient getCodelistClient() {
         return new CodelistClient.Builder()
-                .withDataProvider(getProvider()).build();
+            .addScanPackages(Address.class.getPackage())
+            .withDataProvider(getProvider())
+            .build();
     }
 
 
