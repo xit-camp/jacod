@@ -132,6 +132,19 @@ class CodelistClientTest {
 
 
     @Test
+    void simpleBoolQuery(@CsvClient CodelistClient client) {
+        Codelist<InsuranceProduct> promotions = client.getFilteredCodelist(InsuranceProduct.class, "selected = TRUE");
+        assertThat(promotions.size(), is(2));
+    }
+
+    @Test
+    void simpleStringQuery(@CsvClient CodelistClient client) {
+        Codelist<InsuranceProduct> promotions = client.getFilteredCodelist(InsuranceProduct.class, "description = \"Basic Insurance\"");
+        assertThat(promotions.size(), is(3));
+    }
+
+
+    @Test
     void regexpQuery(@CsvClient CodelistClient client) {
         Codelist<InsuranceProduct> promotions = client.getFilteredCodelist(InsuranceProduct.class, "description ~= \"^Basic.*$\"");
         assertThat(promotions.size(), is(3));
