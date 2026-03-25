@@ -1,9 +1,9 @@
-package camp.xit.jt.one.model;
+package camp.xit.jacod.test.model;
 
 import camp.xit.jacod.annotation.EntryFieldMapping;
 import camp.xit.jacod.annotation.EntryMapping;
+import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
-import camp.xit.jt.model.InsuranceProduct;
 
 @EntryMapping(
     entryClass = InsuranceProduct.class,

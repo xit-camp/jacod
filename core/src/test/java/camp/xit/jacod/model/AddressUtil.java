@@ -1,4 +1,4 @@
-package camp.xit.jt.model;
+package camp.xit.jacod.model;
 
 import java.util.StringJoiner;
 

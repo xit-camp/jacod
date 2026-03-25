@@ -1,10 +1,6 @@
-package camp.xit.jt.model;
+package camp.xit.jacod.model;
 
 import java.math.BigDecimal;
-
-import camp.xit.jacod.model.BonusType;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.CodelistEnum;
 
 public class BonusType extends CodelistEntry {
 

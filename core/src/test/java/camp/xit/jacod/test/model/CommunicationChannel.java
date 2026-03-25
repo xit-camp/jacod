@@ -1,4 +1,4 @@
-package camp.xit.jt.one.model;
+package camp.xit.jacod.test.model;
 
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;

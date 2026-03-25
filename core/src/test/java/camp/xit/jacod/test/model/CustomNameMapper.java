@@ -1,4 +1,4 @@
-package camp.xit.jt.one.model;
+package camp.xit.jacod.test.model;
 
 import camp.xit.jacod.annotation.BaseEntryMapping;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;

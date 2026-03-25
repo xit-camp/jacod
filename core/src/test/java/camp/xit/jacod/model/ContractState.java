@@ -1,8 +1,6 @@
-package camp.xit.jt.model;
+package camp.xit.jacod.model;
 
 import camp.xit.jacod.EntryRef;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.CodelistEnum;
 
 public class ContractState extends CodelistEntry {
 

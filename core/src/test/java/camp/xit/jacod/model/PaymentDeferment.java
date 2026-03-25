@@ -1,7 +1,4 @@
-package camp.xit.jt.model;
-
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.CodelistEnum;
+package camp.xit.jacod.model;
 
 public class PaymentDeferment extends CodelistEntry {
 

@@ -1,7 +1,5 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jt.model.Title;
-
 public class Title extends CodelistEntry {
 
     public enum Position {

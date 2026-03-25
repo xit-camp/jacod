@@ -1,7 +1,4 @@
-package camp.xit.jt.model;
-
-import camp.xit.jacod.model.CodelistEnum;
-import camp.xit.jacod.model.InsuranceProduct;
+package camp.xit.jacod.model;
 
 public enum InsuranceProducts implements CodelistEnum<InsuranceProduct> {
     A_01, B_01, A_02, B_02, A_03, B_03
