@@ -1,8 +1,9 @@
 package camp.xit.jacod.cache2k;
 
+import java.time.Duration;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.provider.DataProvider;
-import java.time.Duration;
 
 public class Cache2kCodelistClient {
 

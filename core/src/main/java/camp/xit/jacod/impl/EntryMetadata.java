@@ -1,9 +1,5 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.Embeddable;
-import camp.xit.jacod.EntryRef;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.provider.DataProvider;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -12,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import camp.xit.jacod.EntryRef;
+import camp.xit.jacod.annotation.Embeddable;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.provider.DataProvider;
 
 public class EntryMetadata {
 

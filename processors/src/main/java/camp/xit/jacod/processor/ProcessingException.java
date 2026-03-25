@@ -1,4 +1,4 @@
-package camp.xit.jacod.impl;
+package camp.xit.jacod.processor;
 
 import javax.lang.model.element.Element;
 

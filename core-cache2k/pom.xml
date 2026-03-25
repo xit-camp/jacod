@@ -4,7 +4,7 @@
     <parent>
         <groupId>camp.xit.jacod</groupId>
         <artifactId>jacod</artifactId>
-        <version>1.3.14-SNAPSHOT</version>
+        <version>1.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>jacod-core-cache2k</artifactId>
@@ -18,6 +18,7 @@
             <groupId>camp.xit.jacod</groupId>
             <artifactId>jacod-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.cache2k</groupId>
             <artifactId>cache2k-api</artifactId>
@@ -34,18 +35,28 @@
             <artifactId>cache2k-addon</artifactId>
             <version>${cache2k.version}</version>
         </dependency>
+
+         <dependency>
+            <groupId>camp.xit.jacod</groupId>
+            <artifactId>jacod-processors</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>camp.xit.jacod</groupId>
+                            <artifactId>jacod-processors</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

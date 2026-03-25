@@ -1,19 +1,27 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.test.CodelistClientExtension;
-import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
-import camp.xit.jacod.test.CodelistClientExtension.ShallowCsvClient;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.EntryNotFoundException;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.InsuranceProducts;
+import camp.xit.jacod.test.CodelistClientExtension;
+import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
+import camp.xit.jacod.test.CodelistClientExtension.ShallowCsvClient;
 
 @ExtendWith(CodelistClientExtension.class)
 class CodelistClientTest {
@@ -62,6 +70,7 @@ class CodelistClientTest {
             assertNotNull(cdl.getEntry("C_03").getCompany());
             fail("Should not get here!");
         } catch (EntryNotFoundException e) {
+            System.out.println(">>>>>> " + e);
             assertThat(e.getCode(), is("C_03"));
         }
     }

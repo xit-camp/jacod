@@ -1,21 +1,26 @@
 package camp.xit.jacod.impl;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import camp.xit.jacod.model.BusinessPlace;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.InsuranceProduct;
 import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import camp.xit.jacod.test.CodelistEntryMapperExtension;
 import camp.xit.jacod.test.CodelistEntryMapperExtension.EntryMapper;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(CodelistEntryMapperExtension.class)
 class CodelistEntryMapperTest {

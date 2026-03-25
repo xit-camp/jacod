@@ -1,5 +1,26 @@
 package camp.xit.jacod.cache2k;
 
+import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
+
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.cache2k.Cache;
+import org.cache2k.Cache2kBuilder;
+import org.cache2k.CacheEntry;
+import org.cache2k.addon.UniversalResiliencePolicy;
+import org.cache2k.event.CacheEntryUpdatedListener;
+import org.cache2k.expiry.ExpiryTimeValues;
+import org.cache2k.io.AdvancedCacheLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.impl.CodelistClientImpl;
 import camp.xit.jacod.impl.ShallowRefProvider;
@@ -8,19 +29,6 @@ import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.CodelistNotChangedException;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import org.cache2k.Cache;
-import org.cache2k.Cache2kBuilder;
-import org.cache2k.CacheEntry;
-import org.cache2k.addon.UniversalResiliencePolicy;
-import org.cache2k.event.CacheEntryUpdatedListener;
-import org.cache2k.expiry.ExpiryTimeValues;
-import static org.cache2k.expiry.ExpiryTimeValues.NEUTRAL;
-import org.cache2k.io.AdvancedCacheLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Cached thread-safety implementation of CodelistClient

@@ -1,6 +1,6 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.Embeddable;
+import camp.xit.jacod.annotation.Embeddable;
 
 @Embeddable
 public class Address {

@@ -1,22 +1,28 @@
-package camp.xit.jacod;
+package camp.xit.jacod.annotation;
 
+import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BaseEntryMapping {
+@Repeatable(EntryMappings.class)
+public @interface EntryMapping {
 
-    String codelist();
+    Class<? extends DataProvider> provider();
 
 
     String resourceName() default "";
 
 
-    Class<? extends DataProvider> provider();
+    Class<?> entryClass() default CodelistEntry.class;
+
+
+    boolean inheritParent() default true;
 
 
     EntryFieldMapping[] fields() default {};

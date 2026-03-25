@@ -1,11 +1,12 @@
 package camp.xit.jacod.entry;
 
+import java.io.StringReader;
+
 import camp.xit.jacod.entry.parser.ParseException;
 import camp.xit.jacod.entry.parser.Parser;
 import camp.xit.jacod.entry.parser.ast.Expression;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import java.io.StringReader;
 
 public class QueryEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 

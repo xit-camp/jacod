@@ -1,8 +1,9 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.EntryRef;
 import java.math.BigDecimal;
 import java.util.List;
+
+import camp.xit.jacod.EntryRef;
 
 public class InsuranceProduct extends CodelistEntry {
 

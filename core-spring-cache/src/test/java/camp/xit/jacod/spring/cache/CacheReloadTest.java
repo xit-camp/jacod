@@ -1,18 +1,22 @@
 package camp.xit.jacod.spring.cache;
 
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.spring.cache.model.Title;
-import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import java.time.Duration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.Duration;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.spring.cache.model.Title;
+import camp.xit.jacod.spring.cache.test.SimpleCsvDataProvider;
 
 public class CacheReloadTest {
 

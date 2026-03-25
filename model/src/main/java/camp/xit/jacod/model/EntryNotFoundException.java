@@ -1,6 +1,4 @@
-package camp.xit.jacod;
-
-import camp.xit.jacod.model.CodelistEntry;
+package camp.xit.jacod.model;
 
 public class EntryNotFoundException extends RuntimeException {
 

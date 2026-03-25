@@ -1,4 +1,4 @@
-package camp.xit.jacod;
+package camp.xit.jacod.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

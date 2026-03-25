@@ -1,10 +1,12 @@
 package camp.xit.jacod;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+
 import org.junit.jupiter.api.Test;
 
 public class ExpirationSupplierTest {

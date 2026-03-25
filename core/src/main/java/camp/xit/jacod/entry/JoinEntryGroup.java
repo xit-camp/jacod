@@ -1,9 +1,10 @@
 package camp.xit.jacod.entry;
 
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.CodelistEntry;
 import java.util.ArrayList;
 import java.util.List;
+
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.model.CodelistEntry;
 
 public class JoinEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 

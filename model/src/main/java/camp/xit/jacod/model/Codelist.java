@@ -1,7 +1,5 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.EntryNotFoundException;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;

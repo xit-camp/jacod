@@ -1,16 +1,19 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.ContractState;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.test.CodelistClientExtension;
-import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
-import camp.xit.jacod.test.model.ContractStates;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.model.ContractState;
+import camp.xit.jacod.model.InsuranceProduct;
+import camp.xit.jacod.model.InsuranceProducts;
+import camp.xit.jacod.test.CodelistClientExtension;
+import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
+import camp.xit.jacod.test.model.ContractStates;
 
 @ExtendWith(CodelistClientExtension.class)
 public class CodelistEnumTest {

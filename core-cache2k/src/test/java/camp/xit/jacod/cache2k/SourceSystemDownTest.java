@@ -1,16 +1,19 @@
 package camp.xit.jacod.cache2k;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.time.Duration;
+
+import org.junit.jupiter.api.Test;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.CodelistNotFoundException;
 import camp.xit.jacod.cache2k.model.InsuranceProduct;
 import camp.xit.jacod.cache2k.test.CsvErrorDataProvider;
 import camp.xit.jacod.model.Codelist;
-import java.time.Duration;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.Test;
 
 public class SourceSystemDownTest {
 

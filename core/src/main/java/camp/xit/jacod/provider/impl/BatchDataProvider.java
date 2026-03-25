@@ -1,4 +1,4 @@
-package camp.xit.jacod.provider;
+package camp.xit.jacod.provider.impl;
 
 import static java.time.Duration.ofMinutes;
 import static java.util.Optional.ofNullable;
@@ -16,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.EntryData;
 
 public abstract class BatchDataProvider implements DataProvider, Closeable {
 

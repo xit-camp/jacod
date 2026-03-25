@@ -1,16 +1,22 @@
 package camp.xit.jacod.spring.cache;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+
 import camp.xit.jacod.impl.CodelistClientImpl;
 import camp.xit.jacod.impl.ShallowRefProvider;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.util.*;
-import java.util.concurrent.Callable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.Cache;
 
 /**
  * Cached thread-safety implementation of CodelistClient

@@ -1,13 +1,15 @@
 package camp.xit.jacod.provider.gsheet;
 
-import camp.xit.jacod.provider.EntryData;
+import static java.util.Optional.empty;
+import static java.util.stream.Collectors.toSet;
+
 import java.io.File;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import static java.util.Optional.empty;
 import java.util.Set;
-import static java.util.stream.Collectors.toSet;
+
+import camp.xit.jacod.provider.EntryData;
 
 public class MetaGSheetBatchDataProvider extends GSheetBatchDataProvider {
 

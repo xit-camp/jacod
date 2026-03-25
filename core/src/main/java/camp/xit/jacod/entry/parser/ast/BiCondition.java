@@ -1,13 +1,14 @@
 package camp.xit.jacod.entry.parser.ast;
 
-import camp.xit.jacod.entry.parser.ParserConstants;
-import camp.xit.jacod.model.CodelistEntry;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import camp.xit.jacod.entry.parser.ParserConstants;
+import camp.xit.jacod.model.CodelistEntry;
 
 public class BiCondition extends Condition {
 

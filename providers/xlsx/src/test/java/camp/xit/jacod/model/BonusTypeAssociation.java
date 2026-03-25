@@ -1,7 +1,8 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.Embeddable;
 import java.time.LocalDate;
+
+import camp.xit.jacod.annotation.Embeddable;
 
 @Embeddable
 public class BonusTypeAssociation {

@@ -1,16 +1,19 @@
 package camp.xit.jacod.cache2k;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.Duration;
+
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.cache2k.model.Title;
 import camp.xit.jacod.cache2k.test.SimpleCsvDataProvider;
 import camp.xit.jacod.model.Codelist;
-import java.time.Duration;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CacheReloadTest {
 

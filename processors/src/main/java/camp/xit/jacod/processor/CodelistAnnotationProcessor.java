@@ -1,6 +1,18 @@
-package camp.xit.jacod.impl;
+package camp.xit.jacod.processor;
 
-import com.google.auto.service.AutoService;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -25,24 +37,13 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import camp.xit.jacod.AdvancedCodelistProvider;
+import com.google.auto.service.AutoService;
+
 import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.provider.AdvancedCodelistProvider;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-
-@SupportedAnnotationTypes("camp.xit.jacod.BaseEntry")
+@SupportedAnnotationTypes("camp.xit.jacod.annotation.BaseEntry") // only constant is possible here // camp.xit.jacod.annotation.BaseEntry
 @AutoService(Processor.class)
 // https://hannesdorfmann.com/annotation-processing/annotationprocessing101/
 public final class CodelistAnnotationProcessor extends AbstractProcessor {
@@ -237,6 +238,7 @@ public final class CodelistAnnotationProcessor extends AbstractProcessor {
         TypeElement annotationElement
     ) {
     }
+
 
     @Override
     public SourceVersion getSupportedSourceVersion() {

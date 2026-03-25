@@ -1,6 +1,7 @@
 package camp.xit.jacod.impl;
 
 import static camp.xit.jacod.impl.EntryMetadata.getReferenceType;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;

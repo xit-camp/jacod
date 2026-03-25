@@ -1,16 +1,19 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.AdvancedCodelistProvider;
-import camp.xit.jacod.CodelistMappingProvider;
-import camp.xit.jacod.model.CodelistEntry;
 import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.provider.AdvancedCodelistProvider;
+import camp.xit.jacod.provider.CodelistMappingProvider;
 
 final class MappersRef {
 

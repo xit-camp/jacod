@@ -1,9 +1,10 @@
 package camp.xit.jacod.provider.proxy;
 
-import camp.xit.jacod.provider.DataProvider;
-import camp.xit.jacod.provider.EntryData;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -13,18 +14,19 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Collection;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singletonList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import static java.util.Optional.empty;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.EntryData;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  *
@@ -61,9 +63,7 @@ public class ProxyDataProvider implements DataProvider {
             if (node.isArray()) {
                 for (JsonNode entryNode : node) {
                     EntryData entryData = new EntryData();
-                    Iterator<Map.Entry<String, JsonNode>> it = entryNode.fields();
-                    while (it.hasNext()) {
-                        Map.Entry<String, JsonNode> attrEntry = it.next();
+                    for (Map.Entry<String, JsonNode> attrEntry : entryNode.properties()) {
                         String attr = attrEntry.getKey();
                         JsonNode attrNode = attrEntry.getValue();
                         entryData.addField(attr, getValue(attrNode));
@@ -82,11 +82,11 @@ public class ProxyDataProvider implements DataProvider {
     private Collection<String> getValue(JsonNode valueNode) {
         List<String> result = emptyList();
         if (valueNode.isValueNode() && !valueNode.isNull()) {
-            result = singletonList(valueNode.asText());
+            result = singletonList(valueNode.asString());
         } else if (valueNode.isArray()) {
             result = new ArrayList<>();
             for (JsonNode arrNode : valueNode) {
-                result.add(arrNode.asText());
+                result.add(arrNode.asString());
             }
         }
         return result;
@@ -106,7 +106,7 @@ public class ProxyDataProvider implements DataProvider {
             if (node.isArray()) {
                 result = new HashSet<>();
                 for (JsonNode nameNode : node) {
-                    result.add(nameNode.asText());
+                    result.add(nameNode.asString());
                 }
             }
         } catch (NotFoundException e) {

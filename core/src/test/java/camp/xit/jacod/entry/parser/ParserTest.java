@@ -1,14 +1,19 @@
 package camp.xit.jacod.entry.parser;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.StringReader;
+
+import org.junit.jupiter.api.Test;
+
 import camp.xit.jacod.entry.parser.ast.AllExpression;
 import camp.xit.jacod.entry.parser.ast.CompileException;
 import camp.xit.jacod.entry.parser.ast.Expression;
 import camp.xit.jacod.model.BusinessPlace;
-import java.io.StringReader;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 public class ParserTest {
 

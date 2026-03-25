@@ -1,4 +1,6 @@
-package camp.xit.jacod.provider;
+package camp.xit.jacod.provider.impl;
+
+import static java.time.Duration.ofMinutes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,16 +9,20 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import static java.time.Duration.ofMinutes;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+
+import camp.xit.jacod.provider.ResourceNotChangedException;
+import camp.xit.jacod.provider.ResourceNotFoundException;
 
 public final class SimpleHttpClient {
 

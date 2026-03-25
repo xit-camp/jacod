@@ -1,17 +1,17 @@
 package camp.xit.jacod.model;
 
-import camp.xit.jacod.BaseEntry;
-import camp.xit.jacod.DateUtil;
-import camp.xit.jacod.NotNull;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+
+import camp.xit.jacod.annotation.BaseEntry;
+import camp.xit.jacod.annotation.NotNull;
+import camp.xit.jacod.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * Základná trieda číselníkovej hodnoty. Číselník je definovaný množinou týchto hodnôt.

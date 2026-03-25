@@ -1,19 +1,22 @@
 package camp.xit.jacod;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.FullScanCsvClient;
 import camp.xit.jacod.test.model.Brand;
 import camp.xit.jacod.test.model.CommunicationChannel;
-import java.util.ArrayList;
-import java.util.List;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith({CodelistClientExtension.class})
 public class CustomCodelistTest {
