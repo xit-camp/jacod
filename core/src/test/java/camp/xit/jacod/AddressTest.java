@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import camp.xit.jacod.model.BusinessPlace;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
+import camp.xit.jt.model.BusinessPlace;
 
 @ExtendWith(CodelistClientExtension.class)
 public class AddressTest {

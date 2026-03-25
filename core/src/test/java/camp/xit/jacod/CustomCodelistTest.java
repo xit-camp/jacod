@@ -15,8 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.FullScanCsvClient;
-import camp.xit.jacod.test.model.Brand;
-import camp.xit.jacod.test.model.CommunicationChannel;
+import camp.xit.jt.one.model.Brand;
+import camp.xit.jt.one.model.CommunicationChannel;
 
 @ExtendWith({CodelistClientExtension.class})
 public class CustomCodelistTest {

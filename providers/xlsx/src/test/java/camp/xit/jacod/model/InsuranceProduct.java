@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import camp.xit.jacod.EntryRef;
+import camp.xit.jt.model.InsuranceProduct;
 
 public class InsuranceProduct extends CodelistEntry {
 

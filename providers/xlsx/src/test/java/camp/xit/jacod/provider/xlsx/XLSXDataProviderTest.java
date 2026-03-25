@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.Title;
 import camp.xit.jacod.provider.EntryData;
+import camp.xit.jt.model.InsuranceProduct;
+import camp.xit.jt.model.Title;
 
 /**
  *

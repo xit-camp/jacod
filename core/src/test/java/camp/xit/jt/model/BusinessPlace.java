@@ -1,6 +1,11 @@
-package camp.xit.jacod.model;
+package camp.xit.jt.model;
 
 import java.util.List;
+
+import camp.xit.jacod.model.Address;
+import camp.xit.jacod.model.BonusType;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.LegalSubject;
 
 public class BusinessPlace extends CodelistEntry {
 

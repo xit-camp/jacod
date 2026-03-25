@@ -1,6 +1,7 @@
 package camp.xit.jacod.model;
 
 import camp.xit.jacod.annotation.Embeddable;
+import camp.xit.jt.model.Address;
 
 @Embeddable
 public class LegalSubject {

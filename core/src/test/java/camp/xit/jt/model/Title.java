@@ -1,4 +1,8 @@
-package camp.xit.jacod.model;
+package camp.xit.jt.model;
+
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.CodelistEnum;
+import camp.xit.jacod.model.Title;
 
 public class Title extends CodelistEntry {
 

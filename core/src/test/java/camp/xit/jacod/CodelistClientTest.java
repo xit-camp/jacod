@@ -17,11 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.EntryNotFoundException;
-import camp.xit.jacod.model.InsuranceProduct;
-import camp.xit.jacod.model.InsuranceProducts;
 import camp.xit.jacod.test.CodelistClientExtension;
 import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
 import camp.xit.jacod.test.CodelistClientExtension.ShallowCsvClient;
+import camp.xit.jt.model.InsuranceProduct;
+import camp.xit.jt.model.InsuranceProducts;
 
 @ExtendWith(CodelistClientExtension.class)
 class CodelistClientTest {

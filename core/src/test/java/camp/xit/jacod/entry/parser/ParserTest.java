@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import camp.xit.jacod.entry.parser.ast.AllExpression;
 import camp.xit.jacod.entry.parser.ast.CompileException;
 import camp.xit.jacod.entry.parser.ast.Expression;
-import camp.xit.jacod.model.BusinessPlace;
+import camp.xit.jt.model.BusinessPlace;
 
 public class ParserTest {
 

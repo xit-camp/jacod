@@ -3,6 +3,7 @@ package camp.xit.jacod.model;
 import java.time.LocalDate;
 
 import camp.xit.jacod.annotation.Embeddable;
+import camp.xit.jt.model.BonusType;
 
 @Embeddable
 public class BonusTypeAssociation {
