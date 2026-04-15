@@ -1,11 +1,12 @@
 package camp.xit.jacod.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class LocalCachedRefProvider implements ReferenceProvider {
 

@@ -1,20 +1,13 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.BaseEntryMapping;
-import camp.xit.jacod.Embeddable;
-import camp.xit.jacod.EntryMapper;
-import camp.xit.jacod.EntryMapping;
-import camp.xit.jacod.EntryMappings;
-import camp.xit.jacod.InvalidEntryException;
-import camp.xit.jacod.NotNull;
 import static camp.xit.jacod.impl.EntryMetadata.getReferenceType;
-import camp.xit.jacod.impl.FieldMap.FieldMapping;
-import static camp.xit.jacod.impl.ValueParser.*;
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.provider.DataProvider;
-import camp.xit.jacod.provider.EntryData;
-import camp.xit.jacod.provider.ReferenceProvider;
+import static camp.xit.jacod.impl.ValueParser.isSimpleType;
+import static camp.xit.jacod.impl.ValueParser.parseCollectionOfSimple;
+import static camp.xit.jacod.impl.ValueParser.parseSimpleValue;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toList;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Constructor;
@@ -23,15 +16,35 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import camp.xit.jacod.EntryMapper;
+import camp.xit.jacod.InvalidEntryException;
+import camp.xit.jacod.annotation.BaseEntryMapping;
+import camp.xit.jacod.annotation.Embeddable;
+import camp.xit.jacod.annotation.EntryMapping;
+import camp.xit.jacod.annotation.EntryMappings;
+import camp.xit.jacod.annotation.NotNull;
+import camp.xit.jacod.impl.FieldMap.FieldMapping;
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.EntryData;
+import camp.xit.jacod.provider.ReferenceProvider;
 
 public final class CodelistEntryMapper implements EntryMapper {
 
@@ -57,7 +70,7 @@ public final class CodelistEntryMapper implements EntryMapper {
     public CodelistEntryMapper(Set<String> whitelistPackages) {
         this.advancedCodelists = new ConcurrentHashMap<>();
         this.entryMappings = new HashMap<>();
-        this.baseEntryMappings = new HashMap();
+        this.baseEntryMappings = new HashMap<>();
         registerEntryMetadata(new MappersRef(whitelistPackages));
         this.baseEntryMetadata = createBaseEntryMetadata();
         this.metadataMap = createMetadataMap(this.advancedCodelists);

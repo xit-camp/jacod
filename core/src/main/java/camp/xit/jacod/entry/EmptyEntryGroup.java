@@ -1,8 +1,9 @@
 package camp.xit.jacod.entry;
 
+import java.util.stream.Stream;
+
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import java.util.stream.Stream;
 
 public class EmptyEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 

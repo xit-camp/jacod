@@ -4,7 +4,7 @@
     <parent>
         <groupId>camp.xit.jacod</groupId>
         <artifactId>jacod</artifactId>
-        <version>1.3.14-SNAPSHOT</version>
+        <version>1.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>jacod-bom</artifactId>
@@ -15,6 +15,11 @@
             <dependency>
                 <groupId>camp.xit.jacod</groupId>
                 <artifactId>jacod-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>camp.xit.jacod</groupId>
+                <artifactId>jacod-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

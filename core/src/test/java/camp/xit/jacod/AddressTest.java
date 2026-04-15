@@ -1,14 +1,16 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.model.BusinessPlace;
-import camp.xit.jacod.test.CodelistClientExtension;
-import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import camp.xit.jacod.test.CodelistClientExtension;
+import camp.xit.jacod.test.CodelistClientExtension.CsvClient;
+import camp.xit.jcd.model.BusinessPlace;
 
 @ExtendWith(CodelistClientExtension.class)
 public class AddressTest {

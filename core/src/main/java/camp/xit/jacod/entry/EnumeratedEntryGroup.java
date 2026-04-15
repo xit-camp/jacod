@@ -1,8 +1,9 @@
 package camp.xit.jacod.entry;
 
+import java.util.Set;
+
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
-import java.util.Set;
 
 public class EnumeratedEntryGroup<T extends CodelistEntry> implements EntryGroup<T> {
 

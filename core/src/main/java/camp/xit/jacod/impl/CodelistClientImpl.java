@@ -1,18 +1,25 @@
 package camp.xit.jacod.impl;
 
+import static camp.xit.jacod.impl.ExceptionUtil.notFoundException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.EntryMapper;
-import camp.xit.jacod.EntryNotFoundException;
 import camp.xit.jacod.entry.QueryEntryGroup;
-import static camp.xit.jacod.impl.ExceptionUtil.*;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.model.CodelistEnum;
+import camp.xit.jacod.model.EntryNotFoundException;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Non-cached thread-safety implementation of CodelistClient

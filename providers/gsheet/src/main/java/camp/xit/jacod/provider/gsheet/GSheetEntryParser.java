@@ -1,12 +1,15 @@
 package camp.xit.jacod.provider.gsheet;
 
-import camp.xit.jacod.provider.EntryData;
-import camp.xit.jacod.provider.gsheet.service.RangeValue;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import static java.util.Optional.ofNullable;
+
 import java.util.ArrayList;
 import java.util.List;
-import static java.util.Optional.ofNullable;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import camp.xit.jacod.provider.EntryData;
+import camp.xit.jacod.provider.gsheet.service.RangeValue;
 
 public class GSheetEntryParser {
 

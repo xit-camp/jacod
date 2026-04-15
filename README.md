@@ -132,7 +132,7 @@ public class Bank extends CodelistEntry {
 }
 ```
 
-Then we can access Banks:
+Then we can access the Bank codelist:
 ```java
 package camp.xit.jacod.example;
 

@@ -1,16 +1,10 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.Embeddable;
-import camp.xit.jacod.InvalidEntryException;
-import camp.xit.jacod.NotNull;
 import static camp.xit.jacod.impl.EntryMetadata.getReferenceType;
-import camp.xit.jacod.impl.FieldMap.FieldMapping;
 import static camp.xit.jacod.impl.ValueParser.isSimpleType;
 import static camp.xit.jacod.impl.ValueParser.parseCollectionOfSimple;
 import static camp.xit.jacod.impl.ValueParser.parseSimpleValue;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.provider.DataProvider;
-import camp.xit.jacod.provider.EntryData;
+
 import java.lang.reflect.Field;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -22,8 +16,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import camp.xit.jacod.InvalidEntryException;
+import camp.xit.jacod.annotation.Embeddable;
+import camp.xit.jacod.annotation.NotNull;
+import camp.xit.jacod.impl.FieldMap.FieldMapping;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.EntryData;
 
 public class FlatEntryMapper {
 

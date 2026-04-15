@@ -1,20 +1,23 @@
 package camp.xit.jacod.provider.csv;
 
-import camp.xit.jacod.provider.CodelistNotChangedException;
-import camp.xit.jacod.provider.DataProvider;
-import camp.xit.jacod.provider.EntryData;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import static java.util.Collections.emptySet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import static java.util.stream.Collectors.toSet;
 import java.util.stream.Stream;
+
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
+
+import camp.xit.jacod.provider.CodelistNotChangedException;
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.EntryData;
 
 /**
  *

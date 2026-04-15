@@ -1,13 +1,18 @@
 package camp.xit.jacod;
 
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import camp.xit.jacod.impl.FlatEntryMapper;
 import camp.xit.jacod.model.Codelist;
 import camp.xit.jacod.model.CodelistEntry;
 import camp.xit.jacod.provider.DataProvider;
 import camp.xit.jacod.provider.EntryData;
 import camp.xit.jacod.provider.ReferenceProvider;
-import java.io.PrintStream;
-import java.util.*;
 
 public interface EntryMapper {
 

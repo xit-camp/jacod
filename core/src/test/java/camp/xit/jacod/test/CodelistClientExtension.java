@@ -1,18 +1,22 @@
 package camp.xit.jacod.test;
 
-import camp.xit.jacod.CodelistClient;
-import camp.xit.jacod.provider.DataProvider;
-import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Parameter;
+
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+
+import camp.xit.jacod.CodelistClient;
+import camp.xit.jacod.provider.DataProvider;
+import camp.xit.jacod.provider.csv.SimpleCsvDataProvider;
+import camp.xit.jcd.model.Address;
+import camp.xit.jcd.model.ext.Brand;
 
 public class CodelistClientExtension implements ParameterResolver {
 
@@ -83,22 +87,32 @@ public class CodelistClientExtension implements ParameterResolver {
 
 
     private CodelistClient getCsvClient() {
-        return getCodelistClientBuilder().build();
+        return getCodelistClientBuilder()
+            .addScanPackages("camp.xit.jacod")
+            .addScanPackages("camp.xit.jacod.model")
+            .addScanPackages(Address.class.getPackage())
+            .addScanPackages(Brand.class.getPackage())
+            .build();
     }
 
 
     private CodelistClient getFullScanCsvClient() {
-        return getCodelistClientBuilder().scanFullClasspath().build();
+        return getCodelistClientBuilder()
+            .scanFullClasspath()
+            .build();
     }
 
 
     private CodelistClient getShallowCsvClient() {
-        return getCodelistClientBuilder().scanFullClasspath().shallowReferences().build();
+        return getCodelistClientBuilder()
+            .scanFullClasspath()
+            .shallowReferences()
+            .build();
     }
 
 
     private CodelistClient.Builder getCodelistClientBuilder() {
         return new CodelistClient.Builder()
-                .withDataProvider(new SimpleCsvDataProvider());
+            .withDataProvider(new SimpleCsvDataProvider());
     }
 }

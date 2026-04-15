@@ -1,10 +1,11 @@
 package camp.xit.jacod.impl;
 
-import camp.xit.jacod.EntryFieldMapping;
-import camp.xit.jacod.EntryMapping;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import camp.xit.jacod.annotation.EntryFieldMapping;
+import camp.xit.jacod.annotation.EntryMapping;
 
 final class FieldMap<T> {
 

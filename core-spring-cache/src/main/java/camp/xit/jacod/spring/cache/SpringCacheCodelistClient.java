@@ -1,8 +1,9 @@
 package camp.xit.jacod.spring.cache;
 
+import org.springframework.cache.Cache;
+
 import camp.xit.jacod.CodelistClient;
 import camp.xit.jacod.provider.DataProvider;
-import org.springframework.cache.Cache;
 
 public class SpringCacheCodelistClient {
 

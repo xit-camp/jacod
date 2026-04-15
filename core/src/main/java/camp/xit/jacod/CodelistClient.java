@@ -1,11 +1,7 @@
 package camp.xit.jacod;
 
-import camp.xit.jacod.entry.parser.ast.CompileException;
-import camp.xit.jacod.impl.CodelistClientImpl;
-import camp.xit.jacod.model.Codelist;
-import camp.xit.jacod.model.CodelistEntry;
-import camp.xit.jacod.model.CodelistEnum;
-import camp.xit.jacod.provider.DataProvider;
+import static java.util.stream.Collectors.toList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,8 +9,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
+
+import camp.xit.jacod.entry.parser.ast.CompileException;
+import camp.xit.jacod.impl.CodelistClientImpl;
+import camp.xit.jacod.model.Codelist;
+import camp.xit.jacod.model.CodelistEntry;
+import camp.xit.jacod.model.CodelistEnum;
+import camp.xit.jacod.model.EntryNotFoundException;
+import camp.xit.jacod.provider.DataProvider;
 
 public interface CodelistClient {
 
@@ -165,11 +168,11 @@ public interface CodelistClient {
 
     public static class Builder<T extends Builder> {
 
-        public static final String[] BASE_PACKAGES = new String[]{CodelistEntry.class.getPackageName()};
+        public static final String[] BASE_PACKAGES = new String[] { CodelistEntry.class.getPackageName() };
 
         protected DataProvider dataProvider = null;
         protected Set<String> prefetchedCodelists = null;
-        protected Set<String> whitelistPackages = new HashSet<>(Arrays.asList(BASE_PACKAGES));
+        protected Set<String> whitelistPackages = new HashSet<>(Set.of(BASE_PACKAGES));
         protected boolean shallowReferences = false;
 
 
