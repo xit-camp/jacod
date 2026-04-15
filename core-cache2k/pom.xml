@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>jacod-core-cache2k</artifactId>
+    <name>${project.artifactId}</name>
 
     <properties>
         <cache2k.version>2.6.1.Final</cache2k.version>

@@ -9,6 +9,7 @@
 
     <artifactId>jacod-providers</artifactId>
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
 
     <properties>
         <jackson.version>3.1.0</jackson.version>

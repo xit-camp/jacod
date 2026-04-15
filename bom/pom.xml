@@ -9,6 +9,7 @@
 
     <artifactId>jacod-bom</artifactId>
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
 
     <dependencyManagement>
         <dependencies>
